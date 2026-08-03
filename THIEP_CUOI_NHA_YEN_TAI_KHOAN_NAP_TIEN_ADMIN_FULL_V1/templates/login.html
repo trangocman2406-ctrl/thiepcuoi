@@ -1,0 +1,22 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <div class="auth-copy">
+      <p class="eyebrow">Hệ thống Thiệp Cưới Nhà Yến</p>
+      <h1>Đăng nhập</h1>
+      <p>Một trang đăng nhập dùng chung cho khách hàng, thiết kế viên và quản trị viên. Hệ thống tự chuyển đúng khu vực theo vai trò tài khoản.</p>
+      <div class="role-list">
+        <span>👤 Khách hàng: tài khoản, địa chỉ, nạp tiền, xem số dư</span>
+        <span>🎨 Thiết kế viên: quản lý và chỉnh sửa thiệp</span>
+        <span>🛡️ Admin: duyệt nạp tiền và quản lý tài khoản</span>
+      </div>
+    </div>
+    <form class="form auth-form" method="post" action="/login">
+      <input type="hidden" name="next" value="{{next}}">
+      <p class="error">{{error}}</p>
+      <label>Tên đăng nhập<input name="username" value="{{username}}" autocomplete="username" required></label>
+      <label>Mật khẩu<input type="password" name="password" autocomplete="current-password" required></label>
+      <button class="ny-btn">Đăng nhập</button>
+      <p class="auth-switch">Chưa có tài khoản khách? <a href="/register">Đăng ký ngay</a></p>
+    </form>
+  </div>
+</section>

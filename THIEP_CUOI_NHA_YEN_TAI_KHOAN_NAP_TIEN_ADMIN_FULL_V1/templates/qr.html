@@ -1,0 +1,35 @@
+<section class="wrap narrow qr-page">
+  <h1>QR link thiệp</h1>
+  <p class="qr-link"><a href="{{url}}" target="_blank" rel="noopener">{{url}}</a></p>
+  <div id="qrCode" class="qr" aria-live="polite"></div>
+  <p id="qrStatus" class="muted">Đang tạo mã QR…</p>
+  <button id="downloadQr" class="ny-btn" type="button" hidden>Tải QR PNG</button>
+</section>
+<style>
+.qr-page{text-align:center;display:grid;justify-items:center}.qr-page .qr-link{width:min(100%,720px);overflow-wrap:anywhere}.qr-page .qr{box-sizing:border-box;display:flex;align-items:center;justify-content:center;margin:18px auto;width:280px;height:280px;max-width:calc(100vw - 32px);max-height:calc(100vw - 32px);padding:20px;background:#fff;border-radius:18px;box-shadow:0 14px 36px rgba(40,20,30,.12);overflow:hidden}.qr-page .qr canvas{display:block!important;margin:auto!important;width:min(240px,100%)!important;height:auto!important;aspect-ratio:1/1;object-fit:contain}.qr-page .muted{color:#6f6670;overflow-wrap:anywhere}
+</style>
+<script src="/static/js/vendor-qrcode.js?v=2"></script>
+<script src="/static/js/qr-renderer.js?v=2"></script>
+<script>
+(function(){
+  var box=document.getElementById('qrCode');
+  var status=document.getElementById('qrStatus');
+  var download=document.getElementById('downloadQr');
+  try{
+    var qrUrl={{url_json}};
+    var qr=new QRCode(box,{text:qrUrl,width:256,height:256,correctLevel:'M'});
+    status.textContent='Quét mã để mở thiệp.';
+    download.hidden=false;
+    download.addEventListener('click',function(){
+      var link=document.createElement('a');
+      link.download='qr-thiep-{{slug}}.png';
+      link.href=qr.toDataURL();
+      link.click();
+    });
+  }catch(error){
+    console.error('[NhaYen QR]',error);
+    box.textContent='Không tạo được QR.';
+    status.textContent='Lỗi: '+(error&&error.message?error.message:'Không xác định');
+  }
+})();
+</script>

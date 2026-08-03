@@ -1,0 +1,24 @@
+<section class="wrap narrow">
+  <h1>Gửi thông tin làm demo</h1>
+  <p class="error">{{error}}</p>{{account_notice}}
+  <form class="form" action="/request" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="template_code" value="{{template_code}}">
+    <label>Mã đơn hàng<input name="order_code" required></label>
+    <label>Số Zalo<input name="zalo" value="{{zalo_value}}" required></label>
+    <label>Tên cô dâu<input name="bride_name" required></label>
+    <label>Tên chú rể<input name="groom_name" required></label>
+    <div class="form-grid">
+      <label>Ngày cưới<input type="date" name="wedding_date"></label>
+      <label>Giờ lễ<input type="time" name="wedding_time"></label>
+      <label>Giờ tiệc<input type="time" name="party_time"></label>
+    </div>
+    <label>Địa chỉ chung / địa chỉ tiệc<textarea name="address">{{address_value}}</textarea></label>
+    <label>Link Google Map<input name="map_url"></label>
+    <label>Lời mời / lời giới thiệu ngắn<textarea name="intro" placeholder="Nếu chưa có, designer sẽ tự điền sau."></textarea></label>
+    <label>Thông tin nhà trai<textarea name="groom_parents" placeholder="Ví dụ: Ông bà..."></textarea></label>
+    <label>Thông tin nhà gái<textarea name="bride_parents" placeholder="Ví dụ: Ông bà..."></textarea></label>
+    <label>Upload ảnh/nhạc<input type="file" name="files" multiple accept="image/*,audio/*"></label>
+    <label>Ghi chú yêu cầu<textarea name="note"></textarea></label>
+    <button class="ny-btn">Gửi yêu cầu</button>
+  </form>
+</section>

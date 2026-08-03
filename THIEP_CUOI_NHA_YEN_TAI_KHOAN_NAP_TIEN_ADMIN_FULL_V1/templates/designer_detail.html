@@ -1,0 +1,149 @@
+<section class="designer-workspace">
+  <header class="designer-toolbar">
+    <div>
+      <a href="/designer">← Danh sách đơn</a>
+      <h1>Editor đơn {{order_code}}</h1>
+      <p class="muted">Bấm trực tiếp vào chữ trong khung thiệp bên trái để sửa. Form bên phải sẽ tự nhảy đến đúng ô và tự lưu.</p>
+    </div>
+    <div class="toolbar-actions">
+      <span id="autosaveStatus" class="autosave-status">Chưa thay đổi</span>
+      <span class="template-role {{template_role_class}}">{{template_role}}</span>
+      <button type="button" class="ny-btn ny-ghost" id="setMasterTemplateBtn" data-set-master-url="/designer/orders/{{id}}/set-as-master" title="Đặt thiết kế này làm nguồn deep clone độc lập cho các đơn {{template_code}} mới"{{master_button_disabled}}>{{master_button_text}}</button>
+      <form method="post" action="/designer/orders/{{id}}/export"><button class="ny-btn">{{export_button_text}}</button></form>
+    </div>
+  </header>
+  {{saved_msg}}
+  <div class="corel-layout">
+    <main class="canvas-column">
+      <div class="canvas-topbar">
+        <b>Khung xem thiệp</b>
+        <div class="canvas-buttons">
+          <button type="button" class="ny-btn ny-ghost ny-small is-active" data-preview-size="laptop">Laptop</button>
+          <button type="button" class="ny-btn ny-ghost ny-small" data-preview-size="mobile">Điện thoại</button>
+          <button type="button" class="ny-btn ny-ghost ny-small" onclick="window.NhaYenReloadPreview&&window.NhaYenReloadPreview()">Tải lại</button>
+          <a class="ny-btn ny-ghost ny-small" href="{{private_preview_url}}" target="_blank">Mở tab</a>
+        </div>
+      </div>
+      <div class="canvas-stage" data-size="laptop"><iframe id="designerLivePreview" src="{{private_preview_url}}?embed=1" title="Khung chỉnh sửa thiệp"></iframe></div>
+      <div class="designer-hint">Chữ có viền hồng là chữ chỉnh trực tiếp được. Link/map trong khung này bị khóa để tránh bấm nhầm khi thiết kế.</div>
+    </main>
+    <aside class="editor-column">
+      <div class="pos-toolbar-sticky is-empty" id="posToolbarSticky">
+        <div class="pos-toolbar-label" id="posToolbarLabel">Bấm vào 1 ô chữ để canh lề / nhích / cỡ / font riêng ô đó</div>
+        <span class="text-pos-tools" id="posToolbarTools"></span>
+      </div>
+      <details class="editor-card" open><summary>Link demo / QR</summary><div class="card-body">{{public}}</div></details>
+      <details class="editor-card"><summary>Thông tin khách gửi</summary><div class="card-body compact-info">{{summary}}</div></details>
+      <form id="designerEditForm" class="form edit-form side-edit-form" method="post" action="/designer/orders/{{id}}/update" enctype="multipart/form-data" data-autosave-url="/designer/orders/{{id}}/autosave" data-auto-upload-url="/designer/orders/{{id}}/auto-upload-files" data-auto-upload-slot-url="/designer/orders/{{id}}/auto-upload-photo-slot">
+        <details class="editor-card" open><summary>1. Text chính trên thiệp</summary><div class="card-body">
+          <p class="tiny-note muted">Bấm vào 1 ô chữ (hoặc dòng "Vị trí...") — cụm nút canh lề / nhích vị trí / <b>A- / ô số / A+</b> sẽ hiện cố định trên đầu khung này để chỉnh riêng cỡ chữ của đúng ô đó (không đổi ô khác). Để trống ô số = dùng lại cỡ chữ nhóm ở mục 4.</p>
+          <label data-field="order_code">Mã đơn hàng<textarea class="ny-inline-field" rows="1" name="order_code" required>{{order_code}}</textarea></label>
+          <label data-field="zalo">Số Zalo<textarea class="ny-inline-field" rows="1" name="zalo" required>{{zalo}}</textarea></label>
+          <label data-field="groom_name">Tên chú rể<textarea class="ny-inline-field" rows="1" name="groom_name" required>{{groom_name}}</textarea></label>
+          <label data-field="bride_name">Tên cô dâu<textarea class="ny-inline-field" rows="1" name="bride_name" required>{{bride_name}}</textarea></label>
+          <label data-field="couple_ampersand" class="pos-only-field">Dấu "&amp;" giữa tên (chỉ chỉnh vị trí / cỡ / font, không đổi được ký tự)</label>
+          <p class="tiny-note muted">Tên cô dâu chú rể và chữ ngày cưới xuất hiện ở nhiều chỗ trên thiệp (màn bìa, bìa thư mời, khung sông nước, khung ảnh gia đình, mục Save The Date...) — <b>bấm/bôi đen trực tiếp đúng chữ đó trong khung xem thiệp bên trái</b>, cụm nút dính trên đầu sẽ tự chuyển sang chỉnh vị trí / cỡ / font / màu riêng đúng chỗ vừa chọn, không ảnh hưởng chỗ khác.</p>
+          <label data-field="cover_title">Tiêu đề bìa<textarea class="ny-inline-field" rows="1" name="cover_title">{{cover_title}}</textarea></label>
+          <label data-field="cover_subtitle">Dòng phụ bìa<textarea class="ny-inline-field" rows="1" name="cover_subtitle">{{cover_subtitle}}</textarea></label>
+          <label data-field="invite_label">Dòng kính mời<textarea class="ny-inline-field" rows="1" name="invite_label">{{invite_label}}</textarea></label>
+          <label data-field="invitation_title">Tiêu đề lời mời<textarea class="ny-inline-field" rows="1" name="invitation_title">{{invitation_title}}</textarea></label>
+          <label data-field="quote_text">Câu quote / câu thơ<textarea name="quote_text">{{quote_text}}</textarea></label>
+          <label data-field="love_quote_title">Tiêu đề mục "I Love You"<textarea class="ny-inline-field" rows="1" name="love_quote_title">{{love_quote_title}}</textarea></label>
+          <label data-field="love_quote_text">Câu thơ mục "I Love You"<textarea name="love_quote_text">{{love_quote_text}}</textarea></label>
+          <label data-field="intro">Lời giới thiệu / lời mời<textarea name="intro">{{intro}}</textarea></label>
+          <label data-field="wishes_title">Tiêu đề lời chúc<textarea class="ny-inline-field" rows="1" name="wishes_title">{{wishes_title}}</textarea></label>
+          <label data-field="gallery_title">Tiêu đề gallery<textarea class="ny-inline-field" rows="1" name="gallery_title">{{gallery_title}}</textarea></label>
+        </div></details>
+        <details class="editor-card" open><summary>2. Lịch, giờ, địa chỉ</summary><div class="card-body">
+          <label data-field="wedding_date">Ngày cưới / lịch<input type="date" name="wedding_date" value="{{wedding_date}}"></label>
+          <div class="mini-grid"><label data-field="wedding_time">Giờ lễ<input type="time" name="wedding_time" value="{{wedding_time}}"></label><label data-field="party_time">Giờ tiệc<input type="time" name="party_time" value="{{party_time}}"></label></div>
+          <label data-field="calendar_note">Ghi chú lịch<textarea class="ny-inline-field" rows="1" name="calendar_note" placeholder="Ví dụ: Nhằm ngày...">{{calendar_note}}</textarea></label>
+          <label data-field="ceremony_title">Tên lễ chính<textarea class="ny-inline-field" rows="1" name="ceremony_title">{{ceremony_title}}</textarea></label>
+          <label data-field="party_title">Tên tiệc<textarea class="ny-inline-field" rows="1" name="party_title">{{party_title}}</textarea></label>
+          <label data-field="address">Địa chỉ chung<textarea name="address">{{address}}</textarea></label>
+          <label data-field="ceremony_address">Địa chỉ lễ<textarea name="ceremony_address">{{ceremony_address}}</textarea></label>
+          <label data-field="party_address">Địa chỉ tiệc<textarea name="party_address">{{party_address}}</textarea></label>
+          <label data-field="map_url">Link Google Map<textarea class="ny-inline-field" rows="1" name="map_url">{{map_url}}</textarea></label>
+          <label data-field="map_button_text">Chữ nút bản đồ<textarea class="ny-inline-field" rows="1" name="map_button_text">{{map_button_text}}</textarea></label>
+        </div></details>
+        <details class="editor-card"><summary>3. Hai bên gia đình</summary><div class="card-body">
+          <label data-field="family_title">Tiêu đề gia đình<textarea class="ny-inline-field" rows="1" name="family_title">{{family_title}}</textarea></label>
+          <label data-field="event_title">Tiêu đề sự kiện<textarea class="ny-inline-field" rows="1" name="event_title">{{event_title}}</textarea></label>
+          <label data-field="groom_parents">Nhà trai / phụ huynh chú rể<textarea name="groom_parents">{{groom_parents}}</textarea></label>
+          <label data-field="groom_address">Địa chỉ nhà trai<textarea name="groom_address">{{groom_address}}</textarea></label>
+          <label data-field="bride_parents">Nhà gái / phụ huynh cô dâu<textarea name="bride_parents">{{bride_parents}}</textarea></label>
+          <label data-field="bride_address">Địa chỉ nhà gái<textarea name="bride_address">{{bride_address}}</textarea></label>
+        </div></details>
+        <details class="editor-card" open><summary>4. Cỡ chữ, font chữ, màu sắc</summary><div class="card-body">
+          <p class="muted tiny-note">Áp dụng cho cả 5 mẫu. Chọn "Theo font mặc định của mẫu" để giữ thiết kế gốc, hoặc chọn thêm trong 13 font có sẵn — preview đổi ngay.</p>
+          <div class="mini-grid"><label>Cỡ tên<input type="number" min="24" max="86" name="name_size" value="{{name_size}}"></label><label>Cỡ tiêu đề<input type="number" min="20" max="64" name="heading_size" value="{{heading_size}}"></label></div>
+          <label>Cỡ chữ thường<input type="number" min="12" max="24" name="body_size" value="{{body_size}}"></label>
+          <div class="mini-grid"><label>Font tên<select name="name_font">{{name_font_options}}</select></label><label>Font tiêu đề<select name="heading_font">{{heading_font_options}}</select></label></div>
+          <label>Font chữ thường<select name="body_font">{{body_font_options}}</select></label>
+          <div class="mini-grid colors"><label>Màu chữ<input type="color" name="text_color" value="{{text_color}}"></label><label>Màu nhấn<input type="color" name="accent_color" value="{{accent_color}}"></label><label>Màu nền<input type="color" name="background_color" value="{{background_color}}"></label></div>
+        </div></details>
+        <details class="editor-card" open><summary>5. Nội dung riêng của mẫu đang chọn</summary><div class="card-body">{{template_copy_fields}}</div></details>
+        <details class="editor-card"><summary>6. Ảnh, nhạc, mẫu</summary><div class="card-body">
+          <label>Mẫu thiệp<select name="template_code">{{template_options}}</select></label>
+          <label>Trạng thái<select name="status">{{status_options}}</select></label>
+          <label>Kiểu ảnh mặc định<select name="image_fit">{{image_fit_options}}</select></label>
+          <div class="image-editor-box" data-image-editor-box>
+            <b>Chỉnh ảnh trực tiếp</b>
+            <p class="muted tiny-note">Bấm một lần để chọn khung. Giữ chuột kéo để canh ảnh; lăn chuột để zoom. Khung luôn giữ nguyên kích thước. Bấm “Thay ảnh” hoặc nhấp đúp vào ảnh khi cần chọn file khác.</p>
+            <div class="selected-photo-name">Chưa chọn ảnh. Bấm một lần vào ảnh trong thiệp để chọn khung cần chỉnh.</div>
+            <label>Zoom ảnh đang chọn<input type="range" min="0.35" max="4" step="0.01" value="1" data-photo-zoom></label>
+            <div class="mini-grid photo-action-grid">
+              <button type="button" class="ny-btn ny-ghost ny-small" data-photo-center>Đưa về giữa</button>
+              <button type="button" class="ny-btn ny-ghost ny-small" data-photo-fit>Đổi cover/contain</button>
+              <button type="button" class="ny-btn ny-small" data-photo-replace>Thay ảnh đang chọn</button>
+            </div>
+          </div>
+          {{photo_hidden_inputs}}
+          {{text_pos_hidden_inputs}}
+          <label class="auto-upload-label">Thêm ảnh hoặc nhạc mới<input type="file" name="files" multiple accept="image/*,audio/*" data-auto-upload-files><small>Dùng khi muốn tải nhiều ảnh một lần. Còn thay đúng từng khung thì bấm trực tiếp vào ảnh trong thiệp.</small></label>
+          <div class="photos mini-photos">{{images}}</div>
+          <div class="music-box">{{music}}</div>
+        </div></details>
+        <details class="editor-card"><summary>7. Câu chữ trang trí (mẫu 01)</summary><div class="card-body">
+          <p class="tiny-note muted">Các câu chữ trước đây viết cứng trong mẫu 01, đơn nào cũng giống nhau — nay chỉnh được riêng cho từng đơn. Chỉ hiện đúng ở mẫu 01, đơn dùng mẫu khác thì bỏ qua mục này.</p>
+          <div class="mini-grid">
+            <label data-field="tiny_nav_left">Chữ nhỏ trái đầu thiệp<textarea class="ny-inline-field" rows="1" name="tiny_nav_left">{{tiny_nav_left}}</textarea></label>
+            <label data-field="tiny_nav_center">Chữ nhỏ giữa đầu thiệp<textarea class="ny-inline-field" rows="1" name="tiny_nav_center">{{tiny_nav_center}}</textarea></label>
+          </div>
+          <label data-field="tiny_nav_right">Chữ nhỏ phải đầu thiệp<textarea class="ny-inline-field" rows="1" name="tiny_nav_right">{{tiny_nav_right}}</textarea></label>
+          <label data-field="open_text">Chữ nhắc mở thiệp (dưới phong bì)<textarea class="ny-inline-field" rows="1" name="open_text">{{open_text}}</textarea></label>
+          <label data-field="ceremony_location_label">Nhãn "ĐƯỢC TỔ CHỨC TẠI"<textarea class="ny-inline-field" rows="1" name="ceremony_location_label">{{ceremony_location_label}}</textarea></label>
+          <div class="mini-grid">
+            <label data-field="bottom_word_1">Chữ trang trí 1<textarea class="ny-inline-field" rows="1" name="bottom_word_1">{{bottom_word_1}}</textarea></label>
+            <label data-field="bottom_word_2">Chữ trang trí 2<textarea class="ny-inline-field" rows="1" name="bottom_word_2">{{bottom_word_2}}</textarea></label>
+          </div>
+          <label data-field="bottom_word_3">Chữ trang trí 3<textarea class="ny-inline-field" rows="1" name="bottom_word_3">{{bottom_word_3}}</textarea></label>
+          <label data-field="cinema_story_title">Tiêu đề mục ảnh phim (YOU ARE MY END...)<textarea name="cinema_story_title">{{cinema_story_title}}</textarea></label>
+          <label data-field="cinema_story_bottom">Chữ cuối mục ảnh phim (LOVE AND FREEDOM...)<textarea name="cinema_story_bottom">{{cinema_story_bottom}}</textarea></label>
+          <label data-field="collage_vertical_word">Chữ dọc cạnh ảnh (My Love Forever)<textarea class="ny-inline-field" rows="1" name="collage_vertical_word">{{collage_vertical_word}}</textarea></label>
+          <label data-field="border_quote">Câu thơ trước mục "I Love You"<textarea name="border_quote">{{border_quote}}</textarea></label>
+          <label data-field="film_caption_1">Chú thích phim 1<textarea class="ny-inline-field" rows="1" name="film_caption_1">{{film_caption_1}}</textarea></label>
+          <label data-field="film_caption_2">Chú thích phim 2<textarea class="ny-inline-field" rows="1" name="film_caption_2">{{film_caption_2}}</textarea></label>
+          <label data-field="film_caption_3">Chú thích phim 3<textarea class="ny-inline-field" rows="1" name="film_caption_3">{{film_caption_3}}</textarea></label>
+          <label data-field="film_caption_4">Chú thích phim 4<textarea class="ny-inline-field" rows="1" name="film_caption_4">{{film_caption_4}}</textarea></label>
+          <label data-field="save_title">Tiêu đề "Save The Date"<textarea class="ny-inline-field" rows="1" name="save_title">{{save_title}}</textarea></label>
+          <label data-field="small_story">Câu thơ nhỏ (Đi một vòng lớn...)<textarea name="small_story">{{small_story}}</textarea></label>
+          <label data-field="memory_note">Chú thích khung ảnh kỷ niệm<textarea class="ny-inline-field" rows="1" name="memory_note">{{memory_note}}</textarea></label>
+          <label data-field="closing_note">Câu chữ trước lịch cưới (Hạnh phúc lớn nhất...)<textarea name="closing_note">{{closing_note}}</textarea></label>
+          <label data-field="marquee_gallery_title">Tiêu đề chạy chữ album ảnh<textarea class="ny-inline-field" rows="1" name="marquee_gallery_title">{{marquee_gallery_title}}</textarea></label>
+          <label data-field="gift_intro_text">Câu chữ trước hộp quà<textarea name="gift_intro_text">{{gift_intro_text}}</textarea></label>
+          <label data-field="gift_box_label">Nhãn "Hộp quà cưới"<textarea class="ny-inline-field" rows="1" name="gift_box_label">{{gift_box_label}}</textarea></label>
+          <label data-field="gift_box_hint">Chữ gợi ý bấm hộp quà<textarea class="ny-inline-field" rows="1" name="gift_box_hint">{{gift_box_hint}}</textarea></label>
+          <label data-field="gift_open_title">Chữ hiện ra khi mở hộp quà<textarea class="ny-inline-field" rows="1" name="gift_open_title">{{gift_open_title}}</textarea></label>
+          <label data-field="wishes_kicker">Nhãn nhỏ "GỬI LỜI CHÚC"<textarea class="ny-inline-field" rows="1" name="wishes_kicker">{{wishes_kicker}}</textarea></label>
+          <label data-field="thank_you_text">Chữ "Cảm ơn quý khách"<textarea class="ny-inline-field" rows="1" name="thank_you_text">{{thank_you_text}}</textarea></label>
+          <label data-field="thank_you_note">Chữ phụ cảm ơn (Thank you for celebrating...)<textarea class="ny-inline-field" rows="1" name="thank_you_note">{{thank_you_note}}</textarea></label>
+        </div></details>
+        <details class="editor-card"><summary>8. Ghi chú nội bộ</summary><div class="card-body"><label>Ghi chú yêu cầu<textarea name="note">{{note}}</textarea></label></div></details>
+        <div class="sticky-save"><button class="ny-btn">Lưu chỉnh sửa</button><a class="ny-btn ny-ghost" href="{{private_preview_url}}" target="_blank">Mở preview riêng</a></div>
+      </form>
+    </aside>
+  </div>
+</section>
+<script>window.NY_FIELD_LABELS = {{field_labels_json}};</script>
+<script src="/static/js/designer-edit.js?v=12" defer></script>

@@ -1,0 +1,49 @@
+<section class="wrap account-page">
+  <div class="account-hero">
+    <div>
+      <p class="eyebrow">Tài khoản khách hàng</p>
+      <h1>Xin chào, {{full_name}}</h1>
+      <p class="muted">@{{username}} · {{phone}}</p>
+    </div>
+    <div class="balance-card">
+      <span>Số dư hiện tại</span>
+      <strong>{{balance}}</strong>
+      <a class="ny-btn" href="/account/topup">+ Nạp tiền</a>
+    </div>
+  </div>
+
+  <div class="account-grid">
+    <article class="account-card">
+      <div class="card-heading"><h2>Thông tin tài khoản</h2><a href="/account/profile">Chỉnh sửa</a></div>
+      <dl class="profile-list">
+        <div><dt>Họ tên</dt><dd>{{full_name}}</dd></div>
+        <div><dt>Số điện thoại</dt><dd>{{phone}}</dd></div>
+        <div><dt>Email</dt><dd>{{email}}</dd></div>
+        <div><dt>Địa chỉ đầy đủ</dt><dd>{{address}}</dd></div>
+      </dl>
+    </article>
+    <article class="account-card account-actions-card">
+      <h2>Thao tác nhanh</h2>
+      <a class="account-action" href="/choose-template"><span>💌</span><b>Chọn mẫu thiệp</b><small>Xem 5 mẫu hiện có</small></a>
+      <a class="account-action" href="/account/topup"><span>💳</span><b>Nạp tiền tài khoản</b><small>Gửi yêu cầu để admin duyệt</small></a>
+      <a class="account-action" href="/account/profile"><span>📍</span><b>Cập nhật địa chỉ</b><small>Giữ hồ sơ liên hệ chính xác</small></a>
+    </article>
+  </div>
+
+  <section class="account-card table-card">
+    <div class="card-heading"><h2>Yêu cầu nạp tiền</h2><a class="ny-btn ny-small" href="/account/topup">Tạo yêu cầu</a></div>
+    <div class="table-scroll"><table><thead><tr><th>Ngày gửi</th><th>Số tiền</th><th>Người chuyển</th><th>Mã giao dịch</th><th>Biên lai</th><th>Trạng thái</th><th>Ghi chú admin</th></tr></thead><tbody>{{topup_rows}}</tbody></table></div>
+  </section>
+
+  <section class="account-card table-card">
+    <h2>Lịch sử số dư</h2>
+    <div class="table-scroll"><table><thead><tr><th>Thời gian</th><th>Số tiền</th><th>Loại</th><th>Nội dung</th></tr></thead><tbody>{{transaction_rows}}</tbody></table></div>
+  </section>
+
+  <section class="account-card table-card">
+    <h2>Đơn thiệp của tôi</h2>
+    <div class="table-scroll"><table><thead><tr><th>Mã đơn</th><th>Cặp đôi</th><th>Mẫu</th><th>Trạng thái</th><th>Link thiệp</th></tr></thead><tbody>{{order_rows}}</tbody></table></div>
+  </section>
+
+  <form method="post" action="/logout"><button class="ny-btn ny-ghost">Đăng xuất</button></form>
+</section>

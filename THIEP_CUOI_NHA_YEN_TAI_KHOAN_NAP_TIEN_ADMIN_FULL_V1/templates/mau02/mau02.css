@@ -1,0 +1,1081 @@
+/* Giao diện và responsive của mẫu 2 — tông xanh bạc hà + đỏ mận, khung
+   viền rõ ràng cho từng khối, theo đúng bố cục ảnh mẫu khách gửi. */
+/* Font Google được nạp sớm bằng thẻ <link> trong index.html, không dùng
+   @import ở đây nữa — tránh chớp chữ font hệ thống trước khi đổi sang font
+   thật lúc mới vào trang. */
+
+.tpl-mau02{
+  --bg:#dbead6;
+  --bg-2:#e9f2e4;
+  --card:#fdfaf1;
+  --card-2:#fff6e0;
+  --maroon:#7c1420;
+  --maroon-2:#9c1f2b;
+  --maroon-deep:#4d0b12;
+  --ink:#2c2420;
+  --line:rgba(124,20,32,.3);
+  position:relative!important;
+  z-index:0!important;
+  min-height:100vh;
+  width:100%;
+  max-width:none!important;
+  margin:0!important;
+  overflow:hidden;
+  isolation:isolate;
+  color:var(--ink);
+  font-family:'Cormorant Garamond',serif;
+  background:
+    radial-gradient(circle at 18% 6%,rgba(255,255,255,.5),transparent 30%),
+    radial-gradient(circle at 84% 88%,rgba(255,255,255,.35),transparent 32%),
+    linear-gradient(180deg,var(--bg-2) 0%,var(--bg) 100%)!important;
+}
+.tpl-mau02,
+.tpl-mau02 *{box-sizing:border-box}
+/* Chặn css global .invitation * của trang khách làm Mẫu 2 bị lệch. */
+.tpl-mau02 :where(*){position:static;z-index:auto;min-width:0}
+.tpl-mau02 img{display:block;max-width:100%;height:auto}
+.tpl-mau02 a{color:inherit;text-decoration:none}
+
+/* ============================================================
+   Nút nhạc + khung viền tròn góc trên (dùng chung mọi khu)
+   ============================================================ */
+.tpl-mau02 .mau02-audio{
+  position:absolute;
+  top:18px;
+  right:18px;
+  z-index:60;
+  width:42px;
+  height:42px;
+  border:2px solid var(--maroon);
+  border-radius:999px;
+  background:var(--card);
+  color:var(--maroon);
+  font-size:18px;
+  box-shadow:0 10px 20px rgba(77,11,18,.18);
+  cursor:pointer;
+}
+.tpl-mau02 .mau02-audio.playing{animation:mau02MusicPulse 1.25s ease-in-out infinite}
+@keyframes mau02MusicPulse{50%{transform:scale(1.12)}}
+
+/* ============================================================
+   Hạt lấp lánh đen bay khắp trang (thay cho cát vàng trước đây)
+   ============================================================ */
+.tpl-mau02 .mau02-spark-layer{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:1;
+}
+.tpl-mau02 .mau02-spark-layer span{
+  position:absolute;
+  opacity:0;
+  color:#1c1c1c;
+  animation:mau02SparkDrift 6.4s linear infinite;
+  will-change:transform,opacity;
+}
+@keyframes mau02SparkDrift{
+  0%{opacity:0;transform:translate3d(-10vw,6vh,0) rotate(0deg) scale(.6)}
+  10%{opacity:.85}
+  60%{opacity:.7}
+  100%{opacity:0;transform:translate3d(90vw,-30vh,0) rotate(220deg) scale(1.15)}
+}
+
+/* ============================================================
+   1. Bìa
+   ============================================================ */
+.tpl-mau02 .mau02-cover{
+  width:min(100%,620px);
+  margin:0 auto;
+  position:relative;
+  z-index:5;
+  min-height:100vh;
+  /* Chặn trần: nội dung (ảnh bìa + tên + ngày) cao khoảng ~900px, nên
+     trên màn hình cao hơn mức đó (điện thoại màn dài, hoặc vh trình
+     duyệt di động tính dư lúc ẩn thanh địa chỉ), min-height:100vh sẽ
+     kéo khối bìa cao hơn nội dung thật, để lại khoảng trống rỗng phía
+     dưới trước khi qua mục kế tiếp. min()/svh giữ khối bìa luôn vừa
+     khít nội dung, không dư khoảng trống. */
+  min-height:min(100vh,920px);
+  min-height:min(100svh,920px);
+  padding:46px 16px 40px;
+  display:grid;
+  align-content:start;
+  gap:18px;
+}
+/* Bìa không còn ảnh — chỉ còn chữ tên/ngày, không cần ép cao bằng cả
+   màn hình nữa (sẽ để lại khoảng trống rỗng phía dưới rất to). Bỏ
+   min-height, canh giữa theo đúng chiều cao chữ thật. */
+.tpl-mau02 .mau02-cover.mau02-cover-no-photo{
+  min-height:0;
+  padding:100px 16px 70px;
+  align-content:center;
+  position:relative;
+}
+/* Nền bìa mờ hẳn ở mép trên rồi rõ dần xuống dưới — không có ảnh bìa
+   nên dùng 1 quầng sáng làm mờ (filter:blur) rồi mask nhạt dần xuống
+   để tạo chiều sâu, thay vì chỉ 1 màu phẳng như trước. */
+.tpl-mau02 .mau02-cover.mau02-cover-no-photo::before{
+  content:"";
+  position:absolute;
+  inset:-12% -20% auto -20%;
+  height:75%;
+  z-index:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.95),rgba(219,234,214,.55) 55%,transparent 78%);
+  filter:blur(40px);
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 38%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 0%,#000 38%,transparent 100%);
+  pointer-events:none;
+}
+.tpl-mau02 .mau02-overline{
+  position:absolute;
+  left:14px;
+  top:74px;
+  writing-mode:vertical-rl;
+  font:800 10px/1 Montserrat,sans-serif;
+  letter-spacing:.23em;
+  text-transform:uppercase;
+  color:rgba(124,20,32,.5);
+}
+.tpl-mau02 .mau02-cover-copy{position:relative;z-index:8;text-align:center}
+.tpl-mau02 .mau02-kicker{
+  margin:0 0 10px;
+  font:400 clamp(20px,4.6vw,28px)/1.3 'Great Vibes','Imperial Script',cursive;
+  letter-spacing:.02em;
+  color:var(--maroon);
+}
+.tpl-mau02 h1,
+.tpl-mau02 h2,
+.tpl-mau02 h3,
+.tpl-mau02 p{margin-top:0}
+/* Tên chú rể & cô dâu nằm chung 1 dòng, xen kẽ 2 bên dấu "&" thay vì
+   xếp dọc từng dòng — cho co giãn theo bề rộng (flex-wrap) để màn
+   hình hẹp vẫn không bị tràn, tự xuống dòng khi thật sự không đủ chỗ. */
+.tpl-mau02 .mau02-cover h1{
+  margin:0;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  justify-content:center;
+  gap:0 .22em;
+  font:400 clamp(40px,11.5vw,88px)/1.05 'Great Vibes','Imperial Script',cursive;
+  color:var(--maroon);
+  text-shadow:0 10px 18px rgba(77,11,18,.14);
+}
+.tpl-mau02 .mau02-cover h1 span{display:inline-block}
+.tpl-mau02 .mau02-cover h1 i{
+  display:inline-block;
+  margin:0;
+  font:400 .5em/1 'Great Vibes','Imperial Script',cursive;
+  color:var(--maroon-2);
+  letter-spacing:0;
+  font-style:italic;
+}
+.tpl-mau02 .mau02-date-pill{
+  display:inline-flex;
+  margin:18px auto 0;
+  color:var(--maroon);
+  font:800 12px Montserrat,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.tpl-mau02 .mau02-photo-cover{
+  position:relative;
+  width:min(96%,480px);
+  margin:0 auto;
+  overflow:hidden;
+  aspect-ratio:4/5;
+}
+.tpl-mau02 .mau02-photo-cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  animation:mau02SlowZoom 14s ease-in-out infinite alternate;
+}
+@keyframes mau02SlowZoom{
+  0%{transform:scale(1)}
+  100%{transform:scale(1.09)}
+}
+
+/* ============================================================
+   Khu nội dung nằm thẳng trên nền xanh, không viền khung (đúng như
+   ảnh mẫu — chỉ lịch, RSVP, khung ảnh mới có viền/khung riêng).
+   ============================================================ */
+.tpl-mau02 .mau02-paper{padding-bottom:46px}
+.tpl-mau02 .mau02-open{
+  position:relative;
+  z-index:6;
+  width:min(92%,540px);
+  margin:44px auto;
+  text-align:center;
+}
+.tpl-mau02 .mau02-open h2{
+  margin:0 0 18px;
+  font:400 clamp(38px,8vw,60px)/1 'Great Vibes',cursive;
+  color:var(--maroon);
+}
+.tpl-mau02 .mau02-panel-title{
+  margin:0 0 20px;
+  font:800 clamp(15px,3.4vw,19px)/1.4 Montserrat,sans-serif;
+  letter-spacing:.03em;
+  color:var(--maroon);
+  text-transform:uppercase;
+}
+.tpl-mau02 .mau02-intro-text{
+  max-width:480px;
+  margin:0 auto;
+  color:var(--maroon-2);
+  font-size:20px;
+  line-height:1.6;
+  font-style:italic;
+}
+
+/* ============================================================
+   2. Câu quote + dải 3 ảnh có số + lịch tháng
+   ============================================================ */
+/* Ảnh to hơn hẳn (gấp ~3 lần diện tích trước đây) — chuyển từ lưới 3
+   cột nhỏ sang xếp dọc 1 cột, mỗi ảnh chiếm trọn bề rộng khối. */
+.tpl-mau02 .mau02-quote-strip{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:22px;
+  margin:26px 0;
+}
+.tpl-mau02 .mau02-quote-strip figure{
+  position:relative;
+  aspect-ratio:16/11;
+  overflow:hidden;
+  border-radius:6px;
+  border:6px solid #fff;
+  box-shadow:0 10px 24px rgba(45,60,45,.2);
+}
+.tpl-mau02 .mau02-quote-strip figure:nth-child(1){transform:rotate(-2deg)}
+.tpl-mau02 .mau02-quote-strip figure:nth-child(2){transform:rotate(1.4deg)}
+.tpl-mau02 .mau02-quote-strip figure:nth-child(3){transform:rotate(-1.4deg)}
+.tpl-mau02 .mau02-quote-strip img{width:100%;height:100%;object-fit:cover;animation:mau02SlowZoom 12s ease-in-out infinite alternate}
+.tpl-mau02 .mau02-quote-strip .mau02-day-mark{
+  position:absolute;
+  left:8px;
+  bottom:2px;
+  font:800 46px/1 Montserrat,sans-serif;
+  color:rgba(255,255,255,.88);
+  text-shadow:0 4px 10px rgba(0,0,0,.35);
+}
+
+.tpl-mau02 .mau02-calendar{
+  margin-top:22px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--card-2);
+}
+.tpl-mau02 .mau02-calendar-head{
+  padding:12px;
+  background:var(--maroon-deep);
+  color:#fdf1e6;
+  font:800 22px/1 'Playfair Display',serif;
+  letter-spacing:.03em;
+}
+.tpl-mau02 .mau02-calendar-body{
+  position:relative;
+  padding:14px 10px 18px;
+}
+.tpl-mau02 .mau02-calendar-body::before{
+  content:attr(data-year);
+  position:absolute;
+  right:6px;
+  bottom:0;
+  font:800 84px/1 'Playfair Display',serif;
+  color:rgba(124,20,32,.1);
+  pointer-events:none;
+}
+.tpl-mau02 .mau02-cal-dow{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:4px;
+  margin-bottom:8px;
+  font:800 11px Montserrat,sans-serif;
+  letter-spacing:.05em;
+  color:var(--maroon);
+}
+.tpl-mau02 .mau02-cal-days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:4px;
+  position:relative;
+  z-index:1;
+}
+.tpl-mau02 .mau02-cal-days span{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  aspect-ratio:1;
+  border-radius:8px;
+  font:600 14px 'Cormorant Garamond',serif;
+}
+.tpl-mau02 .mau02-cal-days span.active{
+  border-radius:0;
+  background:var(--maroon);
+  color:#fff;
+  font-weight:800;
+  animation:mau02HeartBeat 1.6s ease-in-out infinite;
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 29.6'%3E%3Cpath d='M23.6 0c-3.4 0-6.3 2-7.6 4.9C14.7 2 11.8 0 8.4 0 3.8 0 0 3.8 0 8.4c0 9.4 9.5 12.3 16 21.2 6.5-8.9 16-11.8 16-21.2C32 3.8 28.2 0 23.6 0z'/%3E%3C/svg%3E");
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 29.6'%3E%3Cpath d='M23.6 0c-3.4 0-6.3 2-7.6 4.9C14.7 2 11.8 0 8.4 0 3.8 0 0 3.8 0 8.4c0 9.4 9.5 12.3 16 21.2 6.5-8.9 16-11.8 16-21.2C32 3.8 28.2 0 23.6 0z'/%3E%3C/svg%3E");
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  -webkit-mask-size:100% 100%;
+  mask-size:100% 100%;
+  -webkit-mask-position:center;
+  mask-position:center;
+}
+.tpl-mau02 .mau02-cal-days span.blank{visibility:hidden}
+
+/* Hiệu ứng "xếp hình" — từng ô lịch bay/xoay nhẹ vào đúng vị trí theo
+   từng hàng khi lịch cuộn tới, thay vì hiện sẵn một khối tĩnh. */
+.tpl-mau02.mau02-effect-ready .mau02-cal-days span{
+  opacity:0;
+  transform:translateY(14px) scale(.55) rotate(-8deg);
+}
+.tpl-mau02.mau02-effect-ready .mau02-open.show .mau02-cal-days span{
+  opacity:1;
+  transform:none;
+  transition:opacity .5s ease var(--mau02-cal-delay,0s),transform .5s cubic-bezier(.22,.85,.32,1) var(--mau02-cal-delay,0s);
+}
+.tpl-mau02 .mau02-cal-days span:nth-child(7n+1){--mau02-cal-delay:0s}
+.tpl-mau02 .mau02-cal-days span:nth-child(7n+2){--mau02-cal-delay:.04s}
+.tpl-mau02 .mau02-cal-days span:nth-child(7n+3){--mau02-cal-delay:.08s}
+.tpl-mau02 .mau02-cal-days span:nth-child(7n+4){--mau02-cal-delay:.12s}
+.tpl-mau02 .mau02-cal-days span:nth-child(7n+5){--mau02-cal-delay:.16s}
+.tpl-mau02 .mau02-cal-days span:nth-child(7n+6){--mau02-cal-delay:.2s}
+.tpl-mau02 .mau02-cal-days span:nth-child(7n+7){--mau02-cal-delay:.24s}
+@keyframes mau02HeartBeat{
+  0%,100%{transform:scale(1)}
+  25%{transform:scale(1.12)}
+  40%{transform:scale(.97)}
+  55%{transform:scale(1.08)}
+}
+
+/* ============================================================
+   3. Hai bên gia đình
+   ============================================================ */
+.tpl-mau02 .mau02-heart-rule{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  margin:0 auto 16px;
+  color:var(--maroon);
+}
+.tpl-mau02 .mau02-heart-rule-b{margin:26px auto 0}
+.tpl-mau02 .mau02-heart-rule::before,
+.tpl-mau02 .mau02-heart-rule::after{
+  content:"";
+  width:56px;
+  height:1px;
+  background:rgba(124,20,32,.35);
+}
+.tpl-mau02 .mau02-heart-rule span{
+  font-size:19px;
+  color:var(--maroon-2);
+  filter:drop-shadow(0 4px 8px rgba(77,11,18,.22));
+  animation:mau02HeartBeat 1.8s ease-in-out infinite;
+}
+.tpl-mau02 .mau02-family-heading{
+  margin:0 0 24px;
+  font:800 16px/1.5 Montserrat,sans-serif;
+  letter-spacing:.02em;
+  color:var(--maroon);
+  text-transform:uppercase;
+}
+.tpl-mau02 .mau02-family-names{
+  margin:0 0 28px;
+  font:400 clamp(38px,8vw,58px)/1.15 'Great Vibes',cursive;
+  color:var(--maroon);
+}
+.tpl-mau02 .mau02-family-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  text-align:center;
+}
+.tpl-mau02 .mau02-family-grid span{
+  display:block;
+  margin-bottom:8px;
+  font:800 12px Montserrat,sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--maroon-2);
+}
+.tpl-mau02 .mau02-family-grid h3{
+  margin:0 0 6px;
+  font:700 18px/1.4 'Cormorant Garamond',serif;
+  color:var(--ink);
+}
+.tpl-mau02 .mau02-family-grid p{margin:0;font-size:15px;color:#5a4a3c}
+
+/* ============================================================
+   4. Thẻ sự kiện (lễ + tiệc) — có ô số ngày lớn
+   ============================================================ */
+.tpl-mau02 .mau02-event-card h2{
+  margin:0 0 6px;
+  font:800 18px/1.4 Montserrat,sans-serif;
+  letter-spacing:.02em;
+  color:var(--maroon);
+  text-transform:uppercase;
+}
+.tpl-mau02 .mau02-event-sub{
+  margin:0 0 22px;
+  font-size:15px;
+  color:#5a4a3c;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+.tpl-mau02 .mau02-date-row{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:14px;
+  margin:0 0 18px;
+}
+.tpl-mau02 .mau02-date-row b{
+  font:800 56px/1 'Playfair Display',serif;
+  color:var(--maroon);
+}
+.tpl-mau02 .mau02-date-row span{
+  display:block;
+  padding-bottom:6px;
+  border-bottom:1px solid var(--line);
+  font:700 13px Montserrat,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink);
+}
+.tpl-mau02 .mau02-lunar-note{margin:0 0 18px;font-size:14px;font-style:italic;color:#6b5a4a}
+.tpl-mau02 .mau02-event-place{margin:0 0 4px;font:700 15px Montserrat,sans-serif;letter-spacing:.02em;color:var(--maroon)}
+.tpl-mau02 .mau02-event-address{margin:0 0 20px;font-size:15px;color:#5a4a3c}
+/* Ô chữ chưa điền (địa chỉ, ngày âm lịch...) không được để trống mà vẫn
+   chừa khoảng trắng — ẩn hẳn để không tạo khoảng trống vô lý giữa các
+   phần khi đơn thật chưa nhập đủ thông tin. */
+.tpl-mau02 .mau02-lunar-note:empty,
+.tpl-mau02 .mau02-event-place:empty,
+.tpl-mau02 .mau02-event-address:empty,
+.tpl-mau02 .mau02-story-text:empty,
+.tpl-mau02 .mau02-intro-text:empty,
+.tpl-mau02 .mau02-family-grid p:empty,
+.tpl-mau02 .mau02-family-grid h3:empty{display:none}
+.tpl-mau02 .mau02-event-card .map-btn{
+  position:relative;
+  display:inline-block;
+  padding:12px 30px;
+  border-radius:999px;
+  background:var(--maroon)!important;
+  border-color:var(--maroon)!important;
+  color:#fdf1e6!important;
+  font:800 13px Montserrat,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  overflow:visible;
+  transition:box-shadow .2s ease;
+}
+.tpl-mau02 .mau02-event-card .map-btn:active{
+  box-shadow:0 0 0 8px rgba(124,20,32,.22)!important;
+}
+/* Khung bản đồ nhúng trực tiếp — chỉ hiện ở khối Lễ thành hôn, dựng từ
+   địa chỉ chữ (mau02-event-place) thay vì link đã dán, vì link chia
+   sẻ thường (maps.app.goo.gl, maps.google.com/place/...) hay bị Google
+   chặn nhúng iframe, còn địa chỉ chữ luôn dựng được URL nhúng hợp lệ. */
+.tpl-mau02 .mau02-map-embed{margin-top:18px}
+.tpl-mau02 .mau02-map-embed:empty{display:none}
+.tpl-mau02 .mau02-map-frame{
+  display:block;
+  width:100%;
+  height:220px;
+  border:0;
+  border-radius:14px;
+  box-shadow:0 10px 24px rgba(45,10,13,.16);
+}
+
+/* ============================================================
+   5. Ảnh lớn tràn viền + câu quote phủ lên ảnh (không khung, không
+      bo góc — bám sát đúng kiểu ảnh mẫu full-bleed).
+   ============================================================ */
+.tpl-mau02 .mau02-hero-quote{
+  position:relative;
+  width:100%;
+  margin:0 0 44px;
+  overflow:hidden;
+}
+.tpl-mau02 .mau02-hero-quote img{width:100%;display:block;animation:mau02SlowZoom 16s ease-in-out infinite alternate}
+/* Ảnh mở đầu không còn chữ tên/ngày đè/lặp lại bên dưới nữa (đã hiện
+   sẵn ở phần bìa ngay phía trên) — chỉ còn ảnh, canh gọn khoảng cách. */
+.tpl-mau02 .mau02-hero-quote-plain{margin-bottom:28px}
+.tpl-mau02 .mau02-hero-quote figcaption{
+  position:relative;
+  padding:26px 20px 4px;
+  background:transparent;
+  color:var(--maroon);
+  text-align:center;
+}
+/* Hạ xuống (thêm đệm trên) cho khỏi đè sát mép ảnh phía trên, phóng to
+   gấp 2 (34px -> 68px) cho nổi bật hơn. */
+.tpl-mau02 .mau02-hero-quote figcaption.script-only{
+  font:400 68px 'Great Vibes',cursive;
+  padding:58px 20px 10px;
+  color:var(--maroon-2);
+}
+
+.tpl-mau02 .mau02-duo-photos{
+  width:min(92%,540px);
+  margin:0 auto 60px;
+}
+/* Chiều cao khung tính THEO TỈ LỆ chiều rộng (không phải số px cố định)
+   — ảnh thật có tỉ lệ khác nhau, nếu để px cố định thì ở màn hình rộng
+   (khung rộng hơn) ảnh xoay nghiêng sẽ cao hơn khung chứa, trồi lên đè
+   vào đoạn chữ phía trên. aspect-ratio co giãn đúng theo mọi bề rộng. */
+.tpl-mau02 .mau02-duo-frames{
+  position:relative;
+  aspect-ratio:10/9;
+}
+.tpl-mau02 .mau02-duo-photos figure{
+  position:absolute;
+  width:62%;
+  aspect-ratio:4/5;
+  overflow:hidden;
+  border:6px solid #fff;
+  box-shadow:0 16px 30px rgba(45,60,45,.22);
+  background:#fff;
+}
+.tpl-mau02 .mau02-duo-photos figure img{width:100%;height:100%;object-fit:cover;display:block}
+.tpl-mau02 .mau02-duo-photos .duo-1{left:0;top:0;transform:rotate(-5deg);z-index:2}
+.tpl-mau02 .mau02-duo-photos .duo-2{right:0;bottom:0;transform:rotate(5deg);z-index:1}
+.tpl-mau02 .mau02-duo-heart{
+  position:absolute;
+  left:50%;
+  top:44%;
+  transform:translate(-50%,-50%);
+  z-index:3;
+  font-size:26px;
+  color:var(--maroon-2);
+  filter:drop-shadow(0 4px 10px rgba(77,11,18,.3));
+  animation:mau02HeartBeat 1.8s ease-in-out infinite;
+}
+/* Tên đặt HẲN bên dưới 2 khung ảnh, không còn đè lên góc ảnh nữa. */
+.tpl-mau02 .mau02-duo-name{
+  margin-top:18px;
+  text-align:center;
+}
+.tpl-mau02 .mau02-duo-name b{display:block;font:400 34px 'Great Vibes',cursive;color:var(--maroon)}
+.tpl-mau02 .mau02-duo-name span{font:700 13px Montserrat,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+
+/* ============================================================
+   6. Đoạn văn tình yêu + khối "Our memories"
+   ============================================================ */
+.tpl-mau02 .mau02-story-text{
+  max-width:520px;
+  margin:0 auto 30px;
+  text-align:center;
+  color:var(--maroon-2);
+  font-style:italic;
+  font-size:19px;
+  line-height:1.7;
+}
+/* Bỏ hẳn khối nền đỏ mận — chỉ còn chữ + ảnh trên nền trơn như các
+   mục khác trong thiệp. */
+.tpl-mau02 .mau02-memories{
+  width:min(94%,560px);
+  margin:0 auto 30px;
+  text-align:center;
+}
+.tpl-mau02 .mau02-memories h3{
+  margin:0 0 14px;
+  font:400 42px/1 'Great Vibes',cursive;
+  color:var(--maroon);
+}
+.tpl-mau02 .mau02-memories p{font-size:15px;line-height:1.7;color:var(--ink);margin:0 0 20px}
+.tpl-mau02 .mau02-memories figure{border-radius:16px;overflow:hidden;margin:0}
+.tpl-mau02 .mau02-memories img{width:100%;display:block;animation:mau02SlowZoom 15s ease-in-out infinite alternate}
+
+/* ============================================================
+   7. Lưới ảnh cưới
+   ============================================================ */
+.tpl-mau02 .mau02-photo-grid{
+  width:min(92%,540px);
+  margin:0 auto 50px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.tpl-mau02 .mau02-photo-grid figure{
+  margin:0;
+  border:5px solid var(--maroon);
+  overflow:hidden;
+}
+.tpl-mau02 .mau02-photo-grid img{width:100%;height:100%;object-fit:cover;aspect-ratio:1/1}
+.tpl-mau02 .mau02-photo-grid .wide{grid-column:span 2;aspect-ratio:16/10}
+.tpl-mau02 .mau02-photo-grid .wide img{aspect-ratio:16/10}
+
+/* ============================================================
+   8. RSVP
+   ============================================================ */
+.tpl-mau02 .mau02-rsvp-lead{
+  max-width:460px;
+  margin:0 auto 26px;
+  color:var(--maroon);
+  font-size:17px;
+  line-height:1.6;
+}
+.tpl-mau02 .mau02-rsvp-card{
+  width:min(94%,420px);
+  margin:0 auto;
+  padding:28px 24px;
+  border:2px solid var(--maroon);
+  border-radius:16px;
+  background:var(--card);
+  font-family:Montserrat,sans-serif;
+}
+.tpl-mau02 .mau02-rsvp-card h3{
+  margin:0 0 20px;
+  text-align:center;
+  font:800 16px/1.4 Montserrat,sans-serif;
+  letter-spacing:.02em;
+  color:var(--maroon);
+  text-transform:uppercase;
+}
+.tpl-mau02 .mau02-rsvp-card label{display:block;margin:14px 0 7px;font-size:13px;color:var(--ink)}
+.tpl-mau02 .mau02-rsvp-card input,
+.tpl-mau02 .mau02-rsvp-card select{
+  width:100%;
+  padding:12px 10px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:#fff;
+  font:14px Montserrat,sans-serif;
+  color:var(--ink);
+}
+.tpl-mau02 .mau02-radio-line{display:flex;align-items:flex-start;gap:8px;margin:7px 0;font-size:13px}
+.tpl-mau02 .mau02-radio-line input{width:auto;margin-top:2px;accent-color:var(--maroon)}
+.tpl-mau02 .mau02-rsvp-submit{
+  width:100%;
+  margin-top:20px;
+  padding:13px;
+  border:none;
+  border-radius:999px;
+  background:var(--maroon);
+  color:#fdf1e6;
+  font:800 14px Montserrat,sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:transform .15s ease;
+}
+.tpl-mau02 .mau02-rsvp-submit:hover{transform:translateY(-2px)}
+.tpl-mau02 .mau02-rsvp-card .rsvp-result{
+  display:none;
+  margin-top:14px;
+  text-align:center;
+  font-size:13px;
+  color:var(--maroon-2);
+}
+.tpl-mau02 .mau02-rsvp-card.rsvp-sent .rsvp-result{display:block}
+.tpl-mau02 .mau02-rsvp-card.rsvp-loading .mau02-rsvp-submit{opacity:.7;pointer-events:none}
+
+/* ============================================================
+   9. Lời chúc (danh sách đầy đủ, cuối trang)
+   ============================================================ */
+.tpl-mau02 .mau02-wish-form{width:min(94%,480px);margin:0 auto 26px;text-align:left}
+.tpl-mau02 .mau02-wish-form label{display:block;margin:10px 0 6px;font:700 12px Montserrat,sans-serif;letter-spacing:.04em;color:var(--maroon)}
+.tpl-mau02 .mau02-wish-form input[type="text"],
+.tpl-mau02 .mau02-wish-form textarea{
+  width:100%;
+  padding:11px 12px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#fff;
+  font:14px 'Cormorant Garamond',serif;
+  color:var(--ink);
+  resize:vertical;
+}
+.tpl-mau02 .mau02-emoji-picker{display:flex;gap:8px;margin:8px 0}
+.tpl-mau02 .mau02-emoji-picker button{
+  width:34px;height:34px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  font-size:16px;
+  cursor:pointer;
+}
+.tpl-mau02 .mau02-emoji-picker button.active{background:var(--maroon);border-color:var(--maroon)}
+.tpl-mau02 .mau02-wish-send{
+  margin-top:14px;
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:999px;
+  background:var(--maroon);
+  color:#fdf1e6;
+  font:800 13px Montserrat,sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.tpl-mau02 .mau02-wish-result{margin-top:10px;font-size:13px;color:var(--maroon-2);text-align:center}
+/* Khung cố định có viền + thanh cuộn riêng để xem lời chúc — dù có 1
+   hay nhiều lời chúc, khung luôn giữ nguyên kích thước, không co giãn
+   để lộ khoảng nền trống phía dưới; nhiều lời chúc thì cuộn bên trong
+   khung thay vì đẩy cả trang dài ra. */
+.tpl-mau02 .mau02-wish-list{
+  width:min(94%,480px);
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  height:340px;
+  overflow-y:auto;
+  padding:16px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.45);
+  scrollbar-color:var(--maroon-2) transparent;
+  scrollbar-width:thin;
+}
+.tpl-mau02 .mau02-wish-list::-webkit-scrollbar{width:6px}
+.tpl-mau02 .mau02-wish-list::-webkit-scrollbar-thumb{background:var(--maroon-2);border-radius:999px}
+.tpl-mau02 .mau02-wish-list:empty{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.tpl-mau02 .mau02-wish-list:empty::before{
+  content:"Hãy là người đầu tiên gửi lời chúc đến cô dâu chú rể 💌";
+  max-width:70%;
+  color:var(--maroon-2);
+  font:600 14px/1.6 'Cormorant Garamond',serif;
+  font-style:italic;
+  text-align:center;
+}
+.tpl-mau02 .wish-pink-bar{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 16px;
+  border-radius:14px;
+  background:var(--card-2);
+  border:1px solid var(--line);
+  text-align:left;
+}
+.tpl-mau02 .wish-emoji{
+  width:34px;height:34px;
+  display:grid;place-items:center;
+  border-radius:999px;
+  background:#fff;
+  font-size:16px;
+  flex:none;
+}
+.tpl-mau02 .wish-body{display:grid;gap:2px;min-width:0}
+.tpl-mau02 .wish-body b{font:800 13px Montserrat,sans-serif;color:var(--maroon)}
+.tpl-mau02 .wish-body small{font:600 15px 'Cormorant Garamond',serif;color:var(--ink);word-break:break-word}
+
+/* Nếu JS chưa chạy, nội dung vẫn hiện rõ. Khi JS chạy mới bật reveal để tránh xem/xuất bị mờ. */
+.tpl-mau02 [data-reveal]{opacity:1;transform:none}
+.tpl-mau02.mau02-effect-ready [data-reveal]{opacity:0;transform:translateY(32px) scale(.985);transition:opacity .72s ease,transform .72s cubic-bezier(.2,.72,.18,1)}
+.tpl-mau02.mau02-effect-ready [data-reveal].show{opacity:1;transform:none}
+
+/* Ảnh mờ dần rồi nét dần khi cuộn tới — hiệu ứng "hiện ra từ sương mù"
+   mượn từ mẫu 1 (con thuyền), tách riêng khỏi opacity/translateY chung
+   của [data-reveal] nên chữ trong cùng khối vẫn bay lên trước, ảnh nét
+   dần ngay sau đó tạo nhịp "chữ rồi tới ảnh" khi lướt tới. */
+.tpl-mau02.mau02-effect-ready img[data-reveal-blur]{
+  filter:blur(22px);
+  transition:filter 1.3s cubic-bezier(.16,.82,.22,1) .15s;
+}
+.tpl-mau02.mau02-effect-ready [data-reveal].show img[data-reveal-blur]{filter:blur(0);}
+
+/* Ánh sáng mềm lướt qua ảnh ngay khi vừa hiện lên (một lần, không lặp). */
+.tpl-mau02 .mau02-photo-cover,
+.tpl-mau02 .mau02-hero-quote,
+.tpl-mau02 .mau02-memories figure{position:relative}
+.tpl-mau02 [data-reveal].show .mau02-photo-cover::after,
+.tpl-mau02 .mau02-hero-quote.show::after,
+.tpl-mau02 [data-reveal].show .mau02-memories figure::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:5;
+  background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.55) 50%,transparent 58%);
+  transform:translateX(-130%);
+  animation:mau02ShineSweep 1.3s ease-out .35s 1;
+  pointer-events:none;
+}
+@keyframes mau02ShineSweep{
+  0%{transform:translateX(-130%)}
+  100%{transform:translateX(130%)}
+}
+
+@media(max-width:560px){
+  .tpl-mau02 .mau02-cover{min-height:88vh;padding-left:16px;padding-right:16px}
+  .tpl-mau02 .mau02-cover{min-height:min(88vh,820px)}
+  .tpl-mau02 .mau02-cover{min-height:min(88svh,820px)}
+  .tpl-mau02 .mau02-cover.mau02-cover-no-photo{min-height:0}
+  .tpl-mau02 .mau02-family-grid{grid-template-columns:1fr;gap:18px}
+  .tpl-mau02 .mau02-overline{display:none}
+}
+
+/* ============================================================
+   Màn hình lá thư mở đầu — tông đỏ mận + hạt lấp lánh đen, thẻ
+   hình chữ nhật bo góc (không còn mép lồi lõm vò/rách), có viền
+   ngăn cách bên trong khung chữ.
+   ============================================================ */
+.tpl-mau02 .mau02-letter-intro{
+  position:fixed;
+  inset:0;
+  z-index:2147483647;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 14% 18%,rgba(255,255,255,.1),transparent 45%),
+    radial-gradient(circle at 86% 84%,rgba(255,255,255,.08),transparent 48%),
+    linear-gradient(150deg,var(--maroon-deep) 0%,var(--maroon) 55%,#2c0a0e 100%);
+  transition:opacity 1.1s ease,visibility 1.1s ease;
+}
+.tpl-mau02 .mau02-letter-intro.is-closing{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+.tpl-mau02 .mau02-letter-intro .mau02-spark-layer{z-index:1;}
+.tpl-mau02 .mau02-letter-intro .mau02-spark-layer.is-bursting{z-index:3;}
+
+.tpl-mau02 .mau02-letter-card{
+  position:relative;
+  z-index:2;
+  width:min(98%,920px);
+  transition:transform 1.3s cubic-bezier(.4,0,.2,1),opacity 1.15s ease .15s;
+  animation:mau02LetterCardDrop 1.3s cubic-bezier(.18,.8,.24,1) both;
+}
+@keyframes mau02LetterCardDrop{
+  0%{transform:translateY(-64px) scale(.97);opacity:0;}
+  100%{transform:translateY(0) scale(1);opacity:1;}
+}
+.tpl-mau02 .mau02-letter-card.is-falling{
+  transform:translateY(46vh) rotate(-4deg) scale(.92);
+  opacity:0;
+}
+
+.tpl-mau02 .mau02-letter-card::before{
+  content:"";
+  position:absolute;
+  inset:14px -8px -18px 10px;
+  z-index:-1;
+  background:linear-gradient(165deg,#e7c9c9 0%,#a53c42 60%,#5c1217 100%);
+  border-radius:26px;
+  transform:rotate(-1.4deg);
+  opacity:.9;
+}
+
+.tpl-mau02 .mau02-letter-card-inner{
+  position:relative;
+  max-height:92vh;
+  overflow-y:auto;
+  overflow-x:hidden;
+  /* Vẫn cho cuộn được nếu chữ dài hơn khung (đề phòng), nhưng ẩn hẳn
+     thanh cuộn — không liên quan tới nội dung thiệp, không cần thấy. */
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  text-align:center;
+  /* Đệm theo chiều CAO màn hình (vh), không phải chiều rộng — màn hình
+     ngang/lùn (điện thoại xoay ngang, laptop thấp) vẫn co lại vừa khung,
+     không bị tràn mất nút "Mở thư" như khi tính theo vw. */
+  padding:clamp(44px,7.5vh,96px) clamp(26px,5vw,56px) clamp(26px,5.5vh,72px);
+  background:
+    radial-gradient(circle at 14% 18%,rgba(255,255,255,.85),transparent 34%),
+    linear-gradient(165deg,var(--card) 0%,var(--card-2) 55%,#f4e2c4 100%);
+  border:1px solid rgba(124,20,32,.32);
+  border-radius:26px;
+  box-shadow:0 36px 84px rgba(45,10,13,.4),0 12px 30px rgba(77,11,18,.22),0 0 0 1px rgba(255,255,255,.5);
+  animation:mau02LetterCardSway 4.5s ease-in-out 1.3s infinite;
+  transform-origin:center bottom;
+}
+.tpl-mau02 .mau02-letter-card-inner::-webkit-scrollbar{width:0;height:0;display:none}
+@keyframes mau02LetterCardSway{
+  0%,100%{transform:rotate(0deg);}
+  25%{transform:rotate(-.7deg);}
+  50%{transform:rotate(0deg);}
+  75%{transform:rotate(.7deg);}
+}
+
+.tpl-mau02 .mau02-letter-card-inner::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:
+    repeating-linear-gradient(115deg,rgba(77,11,18,.05) 0 2px,transparent 2px 36px),
+    repeating-linear-gradient(25deg,rgba(255,255,255,.4) 0 1px,transparent 1px 48px);
+  mix-blend-mode:multiply;
+  opacity:.6;
+}
+
+/* Bìa thư phông trơn — bỏ viền đỏ + 2 góc bracket trang trí, chỉ còn
+   nền phẳng để chữ nổi bật. */
+.tpl-mau02 .mau02-letter-frame{
+  position:relative;
+  z-index:2;
+  padding:clamp(12px,3vh,26px) 20px;
+}
+
+.tpl-mau02 .mau02-spark-cluster{
+  position:absolute;
+  z-index:0;
+  width:220px;
+  height:220px;
+  pointer-events:none;
+}
+.tpl-mau02 .mau02-letter-spark{
+  position:absolute;
+  line-height:1;
+  font-family:Arial,sans-serif;
+  color:#1c1c1c;
+  -webkit-text-fill-color:#1c1c1c;
+}
+.tpl-mau02 .mau02-letter-spark.spark-1{top:6px;left:0;font-size:60px;z-index:5;opacity:.85}
+.tpl-mau02 .mau02-letter-spark.spark-2{top:18px;left:96px;font-size:38px;z-index:4;opacity:.55}
+.tpl-mau02 .mau02-letter-spark.spark-3{top:88px;left:-6px;font-size:30px;z-index:3;opacity:.5}
+.tpl-mau02 .mau02-letter-spark.spark-4{top:108px;left:80px;font-size:20px;z-index:2;opacity:.6}
+.tpl-mau02 .mau02-letter-spark.spark-5{top:52px;left:130px;font-size:16px;z-index:2;opacity:.5}
+
+.tpl-mau02 .cluster-tl{top:-46px;left:-46px;opacity:0;animation:mau02SparkRiseTL .9s cubic-bezier(.22,.85,.32,1) .6s both;}
+.tpl-mau02 .cluster-br{bottom:-52px;right:-46px;opacity:0;animation:mau02SparkRiseBR .9s cubic-bezier(.22,.85,.32,1) .6s both;}
+@keyframes mau02SparkRiseTL{
+  0%{opacity:0;transform:rotate(180deg) translateY(40px);}
+  100%{opacity:1;transform:rotate(180deg) translateY(0);}
+}
+@keyframes mau02SparkRiseBR{
+  0%{opacity:0;transform:translateY(40px);}
+  100%{opacity:1;transform:translateY(0);}
+}
+
+.tpl-mau02 .mau02-letter-badge{
+  position:absolute;
+  z-index:2;
+  top:0;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:clamp(64px,10vh,104px);
+  height:clamp(64px,10vh,104px);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,var(--maroon-deep),var(--maroon),var(--maroon-2));
+  box-shadow:0 10px 22px rgba(77,11,18,.4);
+  animation:mau02LetterBadgeHint 2.1s ease-in-out infinite;
+}
+@keyframes mau02LetterBadgeHint{
+  0%,100%{transform:translate(-50%,-50%) rotate(0deg);}
+  25%{transform:translate(-50%,-50%) rotate(-7deg);}
+  50%{transform:translate(-50%,-50%) rotate(0deg);}
+  75%{transform:translate(-50%,-50%) rotate(7deg);}
+}
+.tpl-mau02 .mau02-letter-envelope{width:clamp(32px,5vh,50px);height:auto;overflow:visible;}
+.tpl-mau02 .mau02-letter-envelope .mau02-env-panel{fill:#fdfaf1;}
+.tpl-mau02 .mau02-letter-envelope .mau02-env-flap{fill:var(--maroon-2);stroke:#fdfaf1;stroke-width:2;}
+.tpl-mau02 .mau02-letter-envelope .mau02-env-fold{fill:none;stroke:var(--maroon-deep);stroke-width:2;}
+.tpl-mau02 .mau02-letter-envelope .mau02-env-seal{fill:var(--maroon-deep);}
+
+.tpl-mau02 .mau02-letter-badge.is-opening{animation:mau02EnvelopeShake .48s ease-in-out;}
+.tpl-mau02 .mau02-letter-card.is-opening{animation:mau02LetterCardShake .55s ease-in-out;}
+@keyframes mau02LetterCardShake{
+  0%,100%{transform:translateY(0) scale(1) rotate(0deg);}
+  15%{transform:translateY(0) scale(1.015) rotate(-2.2deg);}
+  30%{transform:translateY(0) scale(1.02) rotate(2deg);}
+  45%{transform:translateY(0) scale(1.015) rotate(-1.6deg);}
+  60%{transform:translateY(0) scale(1.01) rotate(1.3deg);}
+  75%{transform:translateY(0) scale(1.005) rotate(-.7deg);}
+  90%{transform:translateY(0) scale(1) rotate(.3deg);}
+}
+@keyframes mau02EnvelopeShake{
+  0%,100%{transform:translate(-50%,-50%) rotate(0deg) scale(1);}
+  20%{transform:translate(-50%,-50%) rotate(-10deg) scale(1.08);}
+  40%{transform:translate(-50%,-50%) rotate(9deg) scale(1.08);}
+  60%{transform:translate(-50%,-50%) rotate(-7deg) scale(1.05);}
+  80%{transform:translate(-50%,-50%) rotate(6deg) scale(1.05);}
+}
+
+.tpl-mau02 .mau02-letter-body{position:relative;z-index:2;}
+.tpl-mau02 .mau02-letter-names{
+  font:400 clamp(34px,7.5vh,96px)/1.15 'Great Vibes','Imperial Script',cursive;
+  margin-bottom:clamp(10px,2.4vh,26px);
+  color:var(--maroon);
+  text-shadow:0 3px 6px rgba(77,11,18,.16);
+  clip-path:inset(0 0 0 0);
+  transition:opacity .75s ease,clip-path 1.4s cubic-bezier(.65,.05,.36,1);
+}
+@keyframes mau02LetterWipeIn{
+  0%{clip-path:inset(0 100% 0 0);opacity:0;}
+  6%{opacity:1;}
+  100%{clip-path:inset(0 0 0 0);opacity:1;}
+}
+@keyframes mau02LetterFadeUp{
+  0%{opacity:0;transform:translateY(12px);}
+  100%{opacity:1;transform:translateY(0);}
+}
+.tpl-mau02 .mau02-letter-rule{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  margin:0 auto clamp(10px,2.4vh,30px);
+  color:var(--maroon);
+  font-size:18px;
+  animation:mau02LetterFadeUp .6s ease .3s both;
+}
+/* Bỏ nét gạch ngang 2 bên (bìa thư phông trơn), chỉ còn ngôi sao lắc lư
+   đứng riêng làm điểm nhấn. */
+.tpl-mau02 .mau02-letter-rule span{
+  display:inline-block;
+  animation:mau02LetterSparkWobble 1.7s ease-in-out 1s infinite;
+}
+@keyframes mau02LetterSparkWobble{
+  0%,100%{transform:rotate(0deg) scale(1);}
+  25%{transform:rotate(-9deg) scale(1.1);}
+  50%{transform:rotate(0deg) scale(1);}
+  75%{transform:rotate(9deg) scale(1.1);}
+}
+.tpl-mau02 .mau02-letter-date{
+  font:600 clamp(17px,3.2vh,30px)/1.3 'Cormorant Garamond',serif;
+  letter-spacing:.03em;
+  color:#5a3a3a;
+  margin-bottom:clamp(6px,1.5vh,16px);
+  clip-path:inset(0 0 0 0);
+  animation:mau02LetterWipeIn .8s cubic-bezier(.65,.05,.36,1) .5s both;
+}
+.tpl-mau02 .mau02-letter-invite{
+  font-size:clamp(15px,2.8vh,26px);
+  color:#5a3a3a;
+  margin-bottom:clamp(12px,3.4vh,38px);
+  animation:mau02LetterFadeUp .6s ease .75s both;
+}
+.tpl-mau02 .mau02-letter-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:clamp(14px,2.8vh,24px) clamp(38px,6vw,62px);
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--maroon-deep),var(--maroon),var(--maroon-2));
+  color:#fdf1e6;
+  font:700 clamp(16px,2.6vh,25px) Montserrat,Arial,sans-serif;
+  letter-spacing:.04em;
+  cursor:pointer;
+  box-shadow:0 14px 28px rgba(77,11,18,.32);
+  transition:transform .2s ease,box-shadow .2s ease;
+  animation:mau02LetterFadeUp .6s ease .95s both;
+}
+.tpl-mau02 .mau02-letter-btn:hover{transform:translateY(-2px);box-shadow:0 18px 34px rgba(77,11,18,.38);}
+
+@media(min-width:900px){
+  .tpl-mau02 .mau02-letter-card-inner{display:flex;flex-direction:column;justify-content:center;}
+}

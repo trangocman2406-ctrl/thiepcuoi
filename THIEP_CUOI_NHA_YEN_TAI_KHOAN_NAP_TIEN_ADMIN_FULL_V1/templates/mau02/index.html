@@ -1,0 +1,175 @@
+<link rel="stylesheet" href="/static/fonts/fonts.css?v=1">
+<link rel="stylesheet" href="{{styleFile}}?v={{templateVersion}}">
+
+<article class="invitation tpl-mau02" data-template="{{templateId}}" data-effect-key="{{templateId}}" data-effect-file="{{effectFile}}?v={{templateVersion}}">
+  {{letterIntroHtml}}
+
+  <button class="mau02-audio" type="button" data-audio-src="{{audioSrc}}" title="Bật / tắt nhạc">♪</button>
+
+  <section class="mau02-cover mau02-cover-no-photo" data-reveal>
+    <div class="mau02-overline">{{coverTitle}}</div>
+    <div class="mau02-cover-copy">
+      <p class="mau02-kicker">{{coverSubtitle}}</p>
+      <h1><span data-pos-key="cover_groom_name">{{groomName}}</span><i data-pos-key="couple_ampersand">&amp;</i><span data-pos-key="cover_bride_name">{{brideName}}</span></h1>
+      <p class="mau02-date-pill" data-pos-key="cover_date_text">{{dateDayName}} • {{weddingDateVi}}</p>
+    </div>
+  </section>
+
+  <main class="mau02-paper">
+
+    <figure class="mau02-hero-quote mau02-hero-quote-plain" data-reveal>
+      <img src="{{photo1}}" alt="Ảnh cưới" data-reveal-blur>
+    </figure>
+
+    <section class="mau02-open" data-reveal>
+      <p class="mau02-intro-text">{{quoteText}}</p>
+
+      <div class="mau02-quote-strip">
+        <figure><img src="{{photo4}}" alt="Ảnh cưới" data-reveal-blur><span class="mau02-day-mark">{{dateDay}}</span></figure>
+        <figure><img src="{{photo5}}" alt="Ảnh cưới" data-reveal-blur><span class="mau02-day-mark">{{dateDay}}</span></figure>
+        <figure><img src="{{photo6}}" alt="Ảnh cưới" data-reveal-blur><span class="mau02-day-mark">{{dateDay}}</span></figure>
+      </div>
+
+      <div class="mau02-calendar">
+        <div class="mau02-calendar-head">{{dateMonth}}.{{dateYear}}</div>
+        <div class="mau02-calendar-body" data-year="{{dateYear}}">
+          <div class="mau02-cal-dow"><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span></div>
+          <div class="mau02-cal-days">{{calendarDaysHtml}}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mau02-open mau02-family" id="familyInfo" data-reveal>
+      <div class="mau02-heart-rule" aria-hidden="true"><span>♥</span></div>
+      <p class="mau02-family-heading">{{familyTitle}}</p>
+      <h2 class="mau02-family-names"><span data-pos-key="family_groom_name">{{groomName}}</span><br>&amp;<br><span data-pos-key="family_bride_name">{{brideName}}</span></h2>
+      <div class="mau02-family-grid">
+        <article>
+          <span>{{groomSideLabel}}</span>
+          <h3>{{groomParents}}</h3>
+          <p>{{groomAddress}}</p>
+        </article>
+        <article>
+          <span>{{brideSideLabel}}</span>
+          <h3>{{brideParents}}</h3>
+          <p>{{brideAddress}}</p>
+        </article>
+      </div>
+      <div class="mau02-heart-rule mau02-heart-rule-b" aria-hidden="true"><span>♥</span></div>
+    </section>
+
+    <section class="mau02-open mau02-event-card" data-reveal>
+      <h2>{{partyTitle}}</h2>
+      <p class="mau02-event-sub">{{eventTimePrefix}} {{partyTime}}</p>
+      <div class="mau02-date-row">
+        <span>{{monthLabel}} {{dateMonth}}</span>
+        <b>{{dateDay}}</b>
+        <span>{{yearLabel}} {{dateYear}}</span>
+      </div>
+      <p class="mau02-lunar-note">{{calendarNote}}</p>
+      <p class="mau02-event-place">{{partyAddress}}</p>
+    </section>
+
+    <section class="mau02-open mau02-event-card" data-reveal>
+      <h2>{{ceremonyTitle}}</h2>
+      <p class="mau02-event-sub">{{eventTimePrefix}} {{weddingTime}}</p>
+      <div class="mau02-date-row">
+        <span>{{monthLabel}} {{dateMonth}}</span>
+        <b>{{dateDay}}</b>
+        <span>{{yearLabel}} {{dateYear}}</span>
+      </div>
+      <p class="mau02-lunar-note">{{calendarNote}}</p>
+      <p class="mau02-event-place">{{ceremonyAddress}}</p>
+      {{mapBtn}}
+      <div class="mau02-map-embed" data-map-embed></div>
+    </section>
+
+    <figure class="mau02-hero-quote" data-reveal>
+      <img src="{{photo2}}" alt="Ảnh cưới" data-reveal-blur>
+      <figcaption class="script-only">{{loveQuoteTitle}}</figcaption>
+    </figure>
+
+    <div class="mau02-duo-photos" data-reveal>
+      <div class="mau02-duo-frames">
+        <figure class="duo-1"><img src="{{photo3}}" alt="Ảnh cưới" data-reveal-blur></figure>
+        <figure class="duo-2"><img src="{{photo6}}" alt="Ảnh cưới" data-reveal-blur></figure>
+        <span class="mau02-duo-heart" aria-hidden="true">♥</span>
+      </div>
+      <div class="mau02-duo-name"><span>{{groomRoleLabel}}</span><b>{{groomName}}</b></div>
+    </div>
+
+    <section class="mau02-open" data-reveal>
+      <p class="mau02-story-text">{{intro}}</p>
+    </section>
+
+    <div class="mau02-memories" data-reveal>
+      <h3>{{cinemaStoryTitle}}</h3>
+      <p>{{cinemaStoryBottom}}</p>
+      <figure><img src="{{photo7}}" alt="Ảnh cưới" data-reveal-blur></figure>
+    </div>
+
+    <div class="mau02-photo-grid" data-reveal>
+      <figure><img src="{{photo8}}" alt="Ảnh cưới" data-reveal-blur></figure>
+      <figure><img src="{{photo9}}" alt="Ảnh cưới" data-reveal-blur></figure>
+      <figure class="wide"><img src="{{photo10}}" alt="Ảnh cưới" data-reveal-blur></figure>
+      <figure><img src="{{photo11}}" alt="Ảnh cưới" data-reveal-blur></figure>
+      <figure><img src="{{photo12}}" alt="Ảnh cưới" data-reveal-blur></figure>
+    </div>
+
+    <section class="mau02-open" data-reveal>
+      <p class="mau02-rsvp-lead">{{rsvpLeadText}}</p>
+      <form class="mau02-rsvp-card" data-rsvp-card>
+        <h3>{{rsvpTitle}}</h3>
+
+        <label>{{rsvpNameLabel}}</label>
+        <input type="text" name="guest_name" autocomplete="name" placeholder="Nhập tên của bạn">
+
+        <label>{{rsvpAttendanceLabel}}</label>
+        <div class="mau02-radio-line">
+          <input type="radio" name="attendance" value="yes" checked>
+          <span>{{rsvpYesText}}</span>
+        </div>
+        <div class="mau02-radio-line">
+          <input type="radio" name="attendance" value="no">
+          <span>{{rsvpNoText}}</span>
+        </div>
+
+        <label>{{rsvpCountLabel}}</label>
+        <select name="guest_count">
+          <option>1 người</option>
+          <option>2 người</option>
+          <option>3 người</option>
+          <option>4 người</option>
+        </select>
+
+        <button class="mau02-rsvp-submit" type="submit">{{rsvpSubmitText}}</button>
+        <div class="rsvp-result" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section class="mau02-open mau02-wishes" data-reveal>
+      <p class="mau02-panel-title">{{wishesKicker}}</p>
+      <h2>{{wishesTitle}}</h2>
+
+      <form class="mau02-wish-form" data-wish-form>
+        <label for="mau02-wish-name-{{templateId}}">{{wishNameLabel}}</label>
+        <input id="mau02-wish-name-{{templateId}}" type="text" name="guest_name" autocomplete="name" placeholder="Ví dụ: Anh Minh">
+
+        <label for="mau02-wish-message-{{templateId}}">{{wishesTitle}}</label>
+        <input type="hidden" name="emoji" value="💖" data-emoji-value>
+        <div class="mau02-emoji-picker" aria-label="Chọn cảm xúc">
+          <button type="button" class="active" data-emoji="💖">💖</button>
+          <button type="button" data-emoji="🎉">🎉</button>
+          <button type="button" data-emoji="🥰">🥰</button>
+          <button type="button" data-emoji="✨">✨</button>
+        </div>
+        <textarea id="mau02-wish-message-{{templateId}}" name="message" rows="3" placeholder="Nhập lời chúc gửi đến cô dâu chú rể..."></textarea>
+
+        <button class="mau02-wish-send" type="submit">{{wishSendText}}</button>
+        <div class="mau02-wish-result" aria-live="polite"></div>
+      </form>
+
+      <div class="mau02-wish-list" data-wish-list>{{messagesHtml}}</div>
+    </section>
+  </main>
+<div class="ny-calendar-note">{{calendarNote}}</div></article>

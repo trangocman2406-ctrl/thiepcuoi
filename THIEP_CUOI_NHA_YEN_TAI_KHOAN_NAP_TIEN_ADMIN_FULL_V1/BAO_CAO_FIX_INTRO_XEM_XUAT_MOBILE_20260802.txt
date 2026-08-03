@@ -1,0 +1,24 @@
+FIX INTRO KHU XEM -> LINK XUẤT KHÁCH (5 MẪU)
+
+Nguyên nhân:
+- CSS cũ dùng phép chia chiều dài để tạo --ny-intro-scale.
+- Firefox không hỗ trợ biểu thức này nên transform của .ny-intro-stage bị vô hiệu toàn bộ.
+- Mất translate(-50%,-50%) làm thẻ bắt đầu tại tâm viewport và tràn phải/dưới.
+
+Đã sửa:
+- Bỏ phép chia CSS không tương thích.
+- Thêm tỷ lệ fallback bằng media query cho mobile dọc/ngang.
+- JavaScript đo viewport và set tỷ lệ số chính xác cho canvas 1180x640.
+- Giữ nguyên layout nội dung bên trong và responsive điện thoại cũ.
+- Áp dụng chung khu xem mẫu và link /i/... của cả mau01-mau05.
+- Tăng cache version để trình duyệt không dùng CSS/JS cũ.
+
+KẾT QUẢ KIỂM TRA TỰ ĐỘNG:
+- Khu xem 5 mẫu: 5 mẫu x 4 viewport = 20 trường hợp, lỗi 0.
+- Route xuất /i/...: 5 mẫu x 3 viewport = 15 trường hợp, lỗi 0.
+- Viewport: 1667x888, 390x844, 320x568, xoay ngang 844x390.
+- Sai lệch tâm intro: 0 px.
+- Tràn ngang: 0 px.
+- CSS fallback khi JavaScript chưa chạy: desktop/mobile/landscape đều nằm giữa và nằm trọn viewport.
+- Python compile: đạt.
+- JavaScript syntax: đạt.

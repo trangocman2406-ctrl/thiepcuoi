@@ -1,0 +1,448 @@
+<script>document.documentElement.classList.add('mau01-fonts-pending');</script>
+<style>
+html.mau01-fonts-pending .mau01-letter-names{visibility:hidden!important;opacity:0!important;clip-path:inset(0 100% 0 0)!important;}
+</style>
+<script>
+(function(){
+  var done = false;
+  function reveal(){
+    if(done) return;
+    done = true;
+    document.documentElement.classList.remove('mau01-fonts-pending');
+  }
+  var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready.catch(function(){}) : Promise.resolve();
+  // Chờ đồng thời cả hai: (1) font đã sẵn sàng, và (2) thẻ thư đã rơi xuống
+  // xong (1300ms, khớp với thời lượng animation hạ thẻ bên dưới) — để tên cô
+  // dâu chú rể chỉ bắt đầu "viết ra" đúng lúc thẻ vừa an vị, không sớm hơn.
+  var cardSettled = new Promise(function(resolve){ setTimeout(resolve, 1300); });
+  Promise.all([fontsReady, cardSettled]).then(reveal);
+  // Lưới an toàn: nếu vì lý do gì đó document.fonts.ready không bao giờ
+  // resolve, vẫn phải hiện chữ ra sau tối đa vài giây, không được để ẩn
+  // mãi. Để đủ dài (4s) cho mạng chậm kịp tải xong font thật — để ngắn quá
+  // (từng thử 0.7s) sẽ tự ép hiện chữ trước khi font tải xong, quay lại y
+  // hệt lỗi "hiện sai font" ban đầu.
+  setTimeout(reveal, 4000);
+})();
+</script>
+<link rel="stylesheet" href="/static/fonts/fonts.css?v=1">
+<link rel="stylesheet" href="{{styleFile}}?v={{templateVersion}}">
+
+<article class="invitation tpl-mau01" data-template="{{templateId}}" data-effect-key="mau01" data-effect-file="/templates/mau01/mau01.js?v={{templateVersion}}" style="--accent:{{accent}}">
+  {{letterIntroHtml}}
+
+  {{effectHtml}}
+
+  <button class="fixed-music" type="button" data-audio-src="{{audioSrc}}" aria-label="Bật nhạc">♪</button>
+  <div class="comment-stream" aria-hidden="true">{{commentsStreamHtml}}</div>
+  <button class="comments-toggle" type="button" data-comments-toggle aria-label="Ẩn hoặc hiện lời chúc nổi">💬</button>
+<main class="page">
+  <div class="bg-fx" aria-hidden="true">
+    <span class="bg-heart heart-bg-1">♥</span>
+    <span class="bg-heart heart-bg-2">♥</span>
+    <span class="bg-heart heart-bg-3">♥</span>
+    <span class="bg-heart heart-bg-4">♥</span>
+    <span class="bg-heart heart-bg-5">♥</span>
+    <span class="bg-star s1">✺</span>
+    <span class="bg-star s2">✦</span>
+    <span class="bg-star s3">♥</span>
+    <span class="bg-bird b1"></span>
+    <span class="bg-bird b2"></span>
+    <span class="bg-bird b3"></span>
+    <span class="bg-bird b4"></span>
+  </div>
+
+    <section class="screen cover">
+      <div class="tiny-nav">
+        <span>{{tinyNavLeft}}</span>
+        <span>{{tinyNavCenter}}</span>
+        <span>{{tinyNavRight}}</span>
+      </div>
+
+      <div class="cover-heart">♥</div>
+
+      <div class="cover-title">
+        <div class="script">{{coverTitle}}</div>
+      </div>
+
+      <div class="open-text">{{openText}}</div>
+
+      <input class="env-state" id="mau01-envelope-toggle-{{templateId}}" type="checkbox" aria-hidden="true">
+
+      <div class="cover-envelope-rise">
+        <label class="envelope-wrap" data-envelope for="mau01-envelope-toggle-{{templateId}}" role="button" tabindex="0" aria-label="Mở hoặc đóng phong bì">
+          <div class="env-back" aria-hidden="true"></div>
+
+          <div class="envelope-photo-card">
+            <img src="{{photo0}}" alt="Ảnh cưới mở từ phong bì">
+          </div>
+
+          <div class="env-flap" aria-hidden="true"></div>
+          <div class="env-front" aria-hidden="true"></div>
+          <div class="seal" aria-hidden="true"></div>
+          <div class="env-pop-hearts" aria-hidden="true"></div>
+        </label>
+      </div>
+
+      <div class="cover-couple signature"><span class="cover-groom" data-pos-key="cover_groom_name">{{groomName}}</span> <span class="cover-bride-group"><span data-pos-key="couple_ampersand">&amp;</span> <span data-pos-key="cover_bride_name">{{brideName}}</span></span></div>
+      <div class="cover-date" data-pos-key="cover_date_text">{{dateDay}}.{{dateMonth}}.{{dateYear}}</div>
+    </section>
+
+    <section class="screen border" id="familyInfo">
+      <div class="main-invite">
+        <div class="shadow-title thin" data-rise="1">{{inviteLabel}}</div>
+
+        <div class="invite-line" data-rise="2">{{intro}}</div>
+
+        <div class="big-date" data-rise="3" data-pos-key="family_date_text">
+          <span>{{weddingTime}}</span>
+          <span>|</span>
+          <span>{{dateDayName}}</span>
+          <span>|</span>
+          <span>{{dateDay}}.{{dateMonth}}.{{dateYear}}</span>
+        </div>
+
+        <div class="lunar" data-rise="4">{{calendarNote}}</div>
+      </div>
+
+      <div class="divider" data-rise="5">♥</div>
+
+      <div class="info-block">
+        <div class="label thin" data-rise="6">{{ceremonyLocationLabel}}</div>
+
+        <h2 class="title tomato-title" data-rise="7" data-rise-pulse>{{ceremonyTitle}}</h2>
+
+        <p class="venue-address" data-rise="8">{{ceremonyAddress}}</p>
+<a
+          class="map-btn mau01-map-btn"
+          data-rise="9"
+          href="{{mapUrl}}"
+          target="_blank"
+          rel="noopener"
+          data-map-url="{{mapUrl}}"
+        >{{mapButtonText}}</a>
+      </div>
+
+      <div class="love-note" data-rise="10">{{quoteText}}</div>
+
+      <div class="bottom-words" data-rise="11">
+        <span>{{bottomWord1}}</span>
+        <span>{{bottomWord2}}</span>
+        <span>{{bottomWord3}}</span>
+      </div>
+
+      <div class="pink-river-frame" aria-hidden="true">
+        <div class="pink-river-water">
+          <span class="water-wave wave-a"></span>
+          <span class="water-wave wave-b"></span>
+          <span class="pink-river-name pink-river-name-groom" data-pos-key="river_groom_name" data-rise-boat="groom">{{groomName}}</span>
+          <span class="pink-river-name pink-river-name-bride" data-pos-key="river_bride_name" data-rise-boat="bride">{{brideName}}</span>
+<div class="mau01-stork-stage mau01-single-boat-stage" data-mau01-final-swan="1" data-rise="12" data-rise-blur aria-hidden="true">
+          <svg class="mau01-single-boat-svg" viewBox="0 0 460 160" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="mau01SingleBoatHull" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#fff8fb"/>
+                <stop offset="100%" stop-color="#f2b7cf"/>
+              </linearGradient>
+              <linearGradient id="mau01SingleBoatSail" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="62%" stop-color="#fff1f7"/>
+                <stop offset="100%" stop-color="#ffc1d6"/>
+              </linearGradient>
+            </defs>
+
+            <g class="single-boat">
+              <path class="single-boat-shadow" d="M145 130 C190 118 268 118 315 130"/>
+              <path class="single-boat-hull" d="M138 105 C174 122 274 122 322 105 C314 125 286 137 230 137 C176 137 148 125 138 105 Z"/>
+              <path class="single-boat-mast" d="M230 38 L230 110"/>
+              <path class="single-boat-sail single-sail-main" d="M235 42 C275 60 300 82 314 106 L235 106 Z"/>
+              <path class="single-boat-sail single-sail-small" d="M225 48 C195 66 174 88 164 106 L225 106 Z"/>
+              <path class="single-boat-flag" d="M231 39 C248 35 263 41 278 37 C265 51 249 50 231 54 Z"/>
+              <path class="single-boat-line" d="M156 105 C192 114 270 114 310 105"/>
+            </g>
+          </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen family-invite-screen">
+      <div class="family-invite-head mau01-family-heading">
+        <div class="family-small-title">{{familyTitle}}</div>
+        <div class="family-center-heart">♥</div>
+      </div>
+      <div class="family-info-grid">
+        <div class="family-side">
+<p class="family-parent family-editable" data-rise-fam="1">{{groomParents}}</p>
+
+          <p class="family-address family-editable" data-rise-fam="2">{{groomFamilyAddress}}</p>
+        </div>
+
+        <div class="family-side">
+<p class="family-parent family-editable" data-rise-fam="3">{{brideParents}}</p>
+
+          <p class="family-address family-editable" data-rise-fam="4">{{brideFamilyAddress}}</p>
+        </div>
+      </div>
+
+      <div class="family-photo-grid">
+        <div class="family-photo-card" data-cross="groom">
+          <div class="family-photo-box">
+            <img src="{{photo1}}" alt="{{groomName}}">
+          </div>
+
+          <div class="family-photo-name family-editable" data-pos-key="family_groom_name">{{groomName}}</div>
+        </div>
+
+        <div class="family-photo-card" data-cross="bride">
+          <div class="family-photo-box">
+            <img src="{{photo2}}" alt="{{brideName}}">
+          </div>
+
+          <div class="family-photo-name family-editable" data-pos-key="family_bride_name">{{brideName}}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen cinema-story-screen">
+    
+      <div class="cinema-story-title" data-rise="1" data-rise-blur>{{cinemaStoryTitle}}</div>
+
+      <div class="cinema-story-grid">
+        <figure class="story-photo story-photo-1" data-grid-in>
+          <img src="{{photo3}}" alt="Wedding photo">
+        </figure>
+
+        <figure class="story-photo story-photo-2" data-grid-in>
+          <img src="{{photo4}}" alt="Wedding photo">
+        </figure>
+
+        <figure class="story-photo story-photo-3" data-grid-in>
+          <img src="{{photo5}}" alt="Wedding photo">
+        </figure>
+
+        <figure class="story-photo story-photo-4" data-grid-in>
+          <img src="{{photo6}}" alt="Wedding photo">
+        </figure>
+
+        <span class="story-dot d1"></span>
+        <span class="story-dot d2"></span>
+        <span class="story-dot d3"></span>
+        <span class="story-dot d4"></span>
+      </div>
+
+      <div class="cinema-story-bottom" data-rise="2" data-rise-blur>{{cinemaStoryBottom}}</div>
+    </section>
+
+    <section class="screen border">
+      <div class="center" data-rise-fam="1" style="font-size:18px;line-height:1.4">{{borderQuote}}</div>
+
+      <div class="collage">
+        <div class="vertical-word" data-rise-fam="2">{{collageVerticalWord}}</div>
+        <div class="main-img ny-photo-frame" data-zoom-in><img class="enter-right" src="{{photo7}}" alt="Wedding couple"></div>
+        <div class="cut-img ny-photo-frame" data-slide-left><img class="enter-left" src="{{photo8}}" alt="Couple moment"></div>
+        <div class="love-you" data-sparkle>{{loveQuoteTitle}}</div>
+        <div class="small-copy" data-rise-fam="3">{{loveQuoteText}}</div>
+      </div>
+    </section>
+
+    <section class="screen border film-section film-scroll-section">
+      <div class="film-frame film-auto-frame" data-rise="1" data-rise-blur>
+        <div class="film-roll" data-marquee-track>
+          <div class="film-shot"><img src="{{photo13}}" alt="Wedding film 1"><div class="film-caption">{{filmCaption1}}</div></div>
+          <div class="film-shot"><img src="{{photo14}}" alt="Wedding film 2"><div class="film-caption">{{filmCaption2}}</div></div>
+          <div class="film-shot"><img src="{{photo15}}" alt="Wedding film 3"><div class="film-caption">{{filmCaption3}}</div></div>
+          <div class="film-shot"><img src="{{photo16}}" alt="Wedding film 4"><div class="film-caption">{{filmCaption4}}</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen border">
+      <div class="center" style="margin-top:20px">
+        <div class="heart" data-rise-fam="1">♥</div>
+      </div>
+
+      <div class="save-title" data-rise-fam="2">{{saveTitle}}</div>
+
+      <div class="small-story" data-rise-fam="3">{{smallStory}}</div>
+
+      <div class="memory-frame" data-rise="1" data-rise-blur>
+        <img src="{{photo9}}" alt="Khung ảnh kỷ niệm">
+        <div class="memory-note">{{memoryNote}}</div>
+      </div>
+    </section>
+
+    <section class="screen border calendar-screen">
+      <div class="calendar-photo-frame" data-rise="1" data-rise-blur>
+        <img class="calendar-photo" src="{{photo10}}" alt="Save the date">
+      </div>
+
+      <div class="calendar-box">
+        <div class="calendar-date-text" data-pos-key="calendar_date_text" data-rise-fam="2">
+          {{dateDayName}}, {{dateDay}}/{{dateMonth}}/{{dateYear}}<br>
+          {{calendarTimeLabel}} | {{weddingTime}}
+        </div>
+      </div>
+
+      <div class="closing-note" data-rise-fam="3">{{closingNote}}</div>
+    </section>
+
+    <section class="screen border marquee-gallery-screen">
+      <div class="marquee-gallery-head">
+        <div class="marquee-gallery-title">{{marqueeGalleryTitle}}</div>
+      </div>
+
+      <div class="gallery-marquee">
+        <!-- Chỉ dùng 5 ảnh gốc (photo11/18/19/20/21) cho cả 4 hàng — mỗi
+             hàng đổi vị trí (xoay vòng) 5 ảnh đó thay vì cần 20 ảnh riêng,
+             để khách chỉ phải tải lên đúng 5 tấm cho cả khu này. -->
+        <div class="gallery-row gallery-row-left">
+          <div class="gallery-track" data-marquee-track>
+            <div class="gallery-card"><img src="{{photo11}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo18}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo19}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo20}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo21}}" alt="Wedding photo"></div>
+          </div>
+        </div>
+        <div class="gallery-row gallery-row-right">
+          <div class="gallery-track" data-marquee-track>
+            <div class="gallery-card"><img src="{{photo18}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo19}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo20}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo21}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo11}}" alt="Wedding photo"></div>
+          </div>
+        </div>
+        <div class="gallery-row gallery-row-left">
+          <div class="gallery-track" data-marquee-track>
+            <div class="gallery-card"><img src="{{photo19}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo20}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo21}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo11}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo18}}" alt="Wedding photo"></div>
+          </div>
+        </div>
+        <div class="gallery-row gallery-row-right">
+          <div class="gallery-track" data-marquee-track>
+            <div class="gallery-card"><img src="{{photo20}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo21}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo11}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo18}}" alt="Wedding photo"></div>
+            <div class="gallery-card"><img src="{{photo19}}" alt="Wedding photo"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen border gift-section">
+      <div class="gift-intro-text">{{giftIntroText}}</div>
+
+      <div class="center" style="margin-top:72px">
+        <div class="heart">♥</div>
+      </div>
+
+      <button class="gift-icon" type="button" data-gift aria-label="Mở hộp quà cưới">
+        <svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M25 42h70v45H25V42Z" fill="#F3A9B8" stroke="#B76F7D" stroke-width="5"/>
+          <path d="M18 25h84v22H18V25Z" fill="#F5B5C3" stroke="#B76F7D" stroke-width="5"/>
+          <path d="M55 25h12v62H55V25Z" fill="#FFD56D"/>
+          <path d="M40 25c-7-17 16-22 20 0M80 25c7-17-16-22-20 0" stroke="#B76F7D" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+
+        <span class="gift-heart h1">♥</span>
+        <span class="gift-heart h2">♥</span>
+        <span class="gift-heart h3">♥</span>
+        <span class="gift-heart h4">♥</span>
+        <span class="gift-heart h5">♥</span>
+        <span class="gift-heart h6">♥</span>
+        <span class="gift-heart h7">♥</span>
+        <span class="gift-heart h8">♥</span>
+        <span class="gift-heart h9">♥</span>
+        <span class="gift-heart h10">♥</span>
+        <span class="gift-heart h11">♥</span>
+        <span class="gift-heart h12">♥</span>
+        <span class="gift-heart h13">♥</span>
+        <span class="gift-heart h14">♥</span>
+        <span class="gift-heart h15">♥</span>
+        <span class="gift-heart h16">♥</span>
+        <span class="gift-heart h17">♥</span>
+        <span class="gift-heart h18">♥</span>
+        <span class="gift-heart h19">♥</span>
+        <span class="gift-heart h20">♥</span>
+      </button>
+
+      <div class="center thin" style="font-size:22px">{{giftBoxLabel}}</div>
+      <div class="open-gift-hint">{{giftBoxHint}}</div>
+
+      <div class="gift-photo-pop">
+        <img src="{{photo12}}" alt="Ảnh hiện ra từ hộp quà">
+        <div class="gift-open-title">{{giftOpenTitle}}</div>
+      </div>
+
+      <form class="rsvp-card" data-rsvp-card>
+        <h3>{{rsvpTitle}}</h3>
+
+        <label>{{rsvpNameLabel}}</label>
+        <input type="text" name="guest_name" autocomplete="name" placeholder="Nhập tên của bạn">
+
+        <label>{{rsvpAttendanceLabel}}</label>
+
+        <div class="radio-line">
+          <input type="radio" name="attendance" value="yes" checked>
+          <span>{{rsvpYesText}}</span>
+        </div>
+
+        <div class="radio-line">
+          <input type="radio" name="attendance" value="no">
+          <span>{{rsvpNoText}}</span>
+        </div>
+
+        <label>{{rsvpCountLabel}}</label>
+        <select name="guest_count">
+          <option>1 người</option>
+          <option>2 người</option>
+          <option>3 người</option>
+          <option>4 người</option>
+        </select>
+
+        <button class="submit-btn" type="submit">{{rsvpSubmitText}}</button>
+        <div class="rsvp-result" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section class="screen border mau01-wish-section" id="guestWishes">
+      <div class="mau01-wish-inner">
+        <div class="mau01-wish-kicker">{{wishesKicker}}</div>
+        <h2 class="mau01-wish-title">{{wishesTitle}}</h2>
+        <p class="mau01-wish-sub">{{quoteText}}</p>
+
+        <form class="mau01-wish-form" data-wish-form>
+          <label for="mau01-wish-name-{{templateId}}">{{wishNameLabel}}</label>
+          <input id="mau01-wish-name-{{templateId}}" type="text" name="guest_name" autocomplete="name" placeholder="Ví dụ: Anh Minh">
+
+          <label for="mau01-wish-message-{{templateId}}">{{wishesTitle}}</label>
+          <input type="hidden" name="emoji" value="💖" data-emoji-value>
+          <div class="emoji-picker mau01-emoji-picker" aria-label="Chọn cảm xúc">
+            <button type="button" class="active" data-emoji="💖">💖</button>
+            <button type="button" data-emoji="🎉">🎉</button>
+            <button type="button" data-emoji="🥰">🥰</button>
+            <button type="button" data-emoji="✨">✨</button>
+            <button type="button" data-emoji="🌸">🌸</button>
+            <button type="button" data-emoji="💐">💐</button>
+          </div>
+          <textarea id="mau01-wish-message-{{templateId}}" name="message" placeholder="Nhập lời chúc gửi đến cô dâu chú rể..."></textarea>
+
+          <button class="mau01-wish-send" type="submit">{{wishSendText}}</button>
+          <div class="mau01-wish-result" aria-live="polite"></div>
+        </form>
+
+        <div class="mau01-wish-list" data-wish-list>
+          {{messagesHtml}}
+        </div>
+
+        <div class="mau01-thank-you">{{thankYouText}}</div>
+        <div class="mau01-thank-note">{{thankYouNote}}</div>
+      </div>
+    </section>
+  </main>
+<div class="ny-calendar-note">{{calendarNote}}</div></article>

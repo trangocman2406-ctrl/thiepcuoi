@@ -1,0 +1,158 @@
+<link rel="stylesheet" href="/static/fonts/fonts.css?v=1">
+<link rel="stylesheet" href="{{styleFile}}?v={{templateVersion}}">
+<article class="invitation tpl-mau04" data-template="{{templateId}}" data-effect-key="mau04" data-effect-file="{{effectFile}}?v={{templateVersion}}" data-wedding-date="{{weddingDate}}" data-ceremony-time="{{weddingTime}}" data-party-time="{{partyTime}}" data-map-url="{{mapUrl}}">{{letterIntroHtml}}<div class="mau04-body" aria-hidden="true"><button class="fixed music" data-audio-src="{{audioSrc}}">♪</button><div class="fixed menu">≡</div><div class="side">{{m04BrandSideText}}</div><div class="page">
+
+<section class="hero" data-reveal data-enter="up"><div class="hero-photo"><img src="{{photo0}}"></div><div class="hero-panel"><div>{{m04HeroInviteText}}</div><div data-pos-key="family_date_text">{{weddingTime}} · {{dateDayName}}</div><div data-pos-key="cover_date_text">{{dateDay}}.{{dateMonth}}.{{dateYear}}</div><div>{{m04HeroCeremonyPrefix}} {{partyTime}}</div></div></section>
+
+<section class="title" data-reveal data-enter="up"><h1>{{m04MainInviteTitle}}</h1><div class="leaf">❦</div></section>
+
+<section class="family mau04-family" id="familyInfo">
+  <div class="mau04-family-block" data-reveal data-enter="left">
+    <h3>{{groomSideLabel}}</h3>
+    <p class="mau04-family-parents">{{groomParents}}</p>
+    <p class="mau04-family-address">{{groomAddress}}</p>
+  </div>
+  <div class="mau04-family-block" data-reveal data-enter="right">
+    <h3>{{brideSideLabel}}</h3>
+    <p class="mau04-family-parents">{{brideParents}}</p>
+    <p class="mau04-family-address">{{brideAddress}}</p>
+  </div>
+</section>
+
+<div class="names" data-reveal data-enter="up">
+  <span data-pos-key="cover_groom_name">{{groomName}}</span><span data-pos-key="couple_ampersand">✦</span><span data-pos-key="cover_bride_name">{{brideName}}</span>
+</div>
+<div class="mau04-couple-photos">
+  <figure class="mau04-couple-photo ny-photo-frame" data-reveal data-enter="left">
+    <img src="{{photo6}}" alt="Ảnh chú rể">
+  </figure>
+  <figure class="mau04-couple-photo ny-photo-frame" data-reveal data-enter="right">
+    <img src="{{photo7}}" alt="Ảnh cô dâu">
+  </figure>
+</div>
+
+<section class="mau04-story" id="mau04Story" data-story-section>
+  <div class="mau04-story-head" data-reveal data-enter="up">
+    <div class="mau04-story-kicker">{{storyKicker}}</div>
+    <h2>{{storyTitle}}</h2>
+    <p>{{intro}}</p>
+  </div>
+
+  <div class="mau04-story-decor" aria-hidden="true">
+    <div class="mau04-flight mau04-flight-a" data-flight>
+      <svg viewBox="0 0 180 240" preserveAspectRatio="none"><path d="M18 214 C32 198, 44 180, 62 170 C82 158, 100 166, 102 186 C104 206, 80 220, 60 202 C40 184, 60 148, 90 138 C122 126, 130 92, 138 58 C144 34, 152 18, 160 10"/></svg>
+      <span>囍</span>
+    </div>
+    <div class="mau04-flight mau04-flight-b" data-flight>
+      <svg viewBox="0 0 180 240" preserveAspectRatio="none"><path d="M160 210 C146 194, 132 180, 116 170 C96 158, 78 166, 76 186 C74 206, 98 220, 118 202 C138 184, 118 148, 88 138 C56 126, 48 92, 40 58 C34 34, 26 18, 18 10"/></svg>
+      <span>囍</span>
+    </div>
+    <div class="mau04-flight mau04-flight-c" data-flight>
+      <svg viewBox="0 0 180 240" preserveAspectRatio="none"><path d="M18 214 C38 192, 54 176, 66 150 C78 126, 76 110, 58 102 C42 96, 26 112, 30 126 C34 144, 64 146, 90 136 C118 126, 134 92, 142 60 C148 36, 156 18, 162 10"/></svg>
+      <span>囍</span>
+    </div>
+    <div class="mau04-flight mau04-flight-d" data-flight>
+      <svg viewBox="0 0 180 240" preserveAspectRatio="none"><path d="M162 214 C148 194, 136 178, 122 156 C108 132, 108 112, 126 102 C142 94, 156 112, 152 126 C148 144, 118 146, 92 136 C64 126, 48 92, 38 58 C30 34, 22 18, 18 10"/></svg>
+      <span>囍</span>
+    </div>
+    <i class="mau04-spark s1">✦</i><i class="mau04-spark s2">✧</i><i class="mau04-spark s3">✦</i><i class="mau04-spark s4">✧</i><i class="mau04-spark s5">✦</i><i class="mau04-spark s6">✧</i>
+  </div>
+
+  <div class="mau04-story-track"></div>
+  <div class="mau04-story-list">
+    <article class="mau04-story-card left mau04-polaroid" data-reveal data-enter="left">
+      <i class="mau04-pin"></i>
+      <figure class="ny-photo-frame"><img src="{{photo8}}" alt="Love story 1"></figure>
+      <div class="mau04-story-date">{{story1Date}}</div>
+      <h3>{{story1Title}}</h3>
+    </article>
+    <article class="mau04-story-card right mau04-polaroid" data-reveal data-enter="right">
+      <i class="mau04-pin"></i>
+      <figure class="ny-photo-frame"><img src="{{photo9}}" alt="Love story 2"></figure>
+      <div class="mau04-story-date">{{story2Date}}</div>
+      <h3>{{story2Title}}</h3>
+    </article>
+    <article class="mau04-story-card left mau04-polaroid" data-reveal data-enter="left">
+      <i class="mau04-pin"></i>
+      <figure class="ny-photo-frame"><img src="{{photo10}}" alt="Love story 3"></figure>
+      <div class="mau04-story-date">{{story3Date}}</div>
+      <h3>{{story3Title}}</h3>
+    </article>
+    <article class="mau04-story-card right mau04-polaroid" data-reveal data-enter="right">
+      <i class="mau04-pin"></i>
+      <figure class="ny-photo-frame"><img src="{{photo11}}" alt="Love story 4"></figure>
+      <div class="mau04-story-date">{{story4Date}}</div>
+      <h3>{{story4Title}}</h3>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-reveal data-enter="up">
+  <h2 class="mau04-script">{{m04MainInviteTitle}}</h2>
+  <p>{{intro}}</p>
+  <div class="event-row">
+    <div class="event">
+      <h3>{{ceremonyTitle}}</h3><p>{{weddingDateVi}} • {{weddingTime}}</p><p>{{ceremonyAddress}}</p>{{mapBtn}}
+      <div class="mau04-mini-count" data-count-target="ceremony">
+        <div><b data-count="days">00</b><span>{{countdownDaysLabel}}</span></div>
+        <div><b data-count="hours">00</b><span>{{countdownHoursLabel}}</span></div>
+        <div><b data-count="minutes">00</b><span>{{countdownMinutesLabel}}</span></div>
+        <div><b data-count="seconds">00</b><span>{{countdownSecondsLabel}}</span></div>
+      </div>
+    </div>
+    <div class="event">
+      <h3>{{partyTitle}}</h3><p>{{weddingDateVi}} • {{partyTime}}</p><p>{{partyAddress}}</p>{{mapBtn}}
+      <div class="mau04-mini-count" data-count-target="party">
+        <div><b data-count="days">00</b><span>{{countdownDaysLabel}}</span></div>
+        <div><b data-count="hours">00</b><span>{{countdownHoursLabel}}</span></div>
+        <div><b data-count="minutes">00</b><span>{{countdownMinutesLabel}}</span></div>
+        <div><b data-count="seconds">00</b><span>{{countdownSecondsLabel}}</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section mau04-map" id="mau04Map" data-reveal data-enter="up">
+  <h2>{{mapSectionTitle}}</h2>
+  <div class="mau04-map-wrap">
+    <div class="mau04-map-frame">
+      <iframe data-map-frame loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen title="Bản đồ địa điểm"></iframe>
+      <div class="mau04-map-empty" data-map-empty>
+        <b>{{mapErrorTitle}}</b>
+        <p>{{mapErrorText}}</p>
+      </div>
+    </div>
+    <div class="mau04-map-copy">
+      <div class="mau04-map-title">{{partyTitle}}</div>
+      <p>{{partyAddress}}</p>
+      <a class="mau04-map-btn" href="{{mapUrl}}" target="_blank" rel="noopener">{{mapButtonText}}</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-reveal data-enter="up"><h2>{{galleryTitle}}</h2><div class="gallery"><figure class="ny-photo-frame"><img src="{{photo1}}"></figure><figure class="ny-photo-frame"><img src="{{photo2}}"></figure><figure class="ny-photo-frame"><img src="{{photo3}}"></figure><figure class="ny-photo-frame"><img src="{{photo4}}"></figure><figure class="ny-photo-frame"><img src="{{photo5}}"></figure><figure class="ny-photo-frame"><img src="{{photo0}}"></figure></div></section>
+
+<section class="section mau04-wishes" id="mau04Wishes" data-reveal data-enter="up">
+  <h2>{{wishesTitle}}</h2>
+  <div class="mau04-rsvp-icons" data-reveal data-enter="up">
+    <button type="button" class="active" data-rsvp-state>☺</button>
+    <button type="button" data-rsvp-state>☹</button>
+  </div>
+  <div class="mau04-wish-box" data-public-wish-box>
+    <form class="mau04-wish-form" data-wish-form-public action="messages" method="post">
+      <input type="text" name="name" placeholder="Tên của bạn">
+      <input type="hidden" name="emoji" value="💖" data-emoji-value>
+      <div class="mau04-emoji-picker">
+        <button type="button" class="active" data-emoji="💖">💖</button>
+        <button type="button" data-emoji="🎉">🎉</button>
+        <button type="button" data-emoji="🥰">🥰</button>
+        <button type="button" data-emoji="✨">✨</button>
+      </div>
+      <textarea name="message" placeholder="Nhập lời chúc gửi đến cô dâu chú rể..."></textarea>
+      <button class="mau04-wish-submit" type="submit">{{wishSendText}}</button>
+    </form>
+    <div class="guestbook wish-list" id="guestbookMount">{{messagesHtml}}</div>
+  </div>
+</section>
+
+</div></div><div class="ny-calendar-note">{{calendarNote}}</div></article>

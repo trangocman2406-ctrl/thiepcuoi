@@ -1,0 +1,52 @@
+BÁO CÁO KIỂM TRA QA TOÀN BỘ – 02/08/2026
+Dự án: Thiệp cưới Nhà Yến – 5 mẫu
+
+1. LỖI CÒN SÓT ĐÃ TÌM THẤY VÀ SỬA
+- Vị trí chữ vẫn còn giới hạn ngầm ±5.000 px ở 3 lớp: JavaScript kéo thả, form chỉnh sửa và Python lưu/đọc dữ liệu. Đã đồng bộ giới hạn kỹ thuật rất rộng ±100.000 px để không bị kéo vài lần rồi đứng hoặc mở lại bị nhảy về vị trí cũ.
+- Tên cô dâu/chú rể quá dài vẫn có ngưỡng co tối thiểu 0,18 nên có thể tràn trên màn hình rất hẹp. Đã hạ ngưỡng an toàn xuống 0,05 và giữ co đồng đều, không bóp méo riêng chiều ngang/dọc.
+- Xoá một lệnh thêm class trùng trong bộ đo dải ảnh mẫu 1.
+- Tăng phiên bản cache CSS/JS để trình duyệt không tiếp tục dùng file cũ.
+
+2. KẾT QUẢ KIỂM TRA CHỨC NĂNG
+- Python compile: đạt.
+- Toàn bộ JavaScript node --check: đạt.
+- Khởi tạo database mới hoàn toàn: đạt; đủ 10 bảng và các cột cần thiết.
+- Chạy server từ dự án mới, mở trang chủ, chọn mẫu, preview, đăng nhập designer: đạt.
+- Kiểm tra 26 route/trạng thái đăng nhập và 31 asset được tải từ các trang chính: không có asset 404.
+- Kiểm tra 99 đường dẫn ảnh/font trong CSS: không thiếu file.
+- Không còn placeholder {{...}} chưa được thay trong nội dung/thuộc tính của 5 mẫu.
+
+3. QR VÀ LINK KHÁCH
+- QR tạo canvas thành công; nút tải PNG hiện đúng.
+- QR nằm đúng tâm khung, sai lệch tâm đo được: 0 px.
+- Màn hình 390 px không tràn ngang.
+- Header X-Forwarded-Proto/X-Forwarded-Host tạo đúng link HTTPS theo domain Render; không lộ localhost/127.0.0.1.
+- Link /i/... của khách không có chat AI.
+
+4. NHẠC VÀ INTRO
+- Kiểm tra cả mau01–mau05: nhạc tắt khi vừa tải trang.
+- Cuộn trang, chạm/bấm nền trước khi mở thư: nhạc vẫn tắt.
+- Chỉ sau thao tác bấm “Mở thiệp” nhạc mới phát.
+- Intro đóng đúng; không có lỗi JavaScript và không tràn ngang ở 390×844 và 1366×768.
+
+5. KÉO THẢ, TÊN VÀ FONT
+- Kéo thử tên ở cả 5 mẫu 6 lần liên tiếp, tổng +5.400 px: đạt, vượt giới hạn cũ 5.000 px.
+- Kiểm tra lưu thật 54.321 px qua API autosave, đọc lại database và render CSS: đạt; sau đó đã trả dữ liệu về giá trị cũ.
+- Nội dung chỉnh trực tiếp trong preview đồng bộ về form.
+- Mẫu 5: chỉnh riêng font Georgia, cỡ 42 px và màu #123456 cho tên chú rể; tên cô dâu không bị đổi theo.
+- Kiểm tra tên rất dài qua các kích thước 320, 390, 768 và 1366 px: cả 5 mẫu nằm trong khung, không chụm/tràn và không tạo cuộn ngang.
+
+6. MẪU 1 – TIM VÀ DẢI ẢNH
+- 96/96 tim SVG có animation sau khi mở phong bì.
+- 5 dải ảnh đều chuyển động; không có dải đứng.
+- Khoảng chạy được đo theo đúng chiều dài nội dung thay vì dùng -50% chung.
+- 4 hàng ảnh ngang có cùng tỷ lệ đo được 1,3784; các thẻ trong mọi hàng có cùng kích thước.
+
+7. CHAT AI
+- Có trong khu xem thử/chọn 5 mẫu.
+- Không có trong khu designer.
+- Không có trong link thiệp đã xuất cho khách.
+
+8. GHI CHÚ KHÔNG PHẢI LỖI CHỨC NĂNG
+- Mẫu 3 tạo sẵn một thẻ ảnh lightbox chưa có src và chỉ gán src khi người dùng bấm ảnh; phần tử này đang ẩn, không tạo lỗi console và không phải ảnh nội dung bị mất.
+- Trước khi đưa website thật lên mạng, cần đổi mật khẩu tài khoản mặc định và thay thông tin ngân hàng mẫu trong biến môi trường. Đây là cấu hình bảo mật/vận hành, không phải lỗi hiển thị của 5 mẫu.

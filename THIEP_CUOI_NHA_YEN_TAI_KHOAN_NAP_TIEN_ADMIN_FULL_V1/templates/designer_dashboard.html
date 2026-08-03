@@ -1,0 +1,21 @@
+<section class="wrap designer-dashboard">
+  <div class="bar">
+    <div>
+      <p class="eyebrow">Đăng nhập: {{login_name}}</p><p class="eyebrow">Đăng nhập: {{login_name}}</p><h1>Danh sách yêu cầu</h1>
+      <p class="muted">Muốn chỉnh sửa thiệp thì phải có ít nhất 1 đơn. Bấm “Tạo đơn mới” để nhập nhanh từ màn designer.</p>
+    </div>
+    <div class="dash-actions">
+      <a class="ny-btn" href="/designer/new">+ Tạo đơn mới</a>
+      <a class="ny-btn ny-ghost" href="/choose-template" target="_blank">Xem mẫu</a>
+      {{admin_link}}
+      {{admin_link}}
+      {{bellHtml}}
+      <form method="post" action="/logout"><button class="ny-btn ny-ghost">Đăng xuất</button></form>
+    </div>
+  </div>
+  <table>
+    <thead><tr><th>Mã đơn</th><th>Cặp đôi</th><th>Zalo</th><th>Mẫu</th><th>Trạng thái</th><th>Ảnh</th><th>Thao tác</th></tr></thead>
+    <tbody>{{rows}}</tbody>
+  </table>
+</section>
+<script src="/static/js/designer-dashboard.js" defer></script>

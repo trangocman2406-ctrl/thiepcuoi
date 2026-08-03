@@ -1,0 +1,22 @@
+<section class="auth-page">
+  <div class="auth-card auth-card-wide">
+    <div class="auth-copy">
+      <p class="eyebrow">Tài khoản khách hàng</p>
+      <h1>Đăng ký tài khoản</h1>
+      <p>Thông tin này dùng để quản lý đơn, xác nhận nạp tiền và hỗ trợ liên hệ. Hãy nhập địa chỉ đầy đủ để hệ thống lưu đúng hồ sơ khách.</p>
+    </div>
+    <form class="form auth-form" method="post" action="/register">
+      <p class="error">{{error}}</p>
+      <div class="form-grid">
+        <label>Tên đăng nhập *<input name="username" value="{{username}}" minlength="3" required></label>
+        <label>Mật khẩu *<input type="password" name="password" minlength="6" required></label>
+        <label>Họ và tên *<input name="full_name" value="{{full_name}}" required></label>
+        <label>Số điện thoại / Zalo *<input name="phone" value="{{phone}}" required></label>
+        <label>Email<input type="email" name="email" value="{{email}}"></label>
+      </div>
+      <label>Địa chỉ đầy đủ *<textarea name="address" required placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố">{{address}}</textarea></label>
+      <button class="ny-btn">Tạo tài khoản</button>
+      <p class="auth-switch">Đã có tài khoản? <a href="/login">Đăng nhập</a></p>
+    </form>
+  </div>
+</section>

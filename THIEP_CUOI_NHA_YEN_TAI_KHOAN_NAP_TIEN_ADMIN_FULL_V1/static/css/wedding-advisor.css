@@ -1,0 +1,441 @@
+:root{
+  --ny-chat-bg:#fffdfb;
+  --ny-chat-paper:#fff8f6;
+  --ny-chat-text:#392b2e;
+  --ny-chat-muted:#7d6d71;
+  --ny-chat-accent:#c94f72;
+  --ny-chat-accent-dark:#9f3555;
+  --ny-chat-border:rgba(110,69,82,.16);
+  --ny-chat-shadow:0 24px 70px rgba(43,24,31,.24);
+}
+
+#ny-wedding-advisor{
+  position:fixed;
+  right:16px;
+  bottom:calc(88px + env(safe-area-inset-bottom));
+  z-index:2147483600;
+  font-family:"Be Vietnam Pro",Montserrat,Arial,sans-serif;
+  color:var(--ny-chat-text);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+#ny-wedding-advisor *{box-sizing:border-box}
+
+.ny-advisor-launcher{
+  position:relative;
+  z-index:3;
+  width:62px;
+  height:62px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.85);
+  border-radius:20px;
+  background:linear-gradient(145deg,#dd6c8d,#ad365a);
+  color:#fff;
+  box-shadow:0 15px 36px rgba(114,35,61,.34);
+  cursor:pointer;
+  transition:transform .2s ease,box-shadow .2s ease;
+  touch-action:manipulation;
+}
+.ny-advisor-launcher:hover{transform:translateY(-2px);box-shadow:0 19px 40px rgba(114,35,61,.4)}
+.ny-advisor-launcher:active{transform:scale(.96)}
+.ny-advisor-launcher svg{width:29px;height:29px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ny-advisor-launcher-label{
+  position:absolute;
+  right:69px;
+  top:50%;
+  transform:translateY(-50%);
+  white-space:nowrap;
+  padding:9px 12px;
+  border-radius:999px;
+  background:#fff;
+  color:#6f3146;
+  font-size:12px;
+  font-weight:700;
+  box-shadow:0 10px 26px rgba(48,25,34,.16);
+  pointer-events:none;
+}
+.ny-advisor-launcher-label::after{
+  content:"";
+  position:absolute;
+  right:-5px;
+  top:50%;
+  width:10px;
+  height:10px;
+  background:#fff;
+  transform:translateY(-50%) rotate(45deg);
+}
+.ny-advisor-dot{
+  position:absolute;
+  top:-4px;
+  right:-4px;
+  min-width:22px;
+  height:22px;
+  padding:0 5px;
+  display:grid;
+  place-items:center;
+  border:2px solid #fff;
+  border-radius:999px;
+  background:#2b8064;
+  color:#fff;
+  font-size:10px;
+  font-weight:800;
+}
+
+.ny-advisor-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:1;
+  background:rgba(27,18,21,.24);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s ease;
+}
+
+.ny-advisor-panel{
+  position:fixed;
+  right:16px;
+  bottom:calc(18px + env(safe-area-inset-bottom));
+  z-index:2;
+  width:min(394px,calc(100vw - 24px));
+  height:min(650px,calc(100dvh - 36px));
+  min-height:470px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.92);
+  border-radius:26px;
+  background:var(--ny-chat-bg);
+  box-shadow:var(--ny-chat-shadow);
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(14px) scale(.97);
+  transform-origin:bottom right;
+  transition:opacity .2s ease,transform .2s ease,visibility .2s ease;
+}
+#ny-wedding-advisor.is-open .ny-advisor-panel{opacity:1;visibility:visible;transform:none}
+#ny-wedding-advisor.is-open .ny-advisor-launcher-label{display:none}
+#ny-wedding-advisor.is-open .ny-advisor-launcher{opacity:0;visibility:hidden;pointer-events:none;transform:scale(.9)}
+
+.ny-advisor-header{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:15px 14px;
+  background:linear-gradient(145deg,#fff7f4,#f8e8ec);
+  border-bottom:1px solid var(--ny-chat-border);
+}
+.ny-advisor-avatar{
+  width:43px;
+  height:43px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  border-radius:15px;
+  background:linear-gradient(145deg,#d45d80,#a52f54);
+  color:#fff;
+  font-family:"Cormorant Garamond",Georgia,serif;
+  font-size:24px;
+  font-weight:700;
+  box-shadow:0 8px 18px rgba(142,49,77,.22);
+}
+.ny-advisor-heading{min-width:0;flex:1}
+.ny-advisor-heading strong{display:block;font-size:14px;line-height:1.25}
+.ny-advisor-heading span{display:flex;align-items:center;gap:6px;margin-top:3px;color:var(--ny-chat-muted);font-size:11px;line-height:1.25}
+.ny-advisor-heading span::before{content:"";width:7px;height:7px;border-radius:50%;background:#38a276;box-shadow:0 0 0 3px rgba(56,162,118,.12)}
+.ny-advisor-icon-btn{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  border:0;
+  border-radius:12px;
+  background:rgba(255,255,255,.74);
+  color:#78505c;
+  font-size:20px;
+  cursor:pointer;
+}
+.ny-advisor-icon-btn:hover{background:#fff}
+
+.ny-advisor-progress{
+  flex:0 0 auto;
+  display:none;
+  padding:8px 14px 7px;
+  background:#fff;
+  border-bottom:1px solid var(--ny-chat-border);
+}
+.ny-advisor-progress.is-visible{display:block}
+.ny-advisor-progress-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;color:var(--ny-chat-muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.ny-advisor-progress-track{height:5px;overflow:hidden;border-radius:999px;background:#f1e5e8}
+.ny-advisor-progress-bar{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#d96484,#a93c5c);transition:width .25s ease}
+
+.ny-advisor-messages{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding:16px 14px 10px;
+  background:
+    radial-gradient(circle at 20% 15%,rgba(255,220,229,.34),transparent 33%),
+    linear-gradient(180deg,#fffdfc,#fffaf8);
+  scrollbar-width:thin;
+  scrollbar-color:#d8c0c7 transparent;
+}
+.ny-advisor-messages::-webkit-scrollbar{width:6px}
+.ny-advisor-messages::-webkit-scrollbar-thumb{background:#d8c0c7;border-radius:999px}
+
+.ny-advisor-message{display:flex;gap:8px;margin:0 0 11px;animation:nyAdvisorIn .22s ease both}
+.ny-advisor-message.is-user{justify-content:flex-end}
+.ny-advisor-bubble{
+  max-width:86%;
+  padding:10px 12px;
+  border-radius:18px 18px 18px 6px;
+  background:#fff;
+  border:1px solid rgba(121,79,91,.12);
+  box-shadow:0 5px 15px rgba(69,43,51,.07);
+  font-size:13px;
+  line-height:1.55;
+  overflow-wrap:anywhere;
+}
+.ny-advisor-message.is-user .ny-advisor-bubble{
+  border:0;
+  border-radius:18px 18px 6px 18px;
+  background:linear-gradient(145deg,#cb597a,#a53658);
+  color:#fff;
+  box-shadow:0 7px 16px rgba(143,48,78,.18);
+}
+.ny-advisor-bubble p{margin:0 0 7px}
+.ny-advisor-bubble p:last-child{margin-bottom:0}
+.ny-advisor-bubble strong{font-weight:800}
+.ny-advisor-bubble small{display:block;margin-top:6px;color:var(--ny-chat-muted);font-size:10px;line-height:1.45}
+.ny-advisor-message.is-user small{color:rgba(255,255,255,.78)}
+.ny-advisor-bubble ul{margin:6px 0 0;padding-left:18px}
+.ny-advisor-bubble li{margin:3px 0}
+
+.ny-advisor-typing{display:flex;align-items:center;gap:4px;padding:12px 14px!important}
+.ny-advisor-typing i{width:6px;height:6px;border-radius:50%;background:#ad7b89;animation:nyAdvisorTyping 1s infinite ease-in-out}
+.ny-advisor-typing i:nth-child(2){animation-delay:.15s}.ny-advisor-typing i:nth-child(3){animation-delay:.3s}
+
+.ny-advisor-quick{
+  flex:0 0 auto;
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  padding:9px 12px 10px;
+  background:#fff;
+  border-top:1px solid var(--ny-chat-border);
+  scrollbar-width:none;
+}
+.ny-advisor-quick::-webkit-scrollbar{display:none}
+.ny-advisor-chip{
+  flex:0 0 auto;
+  max-width:260px;
+  padding:8px 11px;
+  border:1px solid rgba(178,62,96,.22);
+  border-radius:999px;
+  background:#fff7f8;
+  color:#8f3450;
+  font:700 11px/1.35 inherit;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:background .15s ease,border-color .15s ease,transform .15s ease;
+}
+.ny-advisor-chip:hover{background:#fbe9ee;border-color:rgba(178,62,96,.38);transform:translateY(-1px)}
+
+.ny-advisor-template-list{display:grid;gap:8px;margin-top:9px}
+.ny-advisor-template-card{
+  display:grid;
+  grid-template-columns:42px 1fr;
+  gap:9px;
+  padding:9px;
+  border:1px solid rgba(113,72,84,.13);
+  border-radius:15px;
+  background:#fffaf9;
+}
+.ny-advisor-template-number{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:var(--card-color,#c45476);
+  color:#fff;
+  font-family:"Cormorant Garamond",Georgia,serif;
+  font-size:20px;
+  font-weight:800;
+}
+.ny-advisor-template-copy{min-width:0}
+.ny-advisor-template-copy b{display:block;font-size:12px;line-height:1.35}
+.ny-advisor-template-copy span{display:block;margin-top:2px;color:var(--ny-chat-muted);font-size:10.5px;line-height:1.45}
+.ny-advisor-template-copy .ny-advisor-price{margin-top:3px;color:var(--ny-chat-accent-dark);font-size:12px;font-weight:800}
+.ny-advisor-card-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.ny-advisor-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:29px;
+  padding:5px 9px;
+  border-radius:999px;
+  text-decoration:none;
+  font-size:10px;
+  font-weight:800;
+  font-family:inherit;
+  border:0;
+  cursor:pointer;
+  transition:transform .15s ease;
+}
+.ny-advisor-link:hover{transform:translateY(-1px)}
+.ny-advisor-link.is-primary{background:#a83b5c;color:#fff}
+.ny-advisor-link.is-secondary{background:#f3e6e9;color:#814054}
+
+.ny-advisor-score{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  margin-top:5px;
+  padding:3px 7px;
+  border-radius:999px;
+  background:#e9f5ef;
+  color:#257355;
+  font-size:9px;
+  font-weight:800;
+}
+
+.ny-advisor-composer{
+  flex:0 0 auto;
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  padding:10px 11px calc(10px + env(safe-area-inset-bottom));
+  background:#fff;
+  border-top:1px solid var(--ny-chat-border);
+}
+.ny-advisor-input{
+  min-width:0;
+  flex:1;
+  min-height:42px;
+  max-height:92px;
+  resize:none;
+  overflow-y:auto;
+  padding:10px 12px;
+  border:1px solid rgba(106,71,81,.18);
+  border-radius:15px;
+  outline:none;
+  background:#fffaf9;
+  color:var(--ny-chat-text);
+  font:500 12px/1.45 inherit;
+}
+.ny-advisor-input:focus{border-color:rgba(180,55,91,.48);box-shadow:0 0 0 3px rgba(180,55,91,.08)}
+.ny-advisor-input::placeholder{color:#a08e93}
+.ny-advisor-send{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  border:0;
+  border-radius:14px;
+  background:linear-gradient(145deg,#cf5c7d,#a53557);
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 8px 17px rgba(147,48,78,.2);
+}
+.ny-advisor-send:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.ny-advisor-send svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.ny-advisor-note{
+  flex:0 0 auto;
+  padding:0 12px 8px;
+  background:#fff;
+  color:#9b888d;
+  text-align:center;
+  font-size:9px;
+  line-height:1.35;
+}
+
+@keyframes nyAdvisorIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes nyAdvisorTyping{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-3px);opacity:1}}
+
+@media(max-width:520px){
+  #ny-wedding-advisor{right:12px;bottom:calc(82px + env(safe-area-inset-bottom))}
+  .ny-advisor-launcher{width:58px;height:58px;border-radius:18px}
+  .ny-advisor-launcher-label{display:none}
+  .ny-advisor-panel{
+    position:fixed;
+    left:8px;
+    right:8px;
+    bottom:8px;
+    width:auto;
+    height:min(78dvh,690px);
+    min-height:430px;
+    border-radius:24px;
+    transform-origin:bottom center;
+  }
+  #ny-wedding-advisor.is-open .ny-advisor-backdrop{opacity:1;pointer-events:auto}
+  #ny-wedding-advisor.is-open .ny-advisor-launcher{opacity:0;pointer-events:none}
+  .ny-advisor-bubble{max-width:91%}
+}
+
+@media(prefers-reduced-motion:reduce){
+  #ny-wedding-advisor *,#ny-wedding-advisor *::before,#ny-wedding-advisor *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
+/* V5: chỉ một trợ lý dùng chung ngoài dải 5 mẫu và cuộn chat ổn định. */
+#ny-wedding-advisor .ny-advisor-panel{
+  overscroll-behavior:contain;
+}
+#ny-wedding-advisor .ny-advisor-messages{
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-y;
+  overscroll-behavior-y:contain;
+  scrollbar-gutter:stable;
+  user-select:text;
+  cursor:auto;
+}
+#ny-wedding-advisor .ny-advisor-quick{
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-x;
+  overscroll-behavior-x:contain;
+  cursor:grab;
+}
+#ny-wedding-advisor .ny-advisor-quick.is-dragging{
+  cursor:grabbing;
+  user-select:none;
+}
+#ny-wedding-advisor .ny-advisor-quick.is-dragging .ny-advisor-chip{
+  pointer-events:none;
+}
+#ny-wedding-advisor.is-expanded .ny-advisor-panel{
+  width:min(640px,calc(100vw - 32px));
+  height:calc(100dvh - 32px);
+  max-height:900px;
+}
+#ny-wedding-advisor.is-gallery .ny-advisor-launcher{
+  box-shadow:0 17px 42px rgba(114,35,61,.42),0 0 0 5px rgba(255,255,255,.65);
+}
+#ny-wedding-advisor.is-gallery .ny-advisor-launcher-label{
+  display:block;
+}
+
+@media(max-width:520px){
+  .ny-advisor-expand-btn{display:none}
+  .ny-advisor-header{gap:7px;padding:13px 11px}
+  .ny-advisor-avatar{width:39px;height:39px;border-radius:13px;font-size:22px}
+  .ny-advisor-heading strong{font-size:13px}
+  .ny-advisor-heading span{font-size:9.5px}
+  .ny-advisor-icon-btn{width:31px;height:31px;border-radius:10px;font-size:18px}
+  #ny-wedding-advisor.is-gallery .ny-advisor-launcher-label{display:none}
+  #ny-wedding-advisor.is-expanded .ny-advisor-panel{
+    left:6px;
+    right:6px;
+    top:max(6px,env(safe-area-inset-top));
+    bottom:max(6px,env(safe-area-inset-bottom));
+    width:auto;
+    height:auto;
+    max-height:none;
+    min-height:0;
+  }
+}

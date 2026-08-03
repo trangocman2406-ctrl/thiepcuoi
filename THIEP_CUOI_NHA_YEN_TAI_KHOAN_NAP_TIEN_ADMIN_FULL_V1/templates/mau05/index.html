@@ -1,0 +1,240 @@
+<link rel="stylesheet" href="/static/fonts/fonts.css?v=1">
+<link rel="stylesheet" href="{{styleFile}}?v={{templateVersion}}">
+
+<article class="invitation tpl-mau05"
+  data-template="{{templateId}}"
+  data-effect-key="mau05"
+  data-effect-file="{{effectFile}}?v={{templateVersion}}"
+  data-wedding-date="{{weddingDate}}"
+  data-wedding-time="{{partyTime}}"
+  data-map-url="{{mapUrl}}"
+  style="--accent:{{accent}}">
+
+  {{letterIntroHtml}}
+
+  <button class="m05-music" type="button" data-audio-src="{{audioSrc}}" aria-label="Bật nhạc">♪</button>
+
+  <div class="m05-falling-hearts" aria-hidden="true">
+    <span>♥</span><span>♡</span><span>♥</span><span>♡</span><span>♥</span><span>♡</span>
+  </div>
+
+  <main class="m05-page">
+    <section class="m05-section m05-cover" id="m05-cover" data-reveal data-enter="up">
+      <div class="m05-cover-inner">
+        <figure class="m05-cover-photo m05-rect-frame ny-photo-frame">
+          <img src="{{photo0}}" alt="Ảnh Save the Date">
+        </figure>
+        <div class="m05-cover-copy">
+          <div class="m05-kicker">{{coverTitle}}</div>
+          <h1>{{saveTitle}}</h1>
+          <div class="m05-date">{{dateDay}} • {{dateMonth}} • {{dateYear}}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="m05-section m05-family" id="m05-family">
+      <div class="m05-section-head" data-reveal data-enter="up">
+        <div class="m05-kicker">{{familyTitle}}</div>
+      </div>
+
+      <div class="m05-person-row" data-reveal data-enter="left">
+        <div class="m05-person-copy">
+          <div class="m05-label">{{groomRoleLabel}}</div>
+          <h2 data-pos-key="m05_family_groom_name">{{groomName}}</h2>
+          <p>{{groomParents}}</p>
+          <p>{{groomAddress}}</p>
+        </div>
+        <figure class="m05-circle-photo ny-photo-frame">
+          <img src="{{photo1}}" alt="Ảnh chú rể">
+        </figure>
+      </div>
+
+      <div class="m05-quote" data-reveal data-enter="up">
+        <span></span>
+        <p>{{quoteText}}</p>
+        <span></span>
+      </div>
+
+      <div class="m05-person-row is-reverse" data-reveal data-enter="right">
+        <figure class="m05-circle-photo ny-photo-frame">
+          <img src="{{photo2}}" alt="Ảnh cô dâu">
+        </figure>
+        <div class="m05-person-copy">
+          <div class="m05-label">{{brideRoleLabel}}</div>
+          <h2 data-pos-key="m05_family_bride_name">{{brideName}}</h2>
+          <p>{{brideParents}}</p>
+          <p>{{brideAddress}}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="m05-section m05-story" id="m05-story" data-story-section>
+      <div class="m05-section-head m05-head-light" data-reveal data-enter="up">
+        <h2>{{storyKicker}}</h2>
+        <p>{{intro}}</p>
+      </div>
+
+      <div class="m05-story-decor" aria-hidden="true">
+        <div class="m05-flight m05-flight-a" data-flight>
+          <svg viewBox="0 0 180 240" preserveAspectRatio="none"><path d="M18 214 C32 198, 44 180, 62 170 C82 158, 100 166, 102 186 C104 206, 80 220, 60 202 C40 184, 60 148, 90 138 C122 126, 130 92, 138 58 C144 34, 152 18, 160 10"/></svg>
+          <span>✈</span>
+        </div>
+        <div class="m05-flight m05-flight-b" data-flight>
+          <svg viewBox="0 0 180 240" preserveAspectRatio="none"><path d="M160 210 C146 194, 132 180, 116 170 C96 158, 78 166, 76 186 C74 206, 98 220, 118 202 C138 184, 118 148, 88 138 C56 126, 48 92, 40 58 C34 34, 26 18, 18 10"/></svg>
+          <span>✈</span>
+        </div>
+        <div class="m05-flight m05-flight-c" data-flight>
+          <svg viewBox="0 0 180 240" preserveAspectRatio="none"><path d="M18 214 C38 192, 54 176, 66 150 C78 126, 76 110, 58 102 C42 96, 26 112, 30 126 C34 144, 64 146, 90 136 C118 126, 134 92, 142 60 C148 36, 156 18, 162 10"/></svg>
+          <span>✈</span>
+        </div>
+        <div class="m05-flight m05-flight-d" data-flight>
+          <svg viewBox="0 0 180 240" preserveAspectRatio="none"><path d="M162 214 C148 194, 136 178, 122 156 C108 132, 108 112, 126 102 C142 94, 156 112, 152 126 C148 144, 118 146, 92 136 C64 126, 48 92, 38 58 C30 34, 22 18, 18 10"/></svg>
+          <span>✈</span>
+        </div>
+        <i class="m05-spark s1">✦</i><i class="m05-spark s2">✧</i><i class="m05-spark s3">✦</i><i class="m05-spark s4">✧</i><i class="m05-spark s5">✦</i><i class="m05-spark s6">✧</i>
+      </div>
+
+      <div class="m05-story-track"></div>
+
+      <div class="m05-story-list">
+        <article class="m05-story-card left m05-polaroid" data-reveal data-enter="left">
+          <i class="m05-pin"></i>
+          <figure class="ny-photo-frame"><img src="{{photo3}}" alt="Love story 1"></figure>
+          <div class="m05-story-date">{{story1Date}}</div>
+          <h3>{{story1Title}}</h3>
+        </article>
+
+        <article class="m05-story-card right m05-polaroid" data-reveal data-enter="right">
+          <i class="m05-pin"></i>
+          <figure class="ny-photo-frame"><img src="{{photo4}}" alt="Love story 2"></figure>
+          <div class="m05-story-date">{{story2Date}}</div>
+          <h3>{{story2Title}}</h3>
+        </article>
+
+        <article class="m05-story-card left m05-polaroid" data-reveal data-enter="left">
+          <i class="m05-pin"></i>
+          <figure class="ny-photo-frame"><img src="{{photo5}}" alt="Love story 3"></figure>
+          <div class="m05-story-date">{{story3Date}}</div>
+          <h3>{{story3Title}}</h3>
+        </article>
+
+        <article class="m05-story-card right m05-polaroid" data-reveal data-enter="right">
+          <i class="m05-pin"></i>
+          <figure class="ny-photo-frame"><img src="{{photo6}}" alt="Love story 4"></figure>
+          <div class="m05-story-date">{{story4Date}}</div>
+          <h3>{{story4Title}}</h3>
+        </article>
+      </div>
+    </section>
+
+    <section class="m05-section m05-invite" id="m05-invite">
+      <div class="m05-section-head" data-reveal data-enter="up">
+        <div class="m05-kicker">{{inviteLabel}}</div>
+        <h2>{{invitationTitle}}</h2>
+        <p>{{intro}}</p>
+      </div>
+
+      <div class="m05-date-board" data-reveal data-enter="up">
+        <div><small>{{dateDayName}}</small><strong>{{dateDay}}</strong></div>
+        <div><small>{{monthLabel}}</small><strong>{{dateMonth}}</strong></div>
+        <div><small>{{yearLabel}}</small><strong>{{dateYear}}</strong></div>
+      </div>
+
+      <div class="m05-event-grid" data-reveal data-enter="up">
+        <article class="m05-event-card">
+          <div class="m05-event-icon">◇</div>
+          <h3>{{ceremonyTitle}}</h3>
+          <p>{{weddingTime}}</p>
+          <p>{{ceremonyAddress}}</p>
+        </article>
+        <article class="m05-event-card">
+          <div class="m05-event-icon">♧</div>
+          <h3>{{partyTitle}}</h3>
+          <p>{{partyTime}}</p>
+          <p>{{partyAddress}}</p>
+        </article>
+      </div>
+
+      <div class="m05-button-row" data-reveal data-enter="up">
+        <a class="m05-btn" href="{{mapUrl}}" target="_blank" rel="noopener">{{mapButtonText}}</a>
+      </div>
+
+      <div class="m05-countdown" data-reveal data-enter="up">
+        <div class="m05-count-box"><b data-count="days">00</b><span>{{countdownDaysLabel}}</span></div>
+        <div class="m05-count-box"><b data-count="hours">00</b><span>{{countdownHoursLabel}}</span></div>
+        <div class="m05-count-box"><b data-count="minutes">00</b><span>{{countdownMinutesLabel}}</span></div>
+        <div class="m05-count-box"><b data-count="seconds">00</b><span>{{countdownSecondsLabel}}</span></div>
+      </div>
+    </section>
+
+    <section class="m05-section m05-gallery" id="m05-gallery">
+      <div class="m05-section-head" data-reveal data-enter="up">
+        <h2>{{galleryTitle}}</h2>
+      </div>
+      <div class="m05-gallery-list">
+        <figure class="m05-gallery-card m05-rect-frame ny-photo-frame" data-reveal data-enter="left"><img src="{{photo7}}" alt="Album 1"></figure>
+        <figure class="m05-gallery-card m05-rect-frame ny-photo-frame" data-reveal data-enter="right"><img src="{{photo8}}" alt="Album 2"></figure>
+        <figure class="m05-gallery-card m05-rect-frame ny-photo-frame" data-reveal data-enter="left"><img src="{{photo9}}" alt="Album 3"></figure>
+        <figure class="m05-gallery-card m05-rect-frame ny-photo-frame" data-reveal data-enter="right"><img src="{{photo10}}" alt="Album 4"></figure>
+      </div>
+    </section>
+
+    <section class="m05-section m05-wishes" id="m05-wishes">
+      <div class="m05-section-head" data-reveal data-enter="up">
+        <div class="m05-kicker">{{wishOverline}}</div>
+        <h2>{{wishDisplayTitle}}</h2>
+      </div>
+      <div class="m05-rsvp-icons" data-reveal data-enter="up">
+        <button type="button" class="active" data-rsvp-state>☺</button>
+        <button type="button" data-rsvp-state>☹</button>
+      </div>
+      <div class="m05-wish-box" data-public-wish-box data-reveal data-enter="up">
+        <form class="m05-wish-form" data-wish-form-public action="messages" method="post">
+          <input type="text" name="name" placeholder="Tên của bạn">
+          <input type="hidden" name="emoji" value="💖" data-emoji-value>
+          <div class="m05-emoji-picker">
+            <button type="button" class="active" data-emoji="💖">💖</button>
+            <button type="button" data-emoji="🎉">🎉</button>
+            <button type="button" data-emoji="🥰">🥰</button>
+            <button type="button" data-emoji="✨">✨</button>
+          </div>
+          <textarea name="message" placeholder="Nhập lời chúc gửi đến cô dâu chú rể..."></textarea>
+          <button class="m05-btn" type="submit">{{wishSendText}}</button>
+        </form>
+        <div class="wish-list m05-wish-list">{{messagesHtml}}</div>
+      </div>
+    </section>
+
+    <section class="m05-section m05-map" id="m05-map">
+      <div class="m05-section-head" data-reveal data-enter="up">
+        <h2>{{mapSectionTitle}}</h2>
+      </div>
+      <div class="m05-map-wrap m05-rect-frame" data-reveal data-enter="up">
+        <div class="m05-map-frame">
+          <iframe data-map-frame loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen title="Bản đồ địa điểm"></iframe>
+          <div class="m05-map-empty" data-map-empty>
+            <b>{{mapErrorTitle}}</b>
+            <p>{{mapErrorText}}</p>
+          </div>
+        </div>
+        <div class="m05-map-copy">
+          <div class="m05-map-title">{{partyTitle}}</div>
+          <p>{{partyAddress}}</p>
+          <a class="m05-btn" href="{{mapUrl}}" target="_blank" rel="noopener">{{mapButtonText}}</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="m05-section m05-thanks" id="m05-thanks">
+      <div class="m05-section-head m05-thank-head" data-reveal data-enter="up">
+        <div class="m05-kicker"><span data-pos-key="m05_thanks_groom_name">{{groomName}}</span> <span aria-hidden="true">&amp;</span> <span data-pos-key="m05_thanks_bride_name">{{brideName}}</span></div>
+        <h2>{{thankYouTitle}}</h2>
+        <p>{{calendarNote}}</p>
+      </div>
+      <div class="m05-thanks-list">
+        <figure class="m05-thanks-card m05-rect-frame ny-photo-frame" data-reveal data-enter="left"><img src="{{photo15}}" alt="Thank you 1"></figure>
+        <figure class="m05-thanks-card m05-rect-frame ny-photo-frame" data-reveal data-enter="right"><img src="{{photo16}}" alt="Thank you 2"></figure>
+      </div>
+    </section>
+  </main>
+</article>

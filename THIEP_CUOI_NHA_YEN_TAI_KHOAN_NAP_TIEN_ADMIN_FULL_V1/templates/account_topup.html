@@ -1,0 +1,30 @@
+<section class="wrap account-page narrow-account">
+  <p><a href="/account">← Quay lại tài khoản</a></p>
+  <div class="card-heading"><div><p class="eyebrow">Ví khách hàng</p><h1>Nạp tiền tài khoản</h1></div><div class="mini-balance"><span>Số dư</span><b>{{balance}}</b></div></div>
+  <p class="success message-slot">{{message}}</p>
+  <p class="error message-slot">{{error}}</p>
+  <div class="topup-layout">
+    <article class="account-card bank-card">
+      <h2>Thông tin chuyển khoản</h2>
+      <dl class="profile-list">
+        <div><dt>Ngân hàng</dt><dd>{{bank_name}}</dd></div>
+        <div><dt>Số tài khoản</dt><dd class="copy-value">{{account_number}}</dd></div>
+        <div><dt>Chủ tài khoản</dt><dd>{{account_holder}}</dd></div>
+        <div><dt>Chi nhánh</dt><dd>{{branch}}</dd></div>
+        <div><dt>Nội dung chuyển khoản</dt><dd class="copy-value">{{transfer_content}}</dd></div>
+      </dl>
+      <p class="topup-note">Chuyển khoản đúng nội dung trên, sau đó điền biểu mẫu bên cạnh. Admin kiểm tra giao dịch và bấm duyệt thì số tiền mới xuất hiện trong khu tài khoản khách.</p>
+    </article>
+    <article class="account-card">
+      <h2>Gửi yêu cầu duyệt</h2>
+      <form class="form" method="post" action="/account/topup" enctype="multipart/form-data">
+        <label>Số tiền đã chuyển *<input type="number" name="amount" min="10000" step="1000" placeholder="Ví dụ: 200000" required></label>
+        <label>Tên người chuyển khoản *<input name="sender_name" required></label>
+        <label>Mã giao dịch / mã tham chiếu<input name="transfer_code"></label>
+        <label>Ảnh biên lai chuyển khoản<input type="file" name="proof" accept="image/*"></label>
+        <label>Ghi chú<textarea name="note" placeholder="Thông tin cần admin kiểm tra thêm"></textarea></label>
+        <button class="ny-btn">Gửi yêu cầu nạp tiền</button>
+      </form>
+    </article>
+  </div>
+</section>

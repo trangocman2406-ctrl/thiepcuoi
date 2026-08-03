@@ -1,0 +1,23 @@
+<section class="wrap narrow">
+  <p><a href="/designer">← Quay lại designer</a></p>
+  <h1>Tạo đơn mới để chỉnh sửa</h1>
+  <p class="muted">Trang danh sách chỉ hiện nút chỉnh sửa sau khi có đơn. Điền nhanh thông tin ở đây, tạo xong web sẽ mở thẳng trang chỉnh sửa.</p>
+  {{error}}
+  <form class="form" method="post" action="/designer/new" enctype="multipart/form-data">
+    <label>Mã đơn hàng *<input name="order_code" required placeholder="VD: NY001"></label>
+    <label>Số Zalo *<input name="zalo" required placeholder="VD: 09xxxxxxxx"></label>
+    <label>Tên chú rể *<input name="groom_name" required></label>
+    <label>Tên cô dâu *<input name="bride_name" required></label>
+    <label>Ngày cưới<input type="date" name="wedding_date"></label>
+    <label>Giờ lễ<input type="time" name="wedding_time"></label>
+    <label>Giờ tiệc<input type="time" name="party_time"></label>
+    <label>Mẫu thiệp
+      <select name="template_code">{{template_options}}</select>
+    </label>
+    <label>Địa chỉ<textarea name="address" placeholder="Nhập địa chỉ lễ/tiệc"></textarea></label>
+    <label>Link Google Map<input name="map_url" placeholder="Dán link Google Map"></label>
+    <label>Ảnh / nhạc<input type="file" name="files" multiple accept="image/*,audio/*"></label>
+    <label>Ghi chú<textarea name="note" placeholder="Yêu cầu thêm của khách"></textarea></label>
+    <button class="ny-btn">Tạo đơn và mở chỉnh sửa</button>
+  </form>
+</section>

@@ -1,0 +1,28 @@
+<section class="wrap account-page narrow-account">
+  <p><a href="/account">← Quay lại tài khoản</a></p>
+  <h1>Thông tin cá nhân</h1>
+  <p class="success message-slot">{{message}}</p>
+  <p class="error message-slot">{{error}}</p>
+  <article class="account-card">
+    <form class="form" method="post" action="/account/profile">
+      <div class="form-grid">
+        <label>Họ và tên *<input name="full_name" value="{{full_name}}" required></label>
+        <label>Số điện thoại / Zalo *<input name="phone" value="{{phone}}" required></label>
+        <label>Email<input type="email" name="email" value="{{email}}"></label>
+      </div>
+      <label>Địa chỉ đầy đủ *<textarea name="address" required>{{address}}</textarea></label>
+      <button class="ny-btn">Lưu thông tin</button>
+    </form>
+  </article>
+  <article class="account-card">
+    <h2>Đổi mật khẩu</h2>
+    <form class="form" method="post" action="/account/password">
+      <label>Mật khẩu hiện tại<input type="password" name="old_password" required></label>
+      <div class="form-grid">
+        <label>Mật khẩu mới<input type="password" name="new_password" minlength="6" required></label>
+        <label>Nhập lại mật khẩu mới<input type="password" name="confirm_password" minlength="6" required></label>
+      </div>
+      <button class="ny-btn ny-ghost">Đổi mật khẩu và đăng nhập lại</button>
+    </form>
+  </article>
+</section>

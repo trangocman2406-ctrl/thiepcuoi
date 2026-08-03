@@ -1,0 +1,453 @@
+/*
+ * Lớp responsive dùng chung cho 5 mẫu thiệp.
+ * Mục tiêu:
+ * 1) Intro luôn giữ nguyên một bố cục ngang cố định như laptop rồi scale đều,
+ *    không đổi thành thẻ dọc/phóng đại trên điện thoại.
+ * 2) Phần nội dung sau khi mở thư không tạo chiều rộng lớn hơn màn hình.
+ */
+
+html,body{
+  width:100%;
+  max-width:100%;
+  margin:0;
+  overflow-x:clip;
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+
+.invite-shell,
+.invitation{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  overflow-x:clip!important;
+  box-sizing:border-box!important;
+}
+
+.invitation *,
+.invitation *::before,
+.invitation *::after{
+  box-sizing:border-box;
+}
+
+.invitation img,
+.invitation video,
+.invitation iframe,
+.invitation svg,
+.invitation canvas{
+  max-width:100%;
+}
+
+.invitation section,
+.invitation main,
+.invitation article,
+.invitation div,
+.invitation figure{
+  min-width:0;
+}
+
+/* .ny-intro-stage bọc quanh thẻ thư được render sẵn trong HTML của cả 5
+   mẫu (xem letter-intro.html từng mẫu), kể cả trong khung xem trước của
+   Designer — nơi rule ".ny-intro-responsive" bên dưới KHÔNG áp dụng (đang
+   chỉnh sửa thì không scale/canvas cố định). Nếu không có rule nền này,
+   .ny-intro-stage là một div block rỗng không kích thước, khiến
+   ".mau0X-letter-card{width:min(96%,1180px)}" (96% là % theo bề rộng
+   .ny-intro-stage) rơi vào tình huống "shrink-to-fit chứa phần tử con
+   dùng %" mà trình duyệt tính ra gần như 0 — thẻ thư co lại còn vài chục
+   px trong Designer. Đặt sẵn width:100% để .ny-intro-stage luôn rộng bằng
+   đúng phần tử cha (.mau0X-letter-intro, phủ kín màn hình), cho % của thẻ
+   thư có cái để tính đúng ở MỌI ngữ cảnh, không riêng gì lúc responsive
+   scale đang bật. */
+.ny-intro-stage{
+  width:100%;
+}
+
+/* ================================================================
+   INTRO CỐ ĐỊNH: desktop canvas 1180 x 640, scale đều theo viewport.
+   JS chỉ cập nhật --ny-intro-scale trên .ny-intro-stage (đã có sẵn trong
+   HTML từng mẫu).
+   ================================================================ */
+.invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive{
+  position:fixed!important;
+  inset:0!important;
+  width:100vw!important;
+  height:100vh!important;
+  height:100dvh!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  /* Không dùng !important ở display: khi mẫu nhúng trong iframe xem nhanh
+     (trang chọn mẫu), mau0X.js đặt display:none inline để bỏ qua màn intro
+     và hiện thẳng nội dung bên trong. !important ở đây từng đè mất display
+     none đó, khiến khung xem nhanh luôn kẹt ở màn intro thay vì nội dung
+     thật. Style inline vốn đã thắng mọi selector class nên không cần
+     !important để ép hiển thị block. */
+  display:block;
+  overflow:hidden!important;
+  overscroll-behavior:none;
+  touch-action:manipulation;
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{
+  --ny-intro-width:1180px;
+  --ny-intro-height:640px;
+  /* Canvas gốc luôn là 1180 x 640. CSS đặt tỷ lệ dự phòng tương thích
+     mọi trình duyệt; invitation-responsive.js đo viewport và cập nhật tỷ
+     lệ chính xác. Cách này giữ nguyên bố cục điện thoại cũ nhưng không còn
+     phụ thuộc phép chia CSS mà Firefox có thể từ chối. */
+  /* Không dùng phép chia chiều dài trực tiếp trong CSS nữa. Firefox trên
+     máy khách coi biểu thức kiểu (100vw - 42px) / 1180px là không hợp lệ;
+     khi biến --ny-intro-scale hỏng, cả transform (bao gồm translate -50%)
+     cũng bị bỏ, khiến thẻ bắt đầu từ đúng tâm màn hình rồi tràn sang phải
+     và xuống dưới. Hai biến fallback bên dưới luôn là SỐ hợp lệ trên mọi
+     trình duyệt; JavaScript sẽ đo viewport và ghi đè --ny-intro-scale bằng
+     tỷ lệ chính xác ngay khi trang được dựng. */
+  --ny-intro-scale-x:1;
+  --ny-intro-scale-y:1;
+  --ny-intro-scale:min(var(--ny-intro-scale-x),var(--ny-intro-scale-y));
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:var(--ny-intro-width)!important;
+  height:var(--ny-intro-height)!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  transform:translate(-50%,-50%) scale(var(--ny-intro-scale))!important;
+  transform-origin:center center!important;
+  will-change:transform;
+  z-index:2;
+}
+
+/* Tỷ lệ dự phòng trước khi JS chạy. Các mốc chỉ dùng số thuần nên
+   Firefox/Safari/Chrome đều đọc được. JS sau đó thay bằng tỷ lệ chính xác.
+   Nhờ vậy điện thoại dọc, điện thoại xoay ngang và laptop đều không có một
+   khung hình intro khổng lồ bị cắt trong lúc file JS vừa tải. */
+@media (max-width:1200px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-x:.96;}
+}
+@media (max-width:1080px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-x:.87;}
+}
+@media (max-width:960px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-x:.77;}
+}
+@media (max-width:840px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-x:.67;}
+}
+@media (max-width:720px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-x:.57;}
+}
+@media (max-width:600px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-x:.47;}
+}
+@media (max-width:500px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-x:.39;}
+}
+@media (max-width:430px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-x:.33;}
+}
+@media (max-width:390px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-x:.30;}
+}
+@media (max-width:350px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-x:.26;}
+}
+@media (max-height:640px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-y:.96;}
+}
+@media (max-height:600px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-y:.90;}
+}
+@media (max-height:540px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-y:.81;}
+}
+@media (max-height:480px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-y:.72;}
+}
+@media (max-height:430px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-y:.64;}
+}
+@media (max-height:390px){
+  .invitation:not(.is-editor-preview):not([data-editor="true"]) [data-letter-intro].ny-intro-responsive > .ny-intro-stage{--ny-intro-scale-y:.58;}
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage > :is(
+  .mau01-letter-card,
+  .mau02-letter-card,
+  .mau03-letter-card,
+  .mau04-letter-card,
+  .m05-letter-card
+){
+  width:1180px!important;
+  height:640px!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(
+  .mau01-letter-card-inner,
+  .mau02-letter-card-inner,
+  .mau03-letter-card-inner,
+  .mau04-letter-card-inner,
+  .m05-letter-card-inner
+){
+  width:1180px!important;
+  height:640px!important;
+  min-height:640px!important;
+  max-height:640px!important;
+  overflow:hidden!important;
+  padding:58px 64px 42px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:stretch!important;
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(
+  .mau01-letter-frame,
+  .mau02-letter-frame,
+  .mau03-letter-frame,
+  .mau04-letter-frame,
+  .m05-letter-frame
+){
+  width:100%!important;
+  padding:0!important;
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(
+  .mau01-letter-body,
+  .mau02-letter-body,
+  .mau03-letter-body,
+  .mau04-letter-body,
+  .m05-letter-body
+){
+  width:100%!important;
+  max-width:1030px!important;
+  margin:auto!important;
+  position:relative!important;
+  z-index:2!important;
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(
+  .mau01-letter-names,
+  .mau02-letter-names,
+  .mau03-letter-names,
+  .mau04-letter-names,
+  .m05-letter-names
+){
+  width:100%!important;
+  max-width:100%!important;
+  margin:0 auto 18px!important;
+  padding:0!important;
+  font-size:clamp(66px,calc(var(--ny-name-size,46px) * 1.82),96px)!important;
+  line-height:1.06!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-align:center!important;
+  transform-origin:center center!important;
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(
+  .mau01-letter-rule,
+  .mau02-letter-rule,
+  .mau03-letter-rule,
+  .mau04-letter-rule,
+  .m05-letter-rule
+){
+  margin:0 auto 18px!important;
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(
+  .mau01-letter-date,
+  .mau02-letter-date,
+  .mau03-letter-date,
+  .mau04-letter-date,
+  .m05-letter-date
+){
+  margin:0 auto 10px!important;
+  font-size:clamp(26px,calc(var(--ny-body-size,16px) * 1.9),34px)!important;
+  line-height:1.25!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(
+  .mau01-letter-invite,
+  .mau02-letter-invite,
+  .mau03-letter-invite,
+  .mau04-letter-invite,
+  .m05-letter-invite
+){
+  margin:0 auto 24px!important;
+  font-size:clamp(23px,calc(var(--ny-body-size,16px) * 1.65),30px)!important;
+  line-height:1.25!important;
+  text-align:center!important;
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(
+  .mau01-letter-eyebrow,
+  .mau02-letter-eyebrow,
+  .mau03-letter-eyebrow,
+  .mau04-letter-eyebrow,
+  .m05-letter-eyebrow
+){
+  margin:0 auto 8px!important;
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(
+  .mau01-letter-btn,
+  .mau02-letter-btn,
+  .mau03-letter-btn,
+  .mau04-letter-btn,
+  .m05-letter-btn
+){
+  min-width:220px!important;
+  min-height:64px!important;
+  margin:0 auto!important;
+  padding:16px 48px!important;
+  font-size:22px!important;
+  line-height:1!important;
+  justify-content:center!important;
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(
+  .mau01-letter-badge,
+  .mau02-letter-badge,
+  .mau03-letter-badge,
+  .mau04-letter-badge,
+  .m05-letter-badge
+){
+  width:88px!important;
+  height:88px!important;
+}
+
+/* Mẫu 03 không có badge; giữ phần eyebrow ở trên nhưng vẫn cân khung. */
+.tpl-mau03:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage .mau03-letter-card-inner{
+  padding-top:48px!important;
+  padding-bottom:40px!important;
+}
+
+/* Tắt transform fit cũ ở intro sau khi đã dùng canvas cố định; JS mới sẽ
+   tự co chữ một lần dựa trên chiều rộng 1030px và giữ transform ở giữa. */
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage [data-ny-intro-fitted="1"]{
+  transform-origin:center center!important;
+}
+
+/* ================================================================
+   NỘI DUNG THIỆP SAU INTRO
+   ================================================================ */
+.tpl-mau01 .page,
+.tpl-mau02 .mau02-paper,
+.tpl-mau03 .mau03-body,
+.tpl-mau04 .page,
+.tpl-mau05 .m05-page{
+  width:min(100%,760px)!important;
+  max-width:760px!important;
+  min-width:0!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  /* KHÔNG đặt overflow-x ở đây. CSS chỉ đặt overflow-x mà bỏ trống
+     overflow-y sẽ bị trình duyệt tự quy đổi overflow-y thành "auto" (vẫn
+     cắt), nên toàn bộ hiệu ứng "trồi ra ngoài khung" của 5 mẫu (tim bay ra
+     khỏi phong bì mẫu 1, thẻ thư rơi/lắc, cánh hoa, hiệu ứng bay...) bị cắt
+     cụt mất theo chiều dọc. Chống tràn ngang đã có .invite-shell/.invitation
+     ở lớp ngoài (overflow-x:clip) lo rồi nên không cần lặp lại ở đây. */
+}
+
+.invitation [data-edit-field],
+.invitation [data-pos-key]{
+  max-width:100%;
+}
+
+@media (max-width:760px){
+  .tpl-mau01 .page,
+  .tpl-mau02 .mau02-paper,
+  .tpl-mau03 .mau03-body,
+  .tpl-mau04 .page,
+  .tpl-mau05 .m05-page{
+    width:100%!important;
+    max-width:100%!important;
+    border-radius:0!important;
+    margin:0!important;
+  }
+
+  .invitation :is(
+    .family,
+    .event-row,
+    .mau02-family-grid,
+    .mau03-family-columns,
+    .mau04-family,
+    .m05-person-row,
+    .m05-person-row.is-reverse
+  ){
+    min-width:0!important;
+  }
+
+  .invitation :is(input,textarea,select,button,a){
+    max-width:100%;
+  }
+
+  .invitation :is(h1,h2,h3,h4,p,address,li){
+    overflow-wrap:anywhere;
+  }
+}
+
+@media (max-width:430px){
+  .invitation .fixed,
+  .invitation .fixed-music,
+  .invitation .mau02-audio,
+  .invitation .mau03-float,
+  .invitation .m05-music,
+  .invitation .comments-toggle{
+    max-width:58px!important;
+    max-height:58px!important;
+  }
+}
+
+/* ================================================================
+   HIỆN TỪNG DÒNG CHỮ MỘT — mẫu 1/2/4 trước giờ không có animation riêng
+   cho các dòng chữ trong intro (chỉ có cả tấm thẻ rơi xuống một lượt, chữ
+   hiện ra cùng lúc hết), nên tạo mới hẳn một hiệu ứng dùng chung. Mẫu 3
+   đã có sẵn cơ chế riêng (data-letter-reveal + --letter-delay, xem
+   mau03.js/mau03.css) nên không đụng vào, chỉ mẫu 5 là chỉnh lại nhịp độ
+   (giữ nguyên tên animation riêng của mẫu 5, chỉ đổi delay/duration).
+   Trước đây một rule ép cứng animation-delay/duration Y HỆT NHAU cho toàn
+   bộ dòng chữ của cả 5 mẫu — với mẫu 1/2/4 (vốn không có animation-name
+   nào ở các dòng này) thì set delay/duration suông không có tác dụng gì
+   (không có animation để mà delay), nên chữ hiện ra ngay lập tức, không
+   thấy "xuất hiện từng dòng" đâu cả; với mẫu 5 thì lại ép mọi dòng cùng
+   một mốc thời gian, xoá mất đúng cái nhịp xen kẽ mà mẫu 5 vốn thiết kế
+   sẵn. Nhịp mới: mỗi dòng cách nhau ~180ms, đủ chậm để mắt nhận ra thứ tự
+   xuất hiện, đủ nhanh để không lê thê trên điện thoại. */
+@keyframes nyIntroTextIn{
+  from{opacity:0;transform:translateY(14px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(
+  .mau01-letter-eyebrow,.mau01-letter-rule,.mau01-letter-date,.mau01-letter-invite,.mau01-letter-btn,
+  .mau02-letter-eyebrow,.mau02-letter-rule,.mau02-letter-date,.mau02-letter-invite,.mau02-letter-btn,
+  .mau04-letter-eyebrow,.mau04-letter-rule,.mau04-letter-date,.mau04-letter-invite,.mau04-letter-btn
+){
+  animation:nyIntroTextIn .42s cubic-bezier(.16,.84,.44,1) both!important;
+}
+
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(.mau01-letter-eyebrow,.mau02-letter-eyebrow,.mau04-letter-eyebrow){animation-delay:.05s!important;}
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(.mau01-letter-rule,.mau02-letter-rule,.mau04-letter-rule){animation-delay:.28s!important;}
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(.mau01-letter-date,.mau02-letter-date,.mau04-letter-date){animation-delay:.46s!important;}
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(.mau01-letter-invite,.mau02-letter-invite,.mau04-letter-invite){animation-delay:.64s!important;}
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(.mau01-letter-btn,.mau02-letter-btn,.mau04-letter-btn){animation-delay:.82s!important;}
+
+/* Mẫu 5: giữ animation-name gốc của mẫu 5 (m05LetterFadeUp/m05LetterWipeIn),
+   chỉ chỉnh lại delay/duration cho cùng nhịp ~180ms/dòng như trên. */
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage :is(.m05-letter-rule,.m05-letter-date,.m05-letter-invite,.m05-letter-btn){
+  animation-duration:.42s!important;
+}
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage .m05-letter-rule{animation-delay:.28s!important;}
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage .m05-letter-date{animation-delay:.46s!important;}
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage .m05-letter-invite{animation-delay:.64s!important;}
+.invitation:not(.is-editor-preview):not([data-editor="true"]) .ny-intro-stage .m05-letter-btn{animation-delay:.82s!important;}

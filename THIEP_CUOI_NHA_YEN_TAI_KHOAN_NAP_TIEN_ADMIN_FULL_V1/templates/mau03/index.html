@@ -1,0 +1,219 @@
+<link href="/static/fonts/fonts.css?v=1" rel="stylesheet"/>
+<link href="{{styleFile}}?v={{templateVersion}}" rel="stylesheet"/>
+<article class="invitation tpl-mau03" data-effect-file="{{effectFile}}?v={{templateVersion}}" data-effect-key="mau03" data-template="{{templateId}}" data-map-url="{{mapUrl}}">
+  {{letterIntroHtml}}
+  <div class="mau03-diamond-layer" data-diamond-layer aria-hidden="true"></div>
+
+  <button aria-label="Bật hoặc tắt nhạc" class="mau03-float mau03-music" data-audio-src="{{audioSrc}}" title="Nhạc" type="button">
+<span aria-hidden="true">♪</span>
+</button>
+<button aria-label="Về đầu trang" class="mau03-float mau03-top" data-back-to-top="" title="Về đầu trang" type="button">
+<span aria-hidden="true">↑</span>
+</button>
+<div aria-hidden="true" class="mau03-body">
+<!-- 01. Lời mời + thông tin hai bên gia đình -->
+<section class="mau03-section mau03-invite-section">
+<p class="mau03-small-title" data-delay="0" data-reveal="up">{{invitationTitle}}</p>
+<span aria-hidden="true" class="mau03-thin-line" data-delay="90" data-reveal-line=""></span>
+<p class="mau03-invite-prefix" data-delay="150" data-reveal="up">{{intro}}</p>
+<h2 class="mau03-script-names">
+<span data-delay="240" data-reveal="up">{{groomName}}</span>
+<em data-pos-key="couple_ampersand" data-delay="470" data-reveal="up">&amp;</em>
+<span data-delay="700" data-reveal="up">{{brideName}}</span>
+</h2>
+<p class="mau03-couple-ranks" data-delay="330" data-reveal="up">{{m03CoupleRanks}}</p>
+<div class="mau03-family-columns">
+<article class="mau03-family-column" data-delay="420" data-reveal="left">
+<span class="mau03-family-label">{{groomSideLabel}}</span>
+<p>{{m03GroomFather}}</p>
+<p>{{m03GroomMother}}</p>
+<address>{{groomAddress}}</address>
+</article>
+<article class="mau03-family-column" data-delay="520" data-reveal="right">
+<span class="mau03-family-label">{{brideSideLabel}}</span>
+<p>{{m03BrideFather}}</p>
+<p>{{m03BrideMother}}</p>
+<address>{{brideAddress}}</address>
+</article>
+</div>
+<div class="mau03-save-row">
+<span class="mau03-save-script" data-delay="620" data-reveal="left">{{saveTitle}}</span>
+<span class="mau03-date-mark" data-delay="700" data-reveal="right">
+<b data-pos-key="calendar_date_text">{{dateDay}}</b>
+<i aria-hidden="true"></i>
+<b data-pos-key="calendar_date_text">{{dateMonth}}</b>
+</span>
+</div>
+<p class="mau03-save-year" data-pos-key="calendar_date_text" data-delay="760" data-reveal="up">{{weddingDateVi}}</p>
+</section>
+<!-- 02. Ảnh cô dâu chú rể nhô khỏi bao thư -->
+<section class="mau03-section mau03-couple-envelope-section">
+<div class="mau03-couple-envelope-copy">
+<p class="mau03-small-title" data-delay="0" data-reveal="up">{{m03CoupleSectionTitle}}</p>
+<p data-delay="100" data-reveal="up"><span>{{groomName}}</span> • <span>{{brideName}}</span></p>
+</div>
+<div class="mau03-couple-envelope-stage" data-delay="210" data-reveal="up">
+<figure class="ny-photo-frame mau03-couple-photo mau03-couple-photo-left">
+<img alt="{{groomName}}" data-photo-key="photo2" loading="lazy" src="{{photo2}}"/>
+</figure>
+<span aria-hidden="true" class="mau03-couple-envelope-seal">♥</span>
+<figure class="ny-photo-frame mau03-couple-photo mau03-couple-photo-right">
+<img alt="{{brideName}}" data-photo-key="photo3" loading="lazy" src="{{photo3}}"/>
+</figure>
+</div>
+</section>
+<!-- 03. Lễ và tiệc nhà trai -->
+<section class="mau03-section mau03-event-section">
+<div class="mau03-stationery-card" data-delay="0" data-reveal="up">
+<div class="mau03-stationery-paper">
+<p class="mau03-small-title">{{eventTitle}}</p>
+<h2>{{ceremonyTitle}}</h2>
+<p class="mau03-event-host">{{m03CeremonyHostText}}</p>
+<div class="mau03-event-time">
+<strong>{{weddingTime}}</strong>
+<span>•</span>
+<strong data-pos-key="family_date_text">{{dateDayName}}</strong>
+</div>
+<p class="mau03-event-date" data-pos-key="family_date_text">{{weddingDateVi}}</p>
+<p class="mau03-event-lunar">{{m03CeremonyLunarDate}}</p>
+<p class="mau03-event-address">{{ceremonyAddress}}</p>
+<span aria-hidden="true" class="mau03-event-rule"></span>
+<h3>{{partyTitle}}</h3>
+<div class="mau03-event-time mau03-event-time-small">
+<strong>{{partyTime}}</strong>
+<span>•</span>
+<strong data-pos-key="family_date_text">{{dateDayName}}</strong>
+</div>
+<p class="mau03-event-date" data-pos-key="family_date_text">{{weddingDateVi}}</p>
+<p class="mau03-event-lunar">{{m03PartyLunarDate}}</p>
+<p class="mau03-event-address">{{partyAddress}}</p>
+</div>
+</div>
+</section>
+<!-- 04. Lịch cưới -->
+<section class="mau03-section mau03-calendar-section">
+<p class="mau03-small-title" data-delay="0" data-reveal="up">{{m03CalendarOverline}}</p>
+<h2 class="mau03-section-script" data-pos-key="calendar_date_text" data-delay="110" data-reveal="up">{{monthLabel}} {{dateMonth}} · {{dateYear}}</h2>
+<div class="mau03-calendar" data-delay="220" data-reveal="up"><span class="head">T2</span><span class="head">T3</span><span class="head">T4</span><span class="head">T5</span><span class="head">T6</span><span class="head">T7</span><span class="head">CN</span>
+        {{calendarDaysHtml}}
+      </div>
+<p class="mau03-calendar-note" data-delay="350" data-reveal="up">{{calendarNote}}</p>
+</section>
+<!-- 04b. 2 ảnh ngang -->
+<section class="mau03-section mau03-calendar-photos-section">
+<figure class="ny-photo-frame mau03-calendar-photo" data-delay="0" data-reveal="up">
+<img alt="Ảnh cưới" data-photo-key="photo4" loading="lazy" src="{{photo4}}"/>
+</figure>
+<figure class="ny-photo-frame mau03-calendar-photo" data-delay="120" data-reveal="up">
+<img alt="Ảnh cưới" data-photo-key="photo13" loading="lazy" src="{{photo13}}"/>
+</figure>
+</section>
+<!-- 05. Địa điểm + bản đồ -->
+<section class="mau03-section mau03-map-section">
+<p class="mau03-map-address" data-delay="200" data-reveal="up">{{partyAddress}}</p>
+<div class="mau03-map-frame" data-delay="300" data-reveal="zoom">
+<iframe allowfullscreen="" data-map-frame="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Bản đồ địa điểm"></iframe>
+<div class="mau03-map-empty" data-map-empty="">
+<b>{{mapErrorTitle}}</b>
+<p>{{mapErrorText}}</p>
+</div>
+</div>
+<div class="mau03-map-action" data-delay="410" data-reveal="up">
+        {{mapBtn}}
+      </div>
+<p class="mau03-qr-note" data-delay="480" data-reveal="up">{{m03MapNote}}</p>
+</section>
+<!-- 06. Xác nhận tham dự -->
+<section class="mau03-section mau03-rsvp-section">
+<p class="mau03-small-title" data-delay="0" data-reveal="up">{{rsvpOverline}}</p>
+<h2 class="mau03-section-script" data-delay="100" data-reveal="up">{{rsvpTitle}}</h2>
+<form class="mau03-rsvp-form" data-rsvp-form="">
+<label data-delay="180" data-reveal="up">
+<span>{{rsvpNameLabel}}</span>
+<input autocomplete="name" name="guest_name" placeholder="Nhập tên của bạn" type="text"/>
+</label>
+<label data-delay="360" data-reveal="up">
+<span>{{rsvpMessageLabel}}</span>
+<textarea name="guest_note" placeholder="Gửi lời nhắn cho cô dâu chú rể..."></textarea>
+</label>
+<button class="mau03-btn mau03-rsvp-submit" data-delay="540" data-reveal="up" type="submit">
+          {{rsvpSubmitText}}
+        </button>
+<div aria-live="polite" class="mau03-form-result" data-rsvp-result=""></div>
+</form>
+</section>
+<!-- 07. Album ảnh cưới -->
+<section class="mau03-section mau03-gallery-section">
+<p class="mau03-small-title" data-delay="0" data-reveal="up">{{m03GalleryOverline}}</p>
+<h2 class="mau03-section-script" data-delay="100" data-reveal="up">{{galleryTitle}}</h2>
+<div class="mau03-masonry">
+<figure class="mau03-gallery-item" data-delay="120" data-lightbox-item="" data-reveal="left">
+<img alt="Ảnh cưới 1" data-photo-key="photo5" loading="lazy" src="{{photo5}}"/>
+</figure>
+<figure class="mau03-gallery-item" data-delay="190" data-lightbox-item="" data-reveal="right">
+<img alt="Ảnh cưới 2" data-photo-key="photo6" loading="lazy" src="{{photo6}}"/>
+</figure>
+<figure class="mau03-gallery-item" data-delay="260" data-lightbox-item="" data-reveal="left">
+<img alt="Ảnh cưới 3" data-photo-key="photo7" loading="lazy" src="{{photo7}}"/>
+</figure>
+<figure class="mau03-gallery-item" data-delay="330" data-lightbox-item="" data-reveal="right">
+<img alt="Ảnh cưới 4" data-photo-key="photo8" loading="lazy" src="{{photo8}}"/>
+</figure>
+<figure class="mau03-gallery-item" data-delay="400" data-lightbox-item="" data-reveal="left">
+<img alt="Ảnh cưới 5" data-photo-key="photo9" loading="lazy" src="{{photo9}}"/>
+</figure>
+<figure class="mau03-gallery-item" data-delay="470" data-lightbox-item="" data-reveal="right">
+<img alt="Ảnh cưới 6" data-photo-key="photo10" loading="lazy" src="{{photo10}}"/>
+</figure>
+<figure class="mau03-gallery-item" data-delay="540" data-lightbox-item="" data-reveal="left">
+<img alt="Ảnh cưới 7" data-photo-key="photo11" loading="lazy" src="{{photo11}}"/>
+</figure>
+<figure class="mau03-gallery-item" data-delay="610" data-lightbox-item="" data-reveal="right">
+<img alt="Ảnh cưới 8" data-photo-key="photo12" loading="lazy" src="{{photo12}}"/>
+</figure>
+</div>
+</section>
+<!-- 08. Lời chúc -->
+<section class="mau03-section mau03-wishes-section" id="guestWishes">
+<p class="mau03-small-title" data-delay="0" data-reveal="up">{{wishOverline}}</p>
+<h2 class="mau03-section-script" data-delay="100" data-reveal="up">{{wishesTitle}}</h2>
+<form class="mau03-wish-form" data-wish-form="">
+<label data-delay="180" data-reveal="up">
+<span>{{wishNameLabel}}</span>
+<input autocomplete="name" name="guest_name" placeholder="Ví dụ: Anh Minh" type="text"/>
+</label>
+<input data-emoji-value="" name="emoji" type="hidden" value="💖"/>
+<div aria-label="Chọn biểu tượng" class="mau03-emoji-picker" data-delay="270" data-reveal="up">
+<button aria-label="Trái tim" class="active" data-emoji="💖" type="button">💖</button>
+<button aria-label="Chúc mừng" data-emoji="🎉" type="button">🎉</button>
+<button aria-label="Yêu thương" data-emoji="🥰" type="button">🥰</button>
+<button aria-label="Lấp lánh" data-emoji="✨" type="button">✨</button>
+<button aria-label="Hoa" data-emoji="🌸" type="button">🌸</button>
+</div>
+<label data-delay="360" data-reveal="up">
+<span>{{wishMessageLabel}}</span>
+<textarea name="message" placeholder="Nhập lời chúc của bạn..."></textarea>
+</label>
+<button class="mau03-btn mau03-wish-submit" data-delay="450" data-reveal="up" type="submit">
+          {{wishSendText}}
+        </button>
+<div aria-live="polite" class="mau03-form-result" data-wish-result=""></div>
+</form>
+<div class="mau03-wish-list" data-wish-list="">
+        {{messagesHtml}}
+      </div>
+</section>
+<!-- 09. Cảm ơn -->
+<section class="mau03-section mau03-thankyou-section">
+<p class="mau03-thankyou-quote" data-delay="0" data-reveal="up">{{quoteText}}</p>
+<div class="mau03-thankyou-names">
+<span data-delay="130" data-reveal="up">{{groomName}}</span>
+<em data-pos-key="couple_ampersand" data-delay="360" data-reveal="up">&amp;</em>
+<span data-delay="590" data-reveal="up">{{brideName}}</span>
+</div>
+<p class="mau03-thankyou-date" data-pos-key="calendar_date_text" data-delay="250" data-reveal="up">{{weddingDateVi}}</p>
+<span aria-hidden="true" class="mau03-thin-line" data-delay="330" data-reveal-line=""></span>
+<p class="mau03-thankyou-note" data-delay="410" data-reveal="up">{{m03ThankYouNote}}</p>
+</section>
+</div>
+</article>

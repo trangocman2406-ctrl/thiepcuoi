@@ -1,0 +1,21 @@
+<section class="wrap admin-page">
+  <div class="bar admin-heading">
+    <div><p class="eyebrow">Khu quản trị</p><h1>Quản lý tài khoản & nạp tiền</h1><p class="muted">Xin chào {{admin_name}}. Mọi lần duyệt đều được ghi vào lịch sử ví.</p></div>
+    <div class="dash-actions"><a class="ny-btn ny-ghost" href="/designer">Mở khu thiết kế</a><form method="post" action="/logout"><button class="ny-btn ny-ghost">Đăng xuất</button></form></div>
+  </div>
+  <p class="success message-slot">{{message}}</p><p class="error message-slot">{{error}}</p>
+  <div class="admin-stats">
+    <article><span>Yêu cầu chờ duyệt</span><strong>{{pending_count}}</strong></article>
+    <article><span>Tài khoản khách</span><strong>{{customer_count}}</strong></article>
+    <article><span>Tổng số dư khách</span><strong>{{total_balance}}</strong></article>
+  </div>
+  <section class="account-card table-card">
+    <h2>Yêu cầu nạp tiền</h2>
+    <div class="table-scroll"><table><thead><tr><th>Ngày gửi</th><th>Khách hàng</th><th>Số tiền</th><th>Người chuyển</th><th>Mã giao dịch</th><th>Biên lai</th><th>Duyệt</th></tr></thead><tbody>{{topup_rows}}</tbody></table></div>
+  </section>
+  <section class="account-card table-card">
+    <h2>Danh sách tài khoản khách</h2>
+    <p class="muted">Admin có thể cộng hoặc trừ thủ công. Nhập số dương để cộng, số âm để trừ.</p>
+    <div class="table-scroll"><table><thead><tr><th>Khách hàng</th><th>Liên hệ</th><th>Địa chỉ đầy đủ</th><th>Số dư</th><th>Đơn</th><th>Chờ duyệt</th><th>Điều chỉnh</th></tr></thead><tbody>{{customer_rows}}</tbody></table></div>
+  </section>
+</section>

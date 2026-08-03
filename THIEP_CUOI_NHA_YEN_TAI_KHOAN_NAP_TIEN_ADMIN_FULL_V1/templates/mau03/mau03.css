@@ -1,0 +1,1837 @@
+/* =========================================================
+   MẪU 03 — thiệp cưới tối giản giống video tham khảo
+   Toàn bộ selector được giới hạn trong .tpl-mau03.
+   ========================================================= */
+
+.tpl-mau03 {
+  --m03-bg: #fffdf9;
+  --m03-paper: #ffffff;
+  --m03-wine: #7b1020;
+  --m03-wine-dark: #560713;
+  --m03-wine-soft: #a34a55;
+  --m03-gold: #bd8b45;
+  --m03-text: #272120;
+  --m03-muted: #645a58;
+  --m03-line: #ded7d2;
+  --m03-shadow: 0 12px 34px rgba(48, 20, 22, 0.10);
+  --m03-ease: cubic-bezier(.22, 1, .36, 1);
+
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--m03-bg);
+  color: var(--m03-text);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  line-height: 1.55;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.tpl-mau03 *,
+.tpl-mau03 *::before,
+.tpl-mau03 *::after {
+  box-sizing: border-box;
+}
+
+.tpl-mau03 img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+.tpl-mau03 button,
+.tpl-mau03 input,
+.tpl-mau03 select,
+.tpl-mau03 textarea {
+  font: inherit;
+}
+
+.tpl-mau03 .mau03-body {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  background: var(--m03-bg);
+}
+
+/*
+  Thân thiệp luôn nằm nối tiếp phía dưới bao thư.
+  Từng chữ/ảnh vẫn ẩn riêng bằng data-reveal và chỉ hiện khi cuộn tới.
+*/
+
+/* =========================================================
+   INTRO THƯ MỜI — lấy nguyên bản bố cục, kích thước, thông số hiệu
+   ứng và bảng màu từ mẫu 1 (phong bì mở, hoa rơi, thẻ thư rơi xuống),
+   không đổi màu/tỉ lệ, chỉ đổi tiền tố class cho khớp mẫu 3.
+   ========================================================= */
+
+.tpl-mau03 .mau03-letter-intro {
+  position: relative;
+  z-index: 500;
+  min-height: 100svh;
+  padding:
+    max(26px, env(safe-area-inset-top))
+    18px
+    max(26px, env(safe-area-inset-bottom));
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 14% 18%, rgba(255, 255, 255, .12), transparent 45%),
+    radial-gradient(circle at 86% 84%, rgba(255, 255, 255, .1), transparent 48%),
+    linear-gradient(150deg, #b94f6a 0%, #e88da3 55%, #8a3352 100%);
+}
+
+.tpl-mau03.is-js .mau03-letter-intro {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  min-height: 100dvh;
+}
+
+.tpl-mau03 .mau03-letter-intro.is-leaving {
+  pointer-events: none;
+  animation: mau03LetterLeave 760ms var(--m03-ease) forwards;
+}
+
+@keyframes mau03LetterLeave {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(1.025); }
+}
+
+.tpl-mau03 .mau03-letter-petals {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: .56;
+}
+
+/* Bỏ hẳn lớp "nệm" trắng bao ngoài (padding/nền/viền/đổ bóng riêng của
+   khung này) — thẻ thư (mau03-letter-card-inner) giờ nằm sát luôn trên
+   nền hồng, không còn viền trắng + bóng đổ đậm tạo cảm giác 2 lớp khung
+   chồng nhau. */
+.tpl-mau03 .mau03-letter-card {
+  position: relative;
+  z-index: 2;
+  width: min(96%, 1180px);
+  transform: translateY(12px) scale(.985);
+  opacity: 0;
+  transition:
+    opacity 820ms var(--m03-ease),
+    transform 820ms var(--m03-ease);
+}
+
+.tpl-mau03 .mau03-letter-intro.is-ready .mau03-letter-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.tpl-mau03 .mau03-letter-intro.is-opening .mau03-letter-card {
+  transform: translateY(-7px) scale(1.012);
+}
+
+.tpl-mau03 .mau03-letter-card.is-falling {
+  transform: translateY(38vh) rotate(-3deg) scale(.94);
+  opacity: 0;
+}
+
+.tpl-mau03 .mau03-letter-card-inner {
+  position: relative;
+  max-height: 84vh;
+  padding: 44px 25px 28px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(165deg, #fffaf5 0%, #ffeef2 55%, #ffe3ea 100%);
+  box-shadow: 0 22px 54px rgba(120, 20, 50, .15);
+  animation: mau03LetterCardSway 4.5s ease-in-out 1.3s infinite;
+  transform-origin: center bottom;
+}
+
+/* Thẻ đung đưa nhẹ liên tục sau khi đã hiện xong. */
+@keyframes mau03LetterCardSway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-.7deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(.7deg); }
+}
+
+.tpl-mau03 .mau03-bloom-cluster {
+  position: absolute;
+  z-index: 0;
+  width: 340px;
+  height: 340px;
+  pointer-events: none;
+}
+
+.tpl-mau03 .mau03-letter-bloom {
+  position: absolute;
+  line-height: 1;
+  opacity: .55;
+}
+
+.tpl-mau03 .mau03-letter-bloom.bloom-1 { top: 14px; left: 0; font-size: 190px; z-index: 5; transform: rotate(-4deg); }
+.tpl-mau03 .mau03-letter-bloom.bloom-2 { top: 32px; left: 168px; font-size: 116px; z-index: 4; opacity: .55; transform: rotate(16deg); }
+.tpl-mau03 .mau03-letter-bloom.bloom-3 { top: 168px; left: -24px; font-size: 120px; z-index: 3; opacity: .5; transform: rotate(-14deg); }
+.tpl-mau03 .mau03-letter-bloom.bloom-4 { top: 196px; left: 146px; font-size: 108px; z-index: 2; opacity: .48; transform: rotate(22deg); }
+.tpl-mau03 .mau03-letter-bloom.bloom-5 { top: 76px; left: 220px; font-size: 90px; z-index: 2; opacity: .42; transform: rotate(-20deg); }
+.tpl-mau03 .mau03-letter-bloom.bloom-6 { top: -10px; left: 100px; font-size: 100px; z-index: 3; opacity: .46; transform: rotate(10deg); }
+.tpl-mau03 .mau03-letter-bloom.bloom-7 { top: 150px; left: 250px; font-size: 105px; z-index: 1; opacity: .4; transform: rotate(-8deg); }
+.tpl-mau03 .mau03-letter-bloom.bloom-8 { top: 250px; left: 60px; font-size: 95px; z-index: 1; opacity: .4; transform: rotate(18deg); }
+
+.tpl-mau03 .bloom-tl {
+  top: -76px;
+  left: -76px;
+  opacity: 0;
+  animation: mau03BloomRiseTL .9s cubic-bezier(.22, .85, .32, 1) .6s both;
+}
+
+.tpl-mau03 .bloom-br {
+  bottom: -84px;
+  right: -76px;
+  opacity: 0;
+  animation: mau03BloomRiseBR .9s cubic-bezier(.22, .85, .32, 1) .6s both;
+}
+
+@keyframes mau03BloomRiseTL {
+  0% { opacity: 0; transform: rotate(180deg) translateY(56px); }
+  100% { opacity: 1; transform: rotate(180deg) translateY(0); }
+}
+
+@keyframes mau03BloomRiseBR {
+  0% { opacity: 0; transform: translateY(56px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.tpl-mau03 .mau03-letter-body {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  text-align: center;
+}
+
+.tpl-mau03 .mau03-letter-eyebrow {
+  margin: 0;
+  color: #b94f6a;
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.tpl-mau03 .mau03-letter-names {
+  margin-top: 23px;
+  color: #b94f6a;
+  font-family: "Allura", "Great Vibes", cursive;
+  font-size: clamp(46px, 7.5vw, 80px);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.tpl-mau03 .mau03-letter-rule {
+  position: relative;
+  width: 132px;
+  height: 20px;
+  margin: 17px auto 13px;
+  display: grid;
+  place-items: center;
+  color: #e88da3;
+}
+
+.tpl-mau03 .mau03-letter-rule::before,
+.tpl-mau03 .mau03-letter-rule::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(185, 79, 106, .55));
+}
+
+.tpl-mau03 .mau03-letter-rule::before { left: 0; }
+.tpl-mau03 .mau03-letter-rule::after { right: 0; transform: rotate(180deg); }
+
+.tpl-mau03 .mau03-letter-rule span {
+  font-size: 12px;
+  animation: mau03HeartBeat 2.6s ease-in-out infinite;
+}
+
+@keyframes mau03HeartBeat {
+  0%, 100% { transform: scale(1); }
+  45% { transform: scale(1); }
+  55% { transform: scale(1.14); }
+  65% { transform: scale(1); }
+}
+
+.tpl-mau03 .mau03-letter-date {
+  color: #8a5f68;
+  font-size: 17px;
+  letter-spacing: .02em;
+}
+
+.tpl-mau03 .mau03-letter-invite {
+  min-height: 23px;
+  margin-top: 8px;
+  font-size: 15px;
+  font-style: italic;
+  color: #8a5f68;
+}
+
+.tpl-mau03 .mau03-letter-btn {
+  min-width: 168px;
+  min-height: 50px;
+  margin-top: 28px;
+  padding: 0 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid #b94f6a;
+  border-radius: 999px;
+  background: #b94f6a;
+  color: #fff;
+  cursor: pointer;
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 19px rgba(120, 20, 50, .20);
+  transition:
+    background 240ms ease,
+    color 240ms ease,
+    transform 180ms ease,
+    box-shadow 240ms ease;
+}
+
+.tpl-mau03 .mau03-letter-btn i {
+  font-size: 15px;
+  font-style: normal;
+  transition: transform 240ms var(--m03-ease);
+}
+
+.tpl-mau03 .mau03-letter-btn:hover {
+  background: #fff;
+  color: #b94f6a;
+  box-shadow: 0 10px 24px rgba(120, 20, 50, .16);
+}
+
+.tpl-mau03 .mau03-letter-btn:hover i { transform: translateX(3px); }
+.tpl-mau03 .mau03-letter-btn:active { transform: scale(.97); }
+
+.tpl-mau03 .mau03-letter-btn:focus-visible {
+  outline: 2px solid #e88da3;
+  outline-offset: 4px;
+}
+
+.tpl-mau03 .mau03-letter-btn:disabled {
+  opacity: .75;
+  cursor: wait;
+}
+
+.tpl-mau03.is-js [data-letter-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 720ms var(--m03-ease),
+    transform 720ms var(--m03-ease);
+  transition-delay: var(--letter-delay, 0ms);
+}
+
+.tpl-mau03.is-js .mau03-letter-intro.is-ready [data-letter-reveal] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 900px) {
+  .tpl-mau03 .mau03-letter-card-inner {
+    min-height: 60vh;
+    padding: 56px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* Đặt SAU các rule cơ bản ở trên để thắng đúng specificity ngang nhau. */
+@media (min-width: 900px) {
+  .tpl-mau03 .mau03-letter-names {
+    font-size: 104px;
+    margin-top: 104px;
+  }
+  .tpl-mau03 .mau03-letter-date {
+    font-size: 40px;
+  }
+  .tpl-mau03 .mau03-letter-invite {
+    font-size: 34px;
+    margin-bottom: 56px;
+  }
+}
+
+/* Thân thiệp chỉ hiện sau khi bấm Mở thư */
+.tpl-mau03.is-js:not(.is-content-visible) .mau03-body {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.tpl-mau03.is-js.is-content-visible .mau03-body {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  animation: mau03BodySoftEnter 840ms var(--m03-ease) both;
+}
+
+@keyframes mau03BodySoftEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   HỆ THỐNG REVEAL KHI CUỘN — V7 KHÔI PHỤC, CHẠY CHẬM
+   ========================================================= */
+
+.tpl-mau03.is-js .mau03-body [data-reveal] {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 1450ms var(--m03-ease),
+    transform 1550ms var(--m03-ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+  filter: none;
+}
+
+.tpl-mau03.is-js .mau03-body [data-reveal="up"] {
+  transform: translate3d(0, 22px, 0);
+}
+
+.tpl-mau03.is-js .mau03-body [data-reveal="left"] {
+  transform: translate3d(-20px, 0, 0);
+}
+
+.tpl-mau03.is-js .mau03-body [data-reveal="right"] {
+  transform: translate3d(20px, 0, 0);
+}
+
+.tpl-mau03.is-js .mau03-body [data-reveal="zoom"] {
+  transform: scale(.982);
+}
+
+.tpl-mau03.is-js .mau03-body [data-reveal].is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.tpl-mau03.is-js .mau03-body [data-reveal].is-settled {
+  opacity: 1;
+  visibility: visible;
+  transform: none !important;
+  will-change: auto;
+  filter: none !important;
+}
+
+.tpl-mau03.is-js .mau03-body [data-reveal-line] {
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 1250ms var(--m03-ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.tpl-mau03.is-js .mau03-body [data-reveal-line].is-visible {
+  transform: scaleX(1);
+}
+
+/* Chuyển động nền rất nhẹ khi từng phần đi vào màn hình */
+.tpl-mau03 .mau03-section {
+  isolation: isolate;
+}
+
+.tpl-mau03 .mau03-section::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  z-index: -1;
+  width: 88%;
+  height: 74%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(123, 16, 32, .025),
+    transparent 68%
+  );
+  opacity: 0;
+  transform: translateX(-50%) translateY(12px) scale(.97);
+  transition:
+    opacity 1100ms ease,
+    transform 1100ms var(--m03-ease);
+  pointer-events: none;
+}
+
+.tpl-mau03 .mau03-section.is-section-visible::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.tpl-mau03 .ny-photo-frame {
+  transition:
+    transform 700ms var(--m03-ease),
+    box-shadow 700ms ease;
+}
+
+.tpl-mau03 .mau03-section.is-section-visible .ny-photo-frame {
+  box-shadow: 0 11px 27px rgba(60, 25, 30, .08);
+}
+
+/* =========================================================
+   CẤU TRÚC SECTION CHUNG
+   ========================================================= */
+
+.tpl-mau03 .mau03-section {
+  position: relative;
+  padding: 40px 22px;
+  background: var(--m03-bg);
+}
+
+.tpl-mau03 .mau03-section + .mau03-section {
+  border-top: 1px solid rgba(222, 215, 210, .48);
+}
+
+.tpl-mau03 .mau03-small-title {
+  margin: 0;
+  text-align: center;
+  color: #5d5351;
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.tpl-mau03 .mau03-section-script {
+  margin: 8px 0 0;
+  text-align: center;
+  color: var(--m03-text);
+  font-family: "Allura", "Great Vibes", cursive;
+  font-size: 39px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* =========================================================
+   01. LỜI MỜI + GIA ĐÌNH
+   ========================================================= */
+
+.tpl-mau03 .mau03-invite-section {
+  min-height: auto;
+  padding-top: 32px;
+  padding-bottom: 38px;
+  text-align: center;
+}
+
+.tpl-mau03 .mau03-invite-prefix {
+  margin: 20px auto 0;
+  max-width: 310px;
+  color: var(--m03-muted);
+  font-size: 15px;
+  letter-spacing: .02em;
+}
+
+.tpl-mau03 .mau03-script-names {
+  width: 100%;
+  margin: 18px auto 0;
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  color: var(--m03-wine);
+  font-family:
+    "MTD Attention Script",
+    "SVN-Saigon",
+    "Great Vibes",
+    "Allura",
+    "Segoe Script",
+    "Brush Script MT",
+    cursive;
+  font-size: clamp(35px, 9vw, 47px);
+  font-weight: 400;
+  line-height: .98;
+  letter-spacing: -.015em;
+}
+
+.tpl-mau03 .mau03-script-names > span {
+  display: block;
+  max-width: 100%;
+  padding: 0 4px;
+  text-wrap: balance;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .62);
+}
+
+.tpl-mau03 .mau03-script-names em {
+  margin: 2px 0;
+  color: var(--m03-gold);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 17px;
+  font-style: italic;
+}
+
+.tpl-mau03 .mau03-family-columns {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  text-align: left;
+}
+
+.tpl-mau03 .mau03-family-column {
+  min-width: 0;
+}
+
+.tpl-mau03 .mau03-family-column:last-child {
+  text-align: right;
+}
+
+.tpl-mau03 .mau03-family-column span {
+  display: block;
+  margin-bottom: 5px;
+  color: #5d5351;
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+
+.tpl-mau03 .mau03-family-column strong {
+  display: block;
+  color: var(--m03-text);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.tpl-mau03 .mau03-family-column small {
+  display: block;
+  margin-top: 4px;
+  color: var(--m03-muted);
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.tpl-mau03 .mau03-save-row {
+  margin-top: 28px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.tpl-mau03 .mau03-save-script {
+  color: var(--m03-muted);
+  font-family: "Allura", "Great Vibes", cursive;
+  font-size: 29px;
+}
+
+.tpl-mau03 .mau03-date-mark {
+  display: grid;
+  grid-template-columns: auto 1px auto;
+  align-items: center;
+  gap: 8px;
+  color: var(--m03-wine);
+  font-family: "Cormorant Garamond", Georgia, serif;
+}
+
+.tpl-mau03 .mau03-date-mark b {
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.tpl-mau03 .mau03-date-mark i {
+  width: 1px;
+  height: 44px;
+  background: var(--m03-wine);
+  transform: rotate(18deg);
+}
+
+
+.tpl-mau03 .mau03-couple-ranks {
+  margin: 10px 0 0;
+  color: var(--m03-wine);
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+
+.tpl-mau03 .mau03-family-column {
+  min-width: 0;
+  padding: 12px 10px;
+  border-top: 1px solid var(--m03-line);
+  border-bottom: 1px solid var(--m03-line);
+}
+
+.tpl-mau03 .mau03-family-column:last-child {
+  text-align: right;
+}
+
+.tpl-mau03 .mau03-family-label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--m03-wine);
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.tpl-mau03 .mau03-family-column p {
+  margin: 2px 0;
+  color: var(--m03-text);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.tpl-mau03 .mau03-family-column p b {
+  font-weight: 600;
+}
+
+.tpl-mau03 .mau03-family-column address {
+  margin-top: 7px;
+  color: var(--m03-muted);
+  font-size: 11px;
+  font-style: normal;
+  line-height: 1.55;
+}
+
+.tpl-mau03 .mau03-save-year {
+  margin: 8px 0 0;
+  color: var(--m03-muted);
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: .07em;
+}
+
+/* =========================================================
+   02. HAI ẢNH NHÔ KHỎI BAO THƯ
+   ========================================================= */
+
+.tpl-mau03 .mau03-couple-envelope-section {
+  padding-top: 34px;
+  padding-bottom: 22px;
+}
+
+.tpl-mau03 .mau03-couple-envelope-copy {
+  max-width: 300px;
+  margin: 0 auto 24px;
+  text-align: center;
+}
+
+.tpl-mau03 .mau03-couple-envelope-copy > p:last-child {
+  margin: 10px 0 0;
+  color: var(--m03-muted);
+  font-size: 15px;
+}
+
+.tpl-mau03 .mau03-couple-envelope-stage {
+  position: relative;
+  width: min(100%, 400px);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.tpl-mau03 .mau03-couple-photo {
+  position: relative;
+  flex: 1 1 0;
+  height: 210px;
+  margin: 0;
+  padding: 6px 6px 8px;
+  border: 1px solid #e8e0db;
+  background: var(--m03-paper);
+  box-shadow: 0 10px 24px rgba(42, 19, 22, .14);
+  overflow: hidden;
+  opacity: 0;
+  transition: transform 1.05s cubic-bezier(.16, .76, .18, 1), opacity .5s ease;
+}
+
+.tpl-mau03 .mau03-couple-photo-left {
+  transform: translateX(-26px) scale(.9);
+}
+
+.tpl-mau03 .mau03-couple-photo-right {
+  transform: translateX(26px) scale(.9);
+}
+
+.tpl-mau03 .mau03-couple-envelope-stage.is-visible .mau03-couple-photo {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  transition-delay: .3s;
+}
+
+.tpl-mau03 .mau03-couple-photo img {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Trái tim đập ở chính giữa 2 ảnh — nhịp đôi kiểu tim thật (lub-dub)
+   thay vì phập phồng đều đều. */
+.tpl-mau03 .mau03-couple-envelope-seal {
+  position: relative;
+  flex: none;
+  z-index: 2;
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  color: var(--m03-wine);
+  font-size: 38px;
+  opacity: 0;
+}
+
+.tpl-mau03 .mau03-couple-envelope-stage.is-visible .mau03-couple-envelope-seal {
+  opacity: 1;
+  transition: opacity .5s ease .6s;
+  animation: mau03HeartBeat 1.15s ease-in-out .8s infinite;
+}
+
+@keyframes mau03HeartBeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.3); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.18); }
+  60% { transform: scale(1); }
+}
+
+/* =========================================================
+   03. THẺ THÔNG TIN BUỔI TIỆC
+   ========================================================= */
+
+.tpl-mau03 .mau03-event-section {
+  padding-top: 34px;
+  padding-bottom: 42px;
+}
+
+.tpl-mau03 .mau03-stationery-card {
+  width: min(100%, 330px);
+  margin: 0 auto;
+  filter: drop-shadow(0 15px 28px rgba(45, 22, 24, .10));
+}
+
+.tpl-mau03 .mau03-stationery-paper {
+  position: relative;
+  padding: 26px 22px 24px;
+  border: 1px solid #e1dad5;
+  background: var(--m03-paper);
+  text-align: center;
+}
+
+.tpl-mau03 .mau03-stationery-paper h2 {
+  margin: 12px 0 0;
+  color: var(--m03-text);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 15px !important;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.tpl-mau03 .mau03-event-time {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  color: var(--m03-text);
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: .05em;
+}
+
+.tpl-mau03 .mau03-event-date {
+  margin: 8px 0 0;
+  color: var(--m03-muted);
+  font-size: 14px;
+}
+
+.tpl-mau03 .mau03-event-address {
+  margin: 10px auto 0;
+  max-width: 260px;
+  color: var(--m03-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.tpl-mau03 .mau03-event-rule {
+  display: block;
+  width: 36px;
+  height: 1px;
+  margin: 22px auto;
+  background: var(--m03-line);
+}
+
+.tpl-mau03 .mau03-stationery-paper h3 {
+  margin: 0;
+  color: var(--m03-text);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 24px !important;
+  font-weight: 600;
+  letter-spacing: .03em;
+}
+
+.tpl-mau03 .mau03-stationery-paper h3 + p {
+  margin: 7px 0 0;
+  color: var(--m03-muted);
+  font-size: 13px;
+}
+
+
+.tpl-mau03 .mau03-event-host,
+.tpl-mau03 .mau03-event-lunar {
+  margin: 7px auto 0;
+  color: var(--m03-muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.tpl-mau03 .mau03-event-time-small {
+  margin-top: 10px;
+}
+
+.tpl-mau03 .mau03-qr-note {
+  margin: 10px 0 0;
+  color: var(--m03-muted);
+  font-size: 11px;
+  font-style: italic;
+}
+
+/* =========================================================
+   04. LỊCH
+   ========================================================= */
+
+.tpl-mau03 .mau03-calendar-section {
+  padding-top: 38px;
+  padding-bottom: 42px;
+  text-align: center;
+}
+
+.tpl-mau03 .mau03-calendar {
+  margin: 24px auto 0;
+  padding: 20px 16px 18px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px 4px;
+  border: 1px solid #cfc7c2;
+  background: rgba(255,255,255,.72);
+}
+
+.tpl-mau03 .mau03-calendar span {
+  position: relative;
+  min-width: 0;
+  min-height: 26px;
+  display: grid;
+  place-items: center;
+  color: var(--m03-text);
+  border-radius: 50%;
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 12px;
+}
+
+.tpl-mau03 .mau03-calendar .head {
+  min-height: 18px;
+  color: var(--m03-muted);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.tpl-mau03 .mau03-calendar .blank {
+  visibility: hidden;
+}
+
+.tpl-mau03 .mau03-calendar .active {
+  color: var(--m03-wine);
+  font-weight: 700;
+}
+
+.tpl-mau03 .mau03-calendar .active::before {
+  content: "♡";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  color: var(--m03-wine);
+  font-family: Georgia, serif;
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1;
+  transform: translate(-50%, -54%) scale(0);
+  transition: transform 620ms cubic-bezier(.34, 1.56, .64, 1) 520ms;
+}
+
+.tpl-mau03 .mau03-calendar.is-visible .active::before {
+  transform: translate(-50%, -54%) scale(1);
+}
+
+.tpl-mau03 .mau03-calendar-note {
+  margin: 14px auto 0;
+  max-width: 290px;
+  color: var(--m03-muted);
+  font-size: 13px;
+}
+
+/* =========================================================
+   04b. 2 ẢNH NGANG
+   ========================================================= */
+
+.tpl-mau03 .mau03-calendar-photos-section {
+  display: grid;
+  gap: 14px;
+}
+
+.tpl-mau03 .mau03-calendar-photo {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--m03-line);
+  box-shadow: 0 10px 22px rgba(42, 19, 22, .1);
+}
+
+.tpl-mau03 .mau03-calendar-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========================================================
+   05. BẢN ĐỒ
+   ========================================================= */
+
+.tpl-mau03 .mau03-map-section {
+  text-align: center;
+}
+
+.tpl-mau03 .mau03-map-address {
+  margin: 12px auto 0;
+  max-width: 300px;
+  color: var(--m03-muted);
+  font-size: 14px;
+}
+
+.tpl-mau03 .mau03-map-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  margin: 24px 0 0;
+  overflow: hidden;
+  border: 1px solid var(--m03-line);
+  background: #f0ede9;
+}
+
+.tpl-mau03 .mau03-map-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.tpl-mau03 .mau03-map-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 6px;
+  padding: 18px;
+  text-align: center;
+  color: var(--m03-muted);
+  background: linear-gradient(135deg, rgba(255,255,255,.5), rgba(255,255,255,.2));
+}
+
+.tpl-mau03 .mau03-map-empty b {
+  color: var(--m03-text);
+}
+
+.tpl-mau03 .mau03-map-action {
+  margin-top: 18px;
+}
+
+.tpl-mau03 .mau03-map-action .map-btn,
+.tpl-mau03 .mau03-map-action a {
+  display: inline-flex;
+  min-height: 38px;
+  padding: 0 22px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--m03-wine) !important;
+  border-radius: 999px;
+  background: transparent !important;
+  color: var(--m03-wine) !important;
+  text-decoration: none;
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: color 220ms ease, background 220ms ease, transform 150ms ease;
+}
+
+.tpl-mau03 .mau03-map-action .map-btn:active,
+.tpl-mau03 .mau03-map-action a:active {
+  transform: scale(.97);
+}
+
+/* =========================================================
+   06 + 08. FORM
+   ========================================================= */
+
+.tpl-mau03 .mau03-rsvp-section,
+.tpl-mau03 .mau03-wishes-section {
+  text-align: center;
+}
+
+.tpl-mau03 .mau03-rsvp-form,
+.tpl-mau03 .mau03-wish-form {
+  margin-top: 26px;
+  display: grid;
+  gap: 15px;
+  text-align: left;
+}
+
+.tpl-mau03 .mau03-rsvp-form > label,
+.tpl-mau03 .mau03-wish-form > label {
+  display: grid;
+  gap: 7px;
+}
+
+.tpl-mau03 .mau03-rsvp-form label > span,
+.tpl-mau03 .mau03-wish-form label > span,
+.tpl-mau03 .mau03-radio-group legend {
+  color: var(--m03-muted);
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.tpl-mau03 .mau03-rsvp-form input[type="text"],
+.tpl-mau03 .mau03-rsvp-form select,
+.tpl-mau03 .mau03-rsvp-form textarea,
+.tpl-mau03 .mau03-wish-form input[type="text"],
+.tpl-mau03 .mau03-wish-form textarea {
+  width: 100%;
+  border: 1px solid #d8d1cc;
+  border-radius: 3px;
+  outline: 0;
+  background: rgba(255,255,255,.72);
+  color: var(--m03-text);
+  font-size: 15px;
+  transition: border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.tpl-mau03 .mau03-rsvp-form input[type="text"],
+.tpl-mau03 .mau03-rsvp-form select,
+.tpl-mau03 .mau03-wish-form input[type="text"] {
+  height: 43px;
+  padding: 0 12px;
+}
+
+.tpl-mau03 .mau03-rsvp-form textarea,
+.tpl-mau03 .mau03-wish-form textarea {
+  min-height: 92px;
+  padding: 11px 12px;
+  resize: vertical;
+}
+
+.tpl-mau03 .mau03-rsvp-form input:focus,
+.tpl-mau03 .mau03-rsvp-form select:focus,
+.tpl-mau03 .mau03-rsvp-form textarea:focus,
+.tpl-mau03 .mau03-wish-form input:focus,
+.tpl-mau03 .mau03-wish-form textarea:focus {
+  border-color: var(--m03-wine);
+  box-shadow: 0 0 0 3px rgba(123, 16, 32, .07);
+}
+
+.tpl-mau03 .mau03-radio-group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 9px;
+  border: 0;
+}
+
+.tpl-mau03 .mau03-radio-group legend {
+  margin-bottom: 7px;
+}
+
+.tpl-mau03 .mau03-radio-line {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--m03-text);
+  font-size: 14px;
+}
+
+.tpl-mau03 .mau03-radio-line input {
+  accent-color: var(--m03-wine);
+}
+
+.tpl-mau03 .mau03-btn {
+  width: 100%;
+  min-height: 43px;
+  border: 0;
+  border-radius: 3px;
+  background: var(--m03-wine);
+  color: #fff;
+  cursor: pointer;
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  transition: background 220ms ease, opacity 220ms ease, transform 150ms ease;
+}
+
+.tpl-mau03 .mau03-btn:active {
+  transform: scale(.98);
+}
+
+.tpl-mau03 .mau03-btn:disabled {
+  opacity: .65;
+  cursor: wait;
+}
+
+.tpl-mau03 .mau03-form-result {
+  min-height: 18px;
+  color: var(--m03-wine);
+  font-size: 13px;
+  text-align: center;
+}
+
+.tpl-mau03 .mau03-emoji-picker {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.tpl-mau03 .mau03-emoji-picker button {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #d8d1cc;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease, transform 150ms ease;
+}
+
+.tpl-mau03 .mau03-emoji-picker button.active {
+  border-color: var(--m03-wine);
+  background: #f8eaec;
+}
+
+.tpl-mau03 .mau03-emoji-picker button:active {
+  transform: scale(.92);
+}
+
+.tpl-mau03 .mau03-wish-list {
+  margin-top: 24px;
+  display: grid;
+  gap: 10px;
+  text-align: left;
+}
+
+/* =========================================================
+   07. ALBUM
+   ========================================================= */
+
+.tpl-mau03 .mau03-gallery-section {
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.tpl-mau03 .mau03-gallery-section > .mau03-small-title,
+.tpl-mau03 .mau03-gallery-section > .mau03-section-script {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.tpl-mau03 .mau03-masonry {
+  margin-top: 28px;
+  column-count: 2;
+  column-gap: 8px;
+}
+
+.tpl-mau03 .mau03-gallery-item {
+  margin: 0 0 8px;
+  break-inside: avoid;
+  overflow: hidden;
+  background: #f0ede9;
+  cursor: zoom-in;
+}
+
+.tpl-mau03 .mau03-gallery-item img {
+  height: auto;
+  transition: transform 620ms var(--m03-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tpl-mau03 .mau03-gallery-item:hover img {
+    transform: scale(1.025);
+  }
+
+  .tpl-mau03 .mau03-map-action .map-btn:hover,
+  .tpl-mau03 .mau03-map-action a:hover {
+    background: var(--m03-wine) !important;
+    color: #fff !important;
+  }
+}
+
+/* =========================================================
+   LIGHTBOX
+   ========================================================= */
+
+.tpl-mau03 .mau03-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 10, 12, .94);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 280ms ease, visibility 0s linear 280ms;
+}
+
+.tpl-mau03 .mau03-lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.tpl-mau03 .mau03-lightbox-stage {
+  max-width: 92vw;
+  max-height: 82vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transform: scale(.96);
+  transition: transform 300ms var(--m03-ease);
+}
+
+.tpl-mau03 .mau03-lightbox.is-open .mau03-lightbox-stage {
+  transform: scale(1);
+}
+
+.tpl-mau03 .mau03-lightbox-close,
+.tpl-mau03 .mau03-lightbox-nav {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  cursor: pointer;
+}
+
+.tpl-mau03 .mau03-lightbox-close {
+  top: 18px;
+  right: 18px;
+}
+
+.tpl-mau03 .mau03-lightbox-nav {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tpl-mau03 .mau03-lightbox-prev {
+  left: 10px;
+}
+
+.tpl-mau03 .mau03-lightbox-next {
+  right: 10px;
+}
+
+/* =========================================================
+   09. LỜI CẢM ƠN
+   ========================================================= */
+
+.tpl-mau03 .mau03-thankyou-section {
+  min-height: 360px;
+  padding-top: 66px;
+  padding-bottom: 70px;
+  text-align: center;
+}
+
+.tpl-mau03 .mau03-thankyou-quote {
+  margin: 0 auto;
+  max-width: 300px;
+  color: var(--m03-muted);
+  font-size: 15px;
+  font-style: italic;
+}
+
+.tpl-mau03 .mau03-thankyou-names {
+  width: 100%;
+  margin-top: 26px;
+  display: grid;
+  justify-items: center;
+  color: var(--m03-wine);
+  font-family:
+    "MTD Attention Script",
+    "SVN-Saigon",
+    "Great Vibes",
+    "Allura",
+    "Segoe Script",
+    "Brush Script MT",
+    cursive;
+  font-size: clamp(35px, 9vw, 47px);
+  font-weight: 400;
+  line-height: .98;
+  letter-spacing: -.015em;
+}
+
+.tpl-mau03 .mau03-thankyou-names > span {
+  display: block;
+  max-width: 100%;
+  padding: 0 4px;
+  text-wrap: balance;
+}
+
+.tpl-mau03 .mau03-thankyou-names em {
+  margin: 2px 0;
+  color: var(--m03-gold);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 18px;
+  font-style: italic;
+}
+
+.tpl-mau03 .mau03-thankyou-date {
+  margin: 18px 0 0;
+  color: var(--m03-wine);
+  font-family: Montserrat, Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: .13em;
+}
+
+.tpl-mau03 .mau03-thankyou-note {
+  margin: 18px auto 0;
+  max-width: 280px;
+  color: var(--m03-muted);
+  font-size: 14px;
+}
+
+/* =========================================================
+   NÚT NỔI
+   ========================================================= */
+
+.tpl-mau03 .mau03-float {
+  position: fixed;
+  right: 14px;
+  z-index: 90;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 50%;
+  background: var(--m03-wine);
+  color: #fff;
+  box-shadow: 0 7px 18px rgba(66, 14, 24, .20);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 240ms ease, visibility 240ms ease, transform 240ms ease;
+}
+
+.tpl-mau03.is-content-visible .mau03-music {
+  top: max(14px, env(safe-area-inset-top));
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.tpl-mau03 .mau03-top {
+  bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+.tpl-mau03 .mau03-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.tpl-mau03 .mau03-music.playing {
+  animation: mau03MusicPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes mau03MusicPulse {
+  50% { transform: scale(1.1); }
+}
+
+/* Ảnh lỗi: không hiện icon ảnh vỡ */
+.tpl-mau03 .is-image-missing {
+  position: relative;
+  min-height: 120px;
+  background: #f0ede9;
+}
+
+.tpl-mau03 .is-image-missing::after {
+  content: "Ảnh cưới";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #a69b95;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.tpl-mau03 .is-image-missing > img {
+  opacity: 0;
+}
+
+/* Nội dung chỉnh sửa của designer giữ đúng font/màu của vị trí cha */
+.tpl-mau03 .ny-editable-text {
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+}
+
+/* Field chưa nhập gì (địa chỉ lễ/tiệc, giờ tiệc...) là span rỗng 0x0 —
+   không có gì để bấm vào. Cho nó một vùng bấm tối thiểu và mượn luôn text
+   trong title="Bấm để chỉnh: ..." làm gợi ý, để designer thấy chỗ cần điền. */
+.tpl-mau03 .ny-editable-text:empty {
+  display: inline-block;
+  min-width: 120px;
+  min-height: 1.3em;
+}
+
+.tpl-mau03 .ny-editable-text:empty::before {
+  content: attr(title);
+  color: rgba(123, 16, 32, .45);
+  font-style: italic;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 350px) {
+  .tpl-mau03 .mau03-family-columns {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .tpl-mau03 .mau03-family-column,
+  .tpl-mau03 .mau03-family-column:last-child {
+    text-align: center;
+  }
+}
+
+@media (max-width: 375px) {
+  .tpl-mau03 .mau03-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .tpl-mau03 .mau03-cover-names {
+    font-size: 39px;
+  }
+
+  .tpl-mau03 .mau03-script-names {
+    font-size: 37px;
+  }
+
+  .tpl-mau03 .mau03-family-columns {
+    gap: 16px;
+  }
+
+
+  .tpl-mau03 .mau03-date-mark b {
+    font-size: 30px;
+  }
+}
+
+@media (min-width: 431px) {
+  .tpl-mau03 {
+    padding: 22px 0;
+    background: #eee9e4;
+  }
+
+  .tpl-mau03 .mau03-body {
+    border: 1px solid rgba(123, 16, 32, .24);
+    box-shadow:
+      0 0 0 6px rgba(255,255,255,.58),
+      0 18px 50px rgba(52, 25, 29, .13);
+  }
+}
+
+/* =========================================================
+   GIẢM CHUYỂN ĐỘ
+   ========================================================= */
+
+
+/* V6 — tăng khả năng đọc trên điện thoại */
+.tpl-mau03 .mau03-family-column p,
+.tpl-mau03 .mau03-family-column address,
+.tpl-mau03 .mau03-event-address,
+.tpl-mau03 .mau03-event-lunar,
+.tpl-mau03 .mau03-map-address,
+.tpl-mau03 .mau03-calendar-note,
+.tpl-mau03 .mau03-thankyou-note {
+  line-height: 1.6;
+}
+
+@media (max-width: 375px) {
+  .tpl-mau03 .mau03-small-title {
+    font-size: 10.5px;
+  }
+
+  .tpl-mau03 .mau03-family-column p {
+    font-size: 12px;
+  }
+
+  .tpl-mau03 .mau03-family-column address {
+    font-size: 10.5px;
+  }
+
+  .tpl-mau03 .mau03-rsvp-form input[type="text"],
+  .tpl-mau03 .mau03-rsvp-form select,
+  .tpl-mau03 .mau03-rsvp-form textarea,
+  .tpl-mau03 .mau03-wish-form input[type="text"],
+  .tpl-mau03 .mau03-wish-form textarea {
+    font-size: 16px;
+  }
+}
+
+
+
+/* =========================================================
+   V7 RESTORE — KIM CƯƠNG ĐỎ NHẠT
+   ========================================================= */
+
+.tpl-mau03 .mau03-diamond-layer {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 40;
+  width: min(100vw, 430px);
+  height: 100dvh;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.tpl-mau03 .mau03-red-diamond {
+  --diamond-left: 50%;
+  --diamond-size: 12px;
+  --diamond-duration: 15s;
+  --diamond-delay: 0s;
+  --diamond-drift: 0px;
+  --diamond-opacity: .22;
+
+  position: absolute;
+  top: -42px;
+  left: var(--diamond-left);
+  width: var(--diamond-size);
+  opacity: 0;
+  animation:
+    mau03SoftRedDiamondFall
+    var(--diamond-duration)
+    linear
+    var(--diamond-delay)
+    infinite;
+  filter: drop-shadow(0 2px 3px rgba(123, 16, 32, .10));
+  will-change: transform, opacity;
+}
+
+.tpl-mau03 .mau03-red-diamond svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+@keyframes mau03SoftRedDiamondFall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -48px, 0) rotate(-4deg) scale(.90);
+  }
+
+  10% {
+    opacity: var(--diamond-opacity);
+  }
+
+  50% {
+    transform:
+      translate3d(var(--diamond-drift), 50vh, 0)
+      rotate(7deg)
+      scale(1);
+  }
+
+  90% {
+    opacity: var(--diamond-opacity);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate3d(calc(var(--diamond-drift) * -.42), 112vh, 0)
+      rotate(-3deg)
+      scale(.92);
+  }
+}
+
+/* Chữ nhỏ rõ hơn nhưng vẫn giữ nguyên bảng V7 */
+.tpl-mau03 .mau03-family-column p {
+  margin: 3px 0;
+  color: var(--m03-text);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.tpl-mau03 .mau03-family-column address {
+  margin-top: 7px;
+  color: var(--m03-muted);
+  font-size: 10.5px;
+  font-style: normal;
+  line-height: 1.55;
+}
+
+.tpl-mau03 .mau03-event-host,
+.tpl-mau03 .mau03-event-lunar,
+.tpl-mau03 .mau03-event-address,
+.tpl-mau03 .mau03-calendar-note,
+.tpl-mau03 .mau03-map-address,
+.tpl-mau03 .mau03-qr-note,
+.tpl-mau03 .mau03-thankyou-note {
+  color: var(--m03-muted);
+  text-shadow: none;
+}
+
+.tpl-mau03.is-editor-preview .mau03-diamond-layer,
+.tpl-mau03.design-mode .mau03-diamond-layer,
+.tpl-mau03.editor-mode .mau03-diamond-layer,
+.tpl-mau03.is-designing .mau03-diamond-layer {
+  opacity: .58;
+}
+
+@media (max-width: 370px) {
+  .tpl-mau03 .mau03-script-names,
+  .tpl-mau03 .mau03-thankyou-names {
+    font-size: 34px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tpl-mau03 .mau03-red-diamond {
+    animation-duration: 26s !important;
+    --diamond-opacity: .12 !important;
+  }
+}
+
+/* V11 — Mẫu 03 trong Designer: luôn nhận thao tác, không để intro/reveal khóa click.
+   Server gắn thẳng is-editor-preview + data-editor="true" lên .tpl-mau03 (xem
+   routes/templates.py render_fragment), nên chỉ cần bám đúng 2 selector này —
+   không dùng CSS :has(...) hay class tổ tiên đoán mò (design-mode/editor-mode/...)
+   như bản cũ, tránh xung đột / không hiển thị đúng khi hai bộ rule đè lên nhau. */
+.tpl-mau03.is-editor-preview,
+.tpl-mau03[data-editor="true"] {
+  overflow-x: hidden !important;
+}
+.tpl-mau03.is-editor-preview .mau03-letter-intro,
+.tpl-mau03[data-editor="true"] .mau03-letter-intro {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 3 !important;
+  min-height: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: none !important;
+  animation: none !important;
+}
+/* mau03.js không gọi initLetterIntro() trong chế độ editor (bail sớm ở
+   RolaTemplateEffects.mau03), nên .mau03-letter-card không bao giờ được gắn
+   class is-ready — nếu không ép hiện ở đây, card giữ nguyên opacity:0 mặc định
+   (xem khối "INTRO THƯ MỜI" phía trên) và khung chỉnh chỉ thấy nền hồng trống,
+   không thấy tên/ngày/nút để bấm sửa. */
+.tpl-mau03.is-editor-preview .mau03-letter-card,
+.tpl-mau03[data-editor="true"] .mau03-letter-card {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+.tpl-mau03.is-editor-preview .mau03-body,
+.tpl-mau03[data-editor="true"] .mau03-body {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: none !important;
+  animation: none !important;
+}
+.tpl-mau03.is-editor-preview :is([data-reveal], [data-reveal-line], [data-letter-reveal]),
+.tpl-mau03[data-editor="true"] :is([data-reveal], [data-reveal-line], [data-letter-reveal]) {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+}
+/* .mau03-couple-photo / .mau03-couple-envelope-seal và cái bóng trang trí
+   .mau03-section::before đều opacity:0 mặc định, chỉ hiện khi JS quan sát
+   cuộn trang gắn .is-visible / .is-section-visible (initSectionMotion,
+   startBodyReveal) — các hàm đó cũng bị bỏ qua trong chế độ editor, nên ảnh
+   cưới ở khung "cô dâu chú rể" và trái tim ở giữa bị trắng xoá không hiện. */
+.tpl-mau03.is-editor-preview .mau03-couple-photo,
+.tpl-mau03[data-editor="true"] .mau03-couple-photo,
+.tpl-mau03.is-editor-preview .mau03-couple-envelope-seal,
+.tpl-mau03[data-editor="true"] .mau03-couple-envelope-seal {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+}
+.tpl-mau03.is-editor-preview .mau03-section::before,
+.tpl-mau03[data-editor="true"] .mau03-section::before {
+  opacity: 1 !important;
+  transform: translateX(-50%) translateY(0) scale(1) !important;
+}
+.tpl-mau03.is-editor-preview [contenteditable="true"],
+.tpl-mau03[data-editor="true"] [contenteditable="true"] {
+  position: relative;
+  z-index: 6;
+  cursor: text !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  pointer-events: auto !important;
+  outline: 1px dashed rgba(185,79,106,.30);
+  outline-offset: 2px;
+}
