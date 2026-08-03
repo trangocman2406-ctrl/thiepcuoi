@@ -701,60 +701,18 @@
     autosave(true);
   };
 
-  // Khung "Điện thoại" luôn dựng khung trong đúng 390 x 844 (kích thước
-  // thật của điện thoại, để mọi phép đo viewport bên trong iframe không
-  // sai khác so với máy khách thật) rồi mới thu nhỏ HÌNH ẢNH của cả khung
-  // bằng transform: scale() cho vừa đúng khoảng trống hiện có của
-  // .canvas-stage — xem giải thích đầy đủ tại rule CSS tương ứng trong
-  // base.css. Không đụng gì tới iframe.contentWindow (thu nhỏ bằng
-  // transform không đổi toạ độ con trỏ chuột khi kéo-thả trong iframe,
-  // trình duyệt tự quy đổi đúng).
-  var canvasStageEl = document.querySelector('.canvas-stage');
-  var mobileFitFrame = null;
-
-  function fitMobilePreviewStage(){
-    if(!canvasStageEl || canvasStageEl.getAttribute('data-size') !== 'mobile') return;
-    if(!iframe) return;
-    // clientWidth/clientHeight đã TÍNH SẴN padding của .canvas-stage vào
-    // trong đó (padding đổi theo breakpoint: 18px mặc định, ít hơn ở màn
-    // hẹp) — trước đây trừ mỗi "gutter" 20px cố định mà quên trừ đúng
-    // phần padding thật, nên khoảng trống tính ra LUÔN thừa ra đúng bằng
-    // (padding thật - 20px). Với padding mặc định 18px mỗi cạnh (36px hai
-    // cạnh) trừ gutter 20px dư ra 16px — khung điện thoại sau khi thu nhỏ
-    // vẫn luôn cao hơn khoảng trống thật đúng 16px, không bao giờ hết hẳn
-    // thanh cuộn dù đã tính scale. Đọc padding thật qua getComputedStyle
-    // để trừ đúng ở MỌI breakpoint thay vì đoán một số cố định.
-    var style = getComputedStyle(canvasStageEl);
-    var paddingX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
-    var paddingY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
-    var gutter = 20;
-    var availableWidth = canvasStageEl.clientWidth - paddingX - gutter;
-    var availableHeight = canvasStageEl.clientHeight - paddingY - gutter;
-    var scale = Math.min(1, availableWidth / 390, availableHeight / 844);
-    if(!Number.isFinite(scale) || scale <= 0) scale = 1;
-    canvasStageEl.style.setProperty('--ny-mobile-fit-scale', scale.toFixed(4));
-  }
-
-  function scheduleFitMobilePreviewStage(){
-    if(mobileFitFrame) cancelAnimationFrame(mobileFitFrame);
-    mobileFitFrame = requestAnimationFrame(fitMobilePreviewStage);
-  }
-
+  // Khung "Điện thoại" luôn hiện đúng 390 x 844 — kích thước thật của một
+  // máy, to y hệt khung "Laptop" (760px) đang hiện — không tự thu nhỏ theo
+  // khoảng trống làm việc nữa. .canvas-stage tự cuộn (overflow:auto, xem
+  // base.css) khi khoảng trống không đủ, giống hệt cách khung Laptop vẫn
+  // đang cuộn khi cần.
   document.querySelectorAll('[data-preview-size]').forEach(function(button){
     button.addEventListener('click', function(){
       var stage = document.querySelector('.canvas-stage');
       if(stage) stage.setAttribute('data-size', button.getAttribute('data-preview-size'));
       document.querySelectorAll('[data-preview-size]').forEach(function(item){ item.classList.toggle('is-active', item === button); });
-      scheduleFitMobilePreviewStage();
     });
   });
-
-  if(canvasStageEl && window.ResizeObserver){
-    new ResizeObserver(scheduleFitMobilePreviewStage).observe(canvasStageEl);
-  }else{
-    window.addEventListener('resize', scheduleFitMobilePreviewStage);
-  }
-  scheduleFitMobilePreviewStage();
 
   document.querySelectorAll('[data-select-photo]').forEach(function(card){
     card.addEventListener('click', function(){ selectPhoto(card.getAttribute('data-select-photo')); });

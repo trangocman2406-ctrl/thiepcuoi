@@ -249,44 +249,22 @@ body{overflow-x:hidden}
 .canvas-stage[data-size="mobile"]{align-items:start}
 
 /* .ny-frame-fit bọc quanh iframe xem trước (xem designer_detail.html).
-   Ở chế độ Laptop, wrapper này "biến mất" khỏi cây layout (display:contents)
-   để không đổi gì so với trước — iframe vẫn là con trực tiếp của
-   .canvas-stage y hệt lúc chưa có wrapper. */
+   "biến mất" khỏi cây layout (display:contents) ở CẢ hai chế độ — iframe
+   vẫn là con trực tiếp của .canvas-stage y hệt lúc chưa có wrapper. */
 .ny-frame-fit{display:contents}
 
-/* Khung xem "Điện thoại" luôn dựng đúng kích thước thật của một máy
-   (390 x 844, y hệt khách sẽ thấy) để nội dung/JS bên trong iframe luôn đo
-   đúng viewport điện thoại thật — không phải một khung bị bóp hẹp lại rồi
-   tính responsive sai lệch so với điện thoại thật. Khung 390 x 844 đó
-   thường CAO/RỘNG hơn khoảng trống thật của .canvas-stage trên nhiều màn
-   hình làm việc phổ biến (laptop, cửa sổ trình duyệt không tối đa hoá,
-   panel Designer bị thu hẹp...) — trước đây không xử lý gì thêm nên khung
-   điện thoại tràn ra ngoài .canvas-stage, buộc phải cuộn ngang/dọc bên
-   trong một hộp nhỏ mới thấy hết, viền phong bì bị cắt cụt, không thao
-   tác/chỉnh sửa được — đúng như lỗi "kẹt bên điện thoại, hiển thị quá lớn,
-   không thể chỉnh".
-   Giải pháp: .ny-frame-fit trở thành một khung THẬT có kích thước đã thu
-   nhỏ đúng bằng scale (không phải display:contents nữa), rồi iframe bên
-   trong giữ nguyên 390 x 844 gốc và tự co lại bằng transform: scale() cho
-   vừa khít đúng khung cha đó. Nhờ .ny-frame-fit có kích thước thật (không
-   phải hiệu ứng transform thuần hình ảnh), .canvas-stage tính đúng vùng
-   cuộn — không còn khoảng trống ảo phía dưới sau khi đã thu nhỏ. JS
-   (fitMobilePreviewStage trong designer-edit.js) đo khoảng trống rồi gán
-   biến --ny-mobile-fit-scale trên .canvas-stage. */
-.canvas-stage[data-size="mobile"] .ny-frame-fit{
-  display:block;
-  width:calc(390px * var(--ny-mobile-fit-scale,1));
-  height:calc(844px * var(--ny-mobile-fit-scale,1));
-  overflow:hidden;
-  border-radius:24px;
-  box-shadow:0 20px 60px rgba(57,33,22,.18);
-}
-.canvas-stage[data-size="mobile"] .ny-frame-fit iframe{
-  width:390px;min-width:390px;max-width:none;height:844px;min-height:844px;max-height:none;
-  border-radius:0;
-  box-shadow:none;
-  transform:scale(var(--ny-mobile-fit-scale,1));
-  transform-origin:top left;
+/* Khung xem "Điện thoại" luôn hiện ĐÚNG kích thước thật của một máy
+   (390 x 844, to y hệt khách sẽ thấy) — cùng cách đối xử với khung
+   "Laptop" (760px, xem rule .canvas-stage[data-size="laptop"] iframe phía
+   trên): không thu nhỏ hình ảnh lại theo khoảng trống hiện có nữa. Trước
+   đây từng thử tự động co khung điện thoại vừa khoảng trống — hậu quả là
+   toàn bộ nội dung (kể cả chữ) bị thu nhỏ theo, nhìn bé hơn hẳn so với
+   khung Laptop dù đang chỉnh cùng một mẫu. .canvas-stage vẫn overflow:auto
+   (rule gốc phía trên) nên khi khoảng trống làm việc không đủ 844px cao,
+   người dùng cuộn trong khung xem để thấy hết — giống hệt cách khung
+   Laptop vẫn đang cuộn khi cần, không có gì bất thường. */
+.canvas-stage[data-size="mobile"] iframe{
+  width:390px;min-width:390px;max-width:390px;height:844px;min-height:844px;max-height:none;
 }
 
 @media(max-width:1320px){
