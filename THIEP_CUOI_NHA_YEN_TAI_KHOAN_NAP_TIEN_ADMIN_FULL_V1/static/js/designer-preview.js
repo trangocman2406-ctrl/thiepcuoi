@@ -605,15 +605,30 @@
       namesEl.style.setProperty('width', '100%', 'important');
       namesEl.style.setProperty('max-width', 'none', 'important');
       namesEl.style.setProperty('white-space', 'nowrap', 'important');
-      // "left center" chứ không phải "center center": text-align:center trên
-      // khối cha KHÔNG tự chia đều phần tràn dòng sang 2 bên khi nowrap rộng
-      // hơn khung (đã kiểm chứng bằng đo trực tiếp) — chữ luôn bắt đầu sát
-      // mép trái của khối .letter-names rồi tràn hết sang phải. Neo scale ở
-      // "center" (giữa CHÍNH KHỐI, không phải giữa PHẦN CHỮ tràn ra) tính sai
-      // vị trí, khiến chữ vẫn ló ra ngoài khung dù đã nhân đúng tỉ lệ co theo
-      // bề rộng. Neo ở mép trái (trùng đúng điểm chữ bắt đầu, không đổi theo
-      // scale) làm mép phải co đúng theo tỉ lệ available/natural bên dưới.
-      namesEl.style.setProperty('transform-origin', 'left center', 'important');
+
+      // Ghi lại (chỉ một lần) cỡ chữ GỐC của khối tên và từng ô con
+      // (tên chú rể / dấu "&" / tên cô dâu — có thể mỗi ô một cỡ khác nhau
+      // do admin chỉnh riêng ở mục "Vị trí..."). Luôn tính tỉ lệ co dựa
+      // trên cỡ GỐC này, không phải cỡ đã bị co ở lần chạy trước — hàm này
+      // chạy lại nhiều lần (font tải xong, resize...), nếu cứ nhân dồn vào
+      // cỡ hiện tại sẽ co sai/co dồn quá tay qua mỗi lần chạy.
+      var posChildren = all('[data-pos-key]', namesEl);
+      function baseFontSize(el){
+        if(el.dataset.nyBaseFontSize === undefined){
+          el.dataset.nyBaseFontSize = String(parseFloat(getComputedStyle(el).fontSize) || 0);
+        }
+        return parseFloat(el.dataset.nyBaseFontSize) || 0;
+      }
+      if(namesEl.dataset.nyBaseFontSize === undefined){
+        namesEl.dataset.nyBaseFontSize = String(parseFloat(getComputedStyle(namesEl).fontSize) || 0);
+      }
+      var namesBaseSize = parseFloat(namesEl.dataset.nyBaseFontSize) || 0;
+      // Trả từng ô về đúng cỡ GỐC trước khi đo — phép đo "natural" bên dưới
+      // phải dựa trên cỡ chữ thật (chưa co), không phải cỡ đã co từ lần
+      // chạy trước, nếu không tỉ lệ tính ra sẽ sai dần qua mỗi lần chạy lại.
+      posChildren.forEach(function(el){ var b = baseFontSize(el); if(b) el.style.setProperty('font-size', b + 'px', 'important'); });
+      if(namesBaseSize) namesEl.style.setProperty('font-size', namesBaseSize + 'px', 'important');
+
       var available = Math.max(1, container.clientWidth * .94);
       var clone = namesEl.cloneNode(true);
       clone.style.cssText = 'position:fixed!important;visibility:hidden!important;pointer-events:none!important;left:-99999px!important;top:0!important;width:max-content!important;max-width:none!important;white-space:nowrap!important;transform:none!important;translate:none!important;scale:1!important;animation:none!important;';
@@ -628,7 +643,23 @@
       var natural = Math.max(1, clone.getBoundingClientRect().width || clone.scrollWidth);
       clone.remove();
       var ratio = Math.max(.05, Math.min(1, available / natural));
-      namesEl.style.setProperty('scale', ratio.toFixed(5), 'important');
+
+      // KHÔNG scale hình ảnh cả khối bằng transform/scale nữa — co THẲNG
+      // cỡ chữ THẬT của từng ô. Lý do: khi tên dài + có ô chỉnh cỡ chữ
+      // riêng lớn hơn mặc định (VD admin chỉnh tay ở mục "Vị trí..."), bố
+      // cục GỐC (trước khi co) rất rộng, đẩy các ô sau (dấu "&", tên cô
+      // dâu) ra toạ độ RẤT xa bên ngoài khung nhìn trước khi transform kéo
+      // chúng về lại chỗ đúng. Đã kiểm chứng trực tiếp: đúng lúc đó Chrome
+      // (kể cả bản thường, không riêng gì bản headless) không vẽ lại các ô
+      // đó nữa — DOM/CSS vẫn báo đúng vị trí/kích thước nhưng khung hình
+      // thật sự không hiện chữ, như bị "mất chữ" dù không hề lỗi dữ liệu.
+      // Co thẳng cỡ chữ thật giữ bố cục GỐC luôn nằm gọn trong khung ngay
+      // từ đầu, không rơi vào tình huống đó nữa.
+      posChildren.forEach(function(el){
+        var b = baseFontSize(el);
+        if(b) el.style.setProperty('font-size', (b * ratio).toFixed(2) + 'px', 'important');
+      });
+      if(namesBaseSize) namesEl.style.setProperty('font-size', (namesBaseSize * ratio).toFixed(2) + 'px', 'important');
       namesEl.dataset.nyIntroScale = ratio.toFixed(5);
     });
   }

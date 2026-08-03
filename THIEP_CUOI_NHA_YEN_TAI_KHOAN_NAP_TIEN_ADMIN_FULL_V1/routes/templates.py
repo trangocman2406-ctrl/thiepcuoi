@@ -662,7 +662,7 @@ def context_from_invitation(inv, designer_mode=False):
         context['designerPreviewScript'] = (
             '<script>window.NY_DESIGNER_PREVIEW=1;window.NY_PHOTO_UPLOAD_URL='
             + json.dumps(upload_url)
-            + ';</script><script src="/static/js/designer-preview.js?v=15" defer></script>'
+            + ';</script><script src="/static/js/designer-preview.js?v=16" defer></script>'
         )
     else:
         context['designerPreviewScript'] = ''

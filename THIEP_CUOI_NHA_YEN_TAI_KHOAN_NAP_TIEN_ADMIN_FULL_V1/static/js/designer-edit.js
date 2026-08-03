@@ -701,18 +701,55 @@
     autosave(true);
   };
 
-  // Khung "Điện thoại" luôn hiện đúng 390 x 844 — kích thước thật của một
-  // máy, to y hệt khung "Laptop" (760px) đang hiện — không tự thu nhỏ theo
-  // khoảng trống làm việc nữa. .canvas-stage tự cuộn (overflow:auto, xem
-  // base.css) khi khoảng trống không đủ, giống hệt cách khung Laptop vẫn
-  // đang cuộn khi cần.
+  // Khung "Điện thoại" dựng iframe bên trong đúng 390 x 844 (kích thước
+  // thật, để responsive bên trong luôn tính đúng như điện thoại thật) rồi
+  // PHÓNG TO/THU NHỎ ĐỀU khung bọc ngoài (.ny-frame-fit) cho vừa khít
+  // khoảng trống hiện có của .canvas-stage — luôn lấy tỉ lệ LỚN NHẤT có
+  // thể mà vẫn hiện đủ, không cần cuộn ngang lẫn dọc mới thấy hết. Xem
+  // giải thích đầy đủ ở rule CSS tương ứng trong base.css.
+  var canvasStageEl = document.querySelector('.canvas-stage');
+  var mobileFitFrame = null;
+
+  function fitMobilePreviewStage(){
+    if(!canvasStageEl || canvasStageEl.getAttribute('data-size') !== 'mobile') return;
+    if(!iframe) return;
+    // clientWidth/clientHeight đã TÍNH SẴN padding của .canvas-stage vào
+    // trong đó (padding đổi theo breakpoint) — phải trừ đúng phần padding
+    // thật (đọc qua getComputedStyle, không đoán một số cố định) rồi mới
+    // trừ thêm "gutter" nhỏ làm viền thở, nếu không khung điện thoại sau
+    // khi thu nhỏ sẽ luôn thừa ra đúng bằng phần padding bị tính nhầm,
+    // sinh thanh cuộn dư dù đã tính scale.
+    var style = getComputedStyle(canvasStageEl);
+    var paddingX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+    var paddingY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+    var gutter = 12;
+    var availableWidth = canvasStageEl.clientWidth - paddingX - gutter;
+    var availableHeight = canvasStageEl.clientHeight - paddingY - gutter;
+    var scale = Math.min(1, availableWidth / 390, availableHeight / 844);
+    if(!Number.isFinite(scale) || scale <= 0) scale = 1;
+    canvasStageEl.style.setProperty('--ny-mobile-fit-scale', scale.toFixed(4));
+  }
+
+  function scheduleFitMobilePreviewStage(){
+    if(mobileFitFrame) cancelAnimationFrame(mobileFitFrame);
+    mobileFitFrame = requestAnimationFrame(fitMobilePreviewStage);
+  }
+
   document.querySelectorAll('[data-preview-size]').forEach(function(button){
     button.addEventListener('click', function(){
       var stage = document.querySelector('.canvas-stage');
       if(stage) stage.setAttribute('data-size', button.getAttribute('data-preview-size'));
       document.querySelectorAll('[data-preview-size]').forEach(function(item){ item.classList.toggle('is-active', item === button); });
+      scheduleFitMobilePreviewStage();
     });
   });
+
+  if(canvasStageEl && window.ResizeObserver){
+    new ResizeObserver(scheduleFitMobilePreviewStage).observe(canvasStageEl);
+  }else{
+    window.addEventListener('resize', scheduleFitMobilePreviewStage);
+  }
+  scheduleFitMobilePreviewStage();
 
   document.querySelectorAll('[data-select-photo]').forEach(function(card){
     card.addEventListener('click', function(){ selectPhoto(card.getAttribute('data-select-photo')); });
