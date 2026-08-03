@@ -647,8 +647,14 @@ def context_from_invitation(inv, designer_mode=False):
         if order.get('map_url') else ''
     )
     context['designCss'] = build_design_css(order, designer_mode=designer_mode)
-    context['styleFile'] = f'/templates/{code}/{code}.css'
-    context['effectFile'] = f'/templates/{code}/{code}.js'
+    # ?v=... ép trình duyệt luôn tải đúng bản mới nhất của mau0X.css/js —
+    # trước đây 2 file này không có tham số phiên bản, chỉ trông chờ
+    # Cache-Control/ETag để trình duyệt tự xin lại bản mới; máy nào/trình
+    # duyệt nào không tuân theo đúng cách đó (cache cứng, tiện ích mở rộng,
+    # mạng công ty...) vẫn có thể kẹt lại bản CSS/JS cũ sau khi server đã
+    # sửa xong, nhìn như lỗi vẫn còn dù code đã đúng.
+    context['styleFile'] = f'/templates/{code}/{code}.css?v=20260803-mobile-fit'
+    context['effectFile'] = f'/templates/{code}/{code}.js?v=20260803-mobile-fit'
 
     if designer_mode:
         order_id = html.escape(str(order.get('id') or ''))

@@ -715,9 +715,21 @@
   function fitMobilePreviewStage(){
     if(!canvasStageEl || canvasStageEl.getAttribute('data-size') !== 'mobile') return;
     if(!iframe) return;
+    // clientWidth/clientHeight đã TÍNH SẴN padding của .canvas-stage vào
+    // trong đó (padding đổi theo breakpoint: 18px mặc định, ít hơn ở màn
+    // hẹp) — trước đây trừ mỗi "gutter" 20px cố định mà quên trừ đúng
+    // phần padding thật, nên khoảng trống tính ra LUÔN thừa ra đúng bằng
+    // (padding thật - 20px). Với padding mặc định 18px mỗi cạnh (36px hai
+    // cạnh) trừ gutter 20px dư ra 16px — khung điện thoại sau khi thu nhỏ
+    // vẫn luôn cao hơn khoảng trống thật đúng 16px, không bao giờ hết hẳn
+    // thanh cuộn dù đã tính scale. Đọc padding thật qua getComputedStyle
+    // để trừ đúng ở MỌI breakpoint thay vì đoán một số cố định.
+    var style = getComputedStyle(canvasStageEl);
+    var paddingX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+    var paddingY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
     var gutter = 20;
-    var availableWidth = canvasStageEl.clientWidth - gutter;
-    var availableHeight = canvasStageEl.clientHeight - gutter;
+    var availableWidth = canvasStageEl.clientWidth - paddingX - gutter;
+    var availableHeight = canvasStageEl.clientHeight - paddingY - gutter;
     var scale = Math.min(1, availableWidth / 390, availableHeight / 844);
     if(!Number.isFinite(scale) || scale <= 0) scale = 1;
     canvasStageEl.style.setProperty('--ny-mobile-fit-scale', scale.toFixed(4));
