@@ -701,13 +701,48 @@
     autosave(true);
   };
 
+  // Khung "Điện thoại" luôn dựng khung trong đúng 390 x 844 (kích thước
+  // thật của điện thoại, để mọi phép đo viewport bên trong iframe không
+  // sai khác so với máy khách thật) rồi mới thu nhỏ HÌNH ẢNH của cả khung
+  // bằng transform: scale() cho vừa đúng khoảng trống hiện có của
+  // .canvas-stage — xem giải thích đầy đủ tại rule CSS tương ứng trong
+  // base.css. Không đụng gì tới iframe.contentWindow (thu nhỏ bằng
+  // transform không đổi toạ độ con trỏ chuột khi kéo-thả trong iframe,
+  // trình duyệt tự quy đổi đúng).
+  var canvasStageEl = document.querySelector('.canvas-stage');
+  var mobileFitFrame = null;
+
+  function fitMobilePreviewStage(){
+    if(!canvasStageEl || canvasStageEl.getAttribute('data-size') !== 'mobile') return;
+    if(!iframe) return;
+    var gutter = 20;
+    var availableWidth = canvasStageEl.clientWidth - gutter;
+    var availableHeight = canvasStageEl.clientHeight - gutter;
+    var scale = Math.min(1, availableWidth / 390, availableHeight / 844);
+    if(!Number.isFinite(scale) || scale <= 0) scale = 1;
+    canvasStageEl.style.setProperty('--ny-mobile-fit-scale', scale.toFixed(4));
+  }
+
+  function scheduleFitMobilePreviewStage(){
+    if(mobileFitFrame) cancelAnimationFrame(mobileFitFrame);
+    mobileFitFrame = requestAnimationFrame(fitMobilePreviewStage);
+  }
+
   document.querySelectorAll('[data-preview-size]').forEach(function(button){
     button.addEventListener('click', function(){
       var stage = document.querySelector('.canvas-stage');
       if(stage) stage.setAttribute('data-size', button.getAttribute('data-preview-size'));
       document.querySelectorAll('[data-preview-size]').forEach(function(item){ item.classList.toggle('is-active', item === button); });
+      scheduleFitMobilePreviewStage();
     });
   });
+
+  if(canvasStageEl && window.ResizeObserver){
+    new ResizeObserver(scheduleFitMobilePreviewStage).observe(canvasStageEl);
+  }else{
+    window.addEventListener('resize', scheduleFitMobilePreviewStage);
+  }
+  scheduleFitMobilePreviewStage();
 
   document.querySelectorAll('[data-select-photo]').forEach(function(card){
     card.addEventListener('click', function(){ selectPhoto(card.getAttribute('data-select-photo')); });

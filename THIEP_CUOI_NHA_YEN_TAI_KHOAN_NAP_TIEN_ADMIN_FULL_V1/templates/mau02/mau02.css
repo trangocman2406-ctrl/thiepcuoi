@@ -1006,7 +1006,14 @@
 
 .tpl-mau02 .mau02-letter-body{position:relative;z-index:2;}
 .tpl-mau02 .mau02-letter-names{
-  font:400 clamp(34px,7.5vh,96px)/1.15 'Great Vibes','Imperial Script',cursive;
+  /* 7.5vw (không phải 7.5vh) — khớp đúng công thức cỡ chữ tên đang dùng ở
+     cả 4 mẫu còn lại (mau01/03/04/05 đều dùng clamp(...,7.5vw,...)). Dùng
+     vh (theo chiều CAO màn hình) cho một khối bị giới hạn theo chiều
+     NGANG là sai trục: điện thoại dọc có chiều cao lớn hơn nhiều so với
+     chiều ngang (390 x 844) nên 7.5vh tính ra cỡ chữ ~63px — quá to so với
+     bề ngang thật có, khiến tên tràn dòng nặng, JS fitLetterNamesOneLine
+     phải thu nhỏ rất mạnh (tỉ lệ ~0.39) mới vừa, chữ hoá ra bé tí. */
+  font:400 clamp(34px,7.5vw,96px)/1.15 'Great Vibes','Imperial Script',cursive;
   margin-bottom:clamp(10px,2.4vh,26px);
   color:var(--maroon);
   text-shadow:0 3px 6px rgba(77,11,18,.16);

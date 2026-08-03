@@ -24,7 +24,7 @@
           <a class="ny-btn ny-ghost ny-small" href="{{private_preview_url}}" target="_blank">Mở tab</a>
         </div>
       </div>
-      <div class="canvas-stage" data-size="laptop"><iframe id="designerLivePreview" src="{{private_preview_url}}?embed=1" title="Khung chỉnh sửa thiệp"></iframe></div>
+      <div class="canvas-stage" data-size="laptop"><div class="ny-frame-fit"><iframe id="designerLivePreview" src="{{private_preview_url}}?embed=1" title="Khung chỉnh sửa thiệp"></iframe></div></div>
       <div class="designer-hint">Chữ có viền hồng là chữ chỉnh trực tiếp được. Link/map trong khung này bị khóa để tránh bấm nhầm khi thiết kế.</div>
     </main>
     <aside class="editor-column">
@@ -146,4 +146,4 @@
   </div>
 </section>
 <script>window.NY_FIELD_LABELS = {{field_labels_json}};</script>
-<script src="/static/js/designer-edit.js?v=12" defer></script>
+<script src="/static/js/designer-edit.js?v=13" defer></script>

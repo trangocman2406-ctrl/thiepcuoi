@@ -470,7 +470,15 @@ def build_design_css(order, designer_mode=False):
   overflow-x:hidden!important;overflow-y:visible!important;transform:none!important;
 }
 .tpl-mau01 .mau01-letter-card,.tpl-mau02 .mau02-letter-card,.tpl-mau03 .mau03-letter-card,.tpl-mau04 .mau04-letter-card,.tpl-mau05 .m05-letter-card{width:100%!important;max-width:1180px!important;margin:auto!important;}
-.tpl-mau01 .mau01-letter-card-inner,.tpl-mau02 .mau02-letter-card-inner,.tpl-mau03 .mau03-letter-card-inner,.tpl-mau04 .mau04-letter-card-inner,.tpl-mau05 .m05-letter-card-inner{width:100%!important;max-height:none!important;min-height:0!important;height:auto!important;overflow:visible!important;padding:clamp(64px,9vh,110px) clamp(22px,6vw,64px)!important;box-sizing:border-box!important;}
+/* KHÔNG còn đặt max-height/height/overflow ở đây nữa — khối "Chuẩn hoá
+   intro cho cả 5 mẫu" phía dưới (ngoài editor_css, áp dụng cả cho khách
+   xem lẫn Designer) đã lo đúng phần đó (overflow-x:hidden để cắt phần chữ
+   tràn ngang, overflow-y:auto để cuộn dọc khi cần). Trước đây rule này đặt
+   overflow:visible!important + max-height:none!important đè mất
+   overflow-x:hidden của khối chuẩn hoá (cùng !important, rule này đứng sau
+   nên thắng) — tên dài (hoặc chữ thư pháp rộng) tràn hẳn ra ngoài khung
+   thư mời trong khung xem "Điện thoại", không có gì cắt/giới hạn lại. */
+.tpl-mau01 .mau01-letter-card-inner,.tpl-mau02 .mau02-letter-card-inner,.tpl-mau03 .mau03-letter-card-inner,.tpl-mau04 .mau04-letter-card-inner,.tpl-mau05 .m05-letter-card-inner{width:100%!important;padding:clamp(64px,9vh,110px) clamp(22px,6vw,64px)!important;box-sizing:border-box!important;}
 .tpl-mau01 .mau01-letter-body,.tpl-mau02 .mau02-letter-body,.tpl-mau03 .mau03-letter-body,.tpl-mau04 .mau04-letter-body,.tpl-mau05 .m05-letter-body{width:100%!important;max-width:none!important;min-width:0!important;}
 .tpl-mau01 .mau01-letter-names,.tpl-mau02 .mau02-letter-names,.tpl-mau03 .mau03-letter-names,.tpl-mau04 .mau04-letter-names,.tpl-mau05 .m05-letter-names{display:block!important;width:100%!important;max-width:none!important;margin-left:auto!important;margin-right:auto!important;overflow:visible!important;}
 .tpl-mau01 .mau01-letter-intro .mau01-letter-btn,
@@ -648,7 +656,7 @@ def context_from_invitation(inv, designer_mode=False):
         context['designerPreviewScript'] = (
             '<script>window.NY_DESIGNER_PREVIEW=1;window.NY_PHOTO_UPLOAD_URL='
             + json.dumps(upload_url)
-            + ';</script><script src="/static/js/designer-preview.js?v=13" defer></script>'
+            + ';</script><script src="/static/js/designer-preview.js?v=15" defer></script>'
         )
     else:
         context['designerPreviewScript'] = ''

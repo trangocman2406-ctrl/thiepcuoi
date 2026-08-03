@@ -605,11 +605,26 @@
       namesEl.style.setProperty('width', '100%', 'important');
       namesEl.style.setProperty('max-width', 'none', 'important');
       namesEl.style.setProperty('white-space', 'nowrap', 'important');
-      namesEl.style.setProperty('transform-origin', 'center center', 'important');
+      // "left center" chứ không phải "center center": text-align:center trên
+      // khối cha KHÔNG tự chia đều phần tràn dòng sang 2 bên khi nowrap rộng
+      // hơn khung (đã kiểm chứng bằng đo trực tiếp) — chữ luôn bắt đầu sát
+      // mép trái của khối .letter-names rồi tràn hết sang phải. Neo scale ở
+      // "center" (giữa CHÍNH KHỐI, không phải giữa PHẦN CHỮ tràn ra) tính sai
+      // vị trí, khiến chữ vẫn ló ra ngoài khung dù đã nhân đúng tỉ lệ co theo
+      // bề rộng. Neo ở mép trái (trùng đúng điểm chữ bắt đầu, không đổi theo
+      // scale) làm mép phải co đúng theo tỉ lệ available/natural bên dưới.
+      namesEl.style.setProperty('transform-origin', 'left center', 'important');
       var available = Math.max(1, container.clientWidth * .94);
       var clone = namesEl.cloneNode(true);
       clone.style.cssText = 'position:fixed!important;visibility:hidden!important;pointer-events:none!important;left:-99999px!important;top:0!important;width:max-content!important;max-width:none!important;white-space:nowrap!important;transform:none!important;translate:none!important;scale:1!important;animation:none!important;';
-      document.body.appendChild(clone);
+      // Gắn bản sao vào ĐÚNG container cha (trong cây .tpl-mau0X...), không
+      // phải document.body — CSS cỡ chữ/font thư pháp của tên chỉ khớp theo
+      // selector có tiền tố ".tpl-mau0X ..." (xem mau0X.css), nếu gắn ra
+      // ngoài body thì bản sao rơi khỏi phạm vi selector đó, tự động lấy
+      // font/cỡ chữ mặc định của trang (nhỏ hơn nhiều) — đo ra "natural" sai
+      // (nhỏ hơn thật), tưởng tên vừa 1 dòng nên không thu nhỏ, trong khi
+      // tên thật (đúng font/cỡ chữ gốc) vẫn tràn ra ngoài khung thư mời.
+      container.appendChild(clone);
       var natural = Math.max(1, clone.getBoundingClientRect().width || clone.scrollWidth);
       clone.remove();
       var ratio = Math.max(.05, Math.min(1, available / natural));
